@@ -1,0 +1,8 @@
+# so these wont be included in commits and cause conflicts
+
+# Mac OS files
+.DS_Store
+
+# Personal Xcode user data and interface states
+*.xcuserstate
+munchies.xcodeproj/project.xcworkspace/xcuserdata/
