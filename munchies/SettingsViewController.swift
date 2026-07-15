@@ -10,18 +10,25 @@ import UIKit
 class SettingsViewController: UIViewController, UITableViewDelegate, UITableViewDataSource
 {
     @IBOutlet weak var tableView:UITableView!
+    let defaults = UserDefaults.standard
     let switchCellIdentifier:String = "switchCell"
     let segueCellIdentifier:String = "segueCell"
+
+    enum Setting:Int
+    {
+        case darkMode
+        case privacy
+        case restrictions
+    }
     let settings:[String] = ["Dark Mode", "Privacy", "Restrictions"]
-    let settingSwitches:[String] = ["Dark Mode"]
-    let settingSegues:[String] = ["Privacy", "Restrictions"]
+    let settingSwitches:[Setting] = [Setting.darkMode]
+    let settingSegues:[Setting] = [Setting.privacy, Setting.restrictions]
     
     override func viewDidLoad()
     {
         super.viewDidLoad()
         tableView.dataSource = self
         tableView.delegate = self
-        print("huh?")
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int
@@ -32,8 +39,8 @@ class SettingsViewController: UIViewController, UITableViewDelegate, UITableView
     func tableView(_ tableView:UITableView, cellForRowAt indexPath:IndexPath) -> UITableViewCell
     {
         var cellType:String
-        let cellTitle = settings[indexPath.row]
-        if settingSwitches.firstIndex(of: cellTitle) != nil
+        let cellSetting:Setting = Setting(rawValue: indexPath.row)!
+        if settingSwitches.firstIndex(of: cellSetting) != nil
         {
             cellType = switchCellIdentifier
         } else
@@ -47,6 +54,7 @@ class SettingsViewController: UIViewController, UITableViewDelegate, UITableView
         {
             let uiSwitch:UISwitch = UISwitch(frame: CGRect.zero)
             uiSwitch.tag = indexPath.row
+            uiSwitch.addTarget(self, action: #selector(self.onSwitchChanged), for: UIControl.Event.valueChanged)
             cell.accessoryView = uiSwitch
         }
         var content:UIListContentConfiguration = cell.defaultContentConfiguration()
@@ -56,8 +64,14 @@ class SettingsViewController: UIViewController, UITableViewDelegate, UITableView
         return cell
     }
     
-    func onSwitchChanged()
+    @objc func onSwitchChanged(sender:UISwitch)
     {
-        
+        switch sender.tag
+        {
+            case Setting.darkMode.rawValue:
+                defaults.set(sender.isOn, forKey: settings[Setting.darkMode.rawValue])
+            default:
+                break
+        }
     }
 }
