@@ -64,10 +64,10 @@
             </objects>
             <point key="canvasLocation" x="701" y="-640"/>
         </scene>
-        <!--View Controller-->
+        <!--Profile View Controller-->
         <scene sceneID="Rx1-c9-JPf">
             <objects>
-                <viewController id="kPt-Ow-f8S" sceneMemberID="viewController">
+                <viewController id="kPt-Ow-f8S" customClass="ProfileViewController" customModule="munchies" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="hDl-EG-AJw">
                         <rect key="frame" x="0.0" y="0.0" width="440" height="956"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
