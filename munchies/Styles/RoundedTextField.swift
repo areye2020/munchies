@@ -27,6 +27,8 @@ class RoundedTextField: UITextField {
         paddingView.frame = CGRect(x: 0, y: 0, width: 16, height: 0)
         leftView = paddingView
         leftViewMode = .always
+        rightView = paddingView
+        rightViewMode = .always
 
         font = UIFont.systemFont(ofSize: 16)
     }
