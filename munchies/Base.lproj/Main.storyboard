@@ -12,7 +12,7 @@
         <!--Search-->
         <scene sceneID="AIO-Ip-oLy">
             <objects>
-                <viewController id="rh1-DN-qFn" sceneMemberID="viewController">
+                <viewController id="rh1-DN-qFn" customClass="SearchViewController" customModule="munchies" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="NnP-qt-NAm">
                         <rect key="frame" x="0.0" y="0.0" width="440" height="956"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -40,13 +40,13 @@
         <!--Add-->
         <scene sceneID="C3j-hi-asQ">
             <objects>
-                <viewController id="dpo-4x-4va" sceneMemberID="viewController">
+                <viewController id="dpo-4x-4va" customClass="AddRecipieViewController" customModule="munchies" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="re5-IE-4rh">
                         <rect key="frame" x="0.0" y="0.0" width="440" height="956"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Add Recipie" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PqU-Tk-OJC">
-                                <rect key="frame" x="147.66666666666666" y="461" width="144.99999999999997" height="34"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Add Recipe" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PqU-Tk-OJC">
+                                <rect key="frame" x="150.66666666666666" y="461" width="138.99999999999997" height="34"/>
                                 <fontDescription key="fontDescription" style="UICTFontTextStyleTitle1"/>
                                 <color key="textColor" red="0.80000000000000004" green="0.46666666670000001" blue="0.1333333333" alpha="0.84999999999999998" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
@@ -154,6 +154,12 @@
                                     <segue destination="QRl-fC-5VK" kind="show" id="81Y-9W-rrG"/>
                                 </connections>
                             </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0iL-zu-Z9q">
+                                <rect key="frame" x="199" y="682" width="42" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="FTZ-CU-DnS"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
@@ -163,8 +169,10 @@
                             <constraint firstItem="Ows-Mh-ABw" firstAttribute="leading" secondItem="TJV-hc-urd" secondAttribute="leading" id="615-wG-wUx"/>
                             <constraint firstItem="flB-XB-4WW" firstAttribute="leading" secondItem="TJV-hc-urd" secondAttribute="leading" id="6B8-5D-tuO"/>
                             <constraint firstItem="p3X-cl-sqV" firstAttribute="leading" secondItem="FTZ-CU-DnS" secondAttribute="leading" constant="50" id="8ga-x1-94a"/>
+                            <constraint firstItem="0iL-zu-Z9q" firstAttribute="centerX" secondItem="brp-st-JDU" secondAttribute="centerX" id="9Od-Op-Bmo"/>
                             <constraint firstItem="t91-OE-OFl" firstAttribute="top" secondItem="FTZ-CU-DnS" secondAttribute="top" id="Bg1-Pv-NjO"/>
                             <constraint firstItem="flB-XB-4WW" firstAttribute="top" secondItem="TJV-hc-urd" secondAttribute="bottom" constant="25" id="Bki-Sh-TYj"/>
+                            <constraint firstItem="0iL-zu-Z9q" firstAttribute="top" secondItem="Ows-Mh-ABw" secondAttribute="bottom" constant="40" id="DHu-Oz-d2t"/>
                             <constraint firstItem="FTZ-CU-DnS" firstAttribute="trailing" secondItem="p3X-cl-sqV" secondAttribute="trailing" constant="50" id="DWE-vU-wri"/>
                             <constraint firstItem="SKg-tU-flM" firstAttribute="leading" secondItem="FTZ-CU-DnS" secondAttribute="leading" constant="30" id="EQc-bd-LaB"/>
                             <constraint firstItem="3Af-FX-JRt" firstAttribute="leading" secondItem="p3X-cl-sqV" secondAttribute="leading" id="FTw-az-eay"/>
@@ -186,6 +194,7 @@
                     <navigationItem key="navigationItem" id="tA5-Bx-csr"/>
                     <connections>
                         <outlet property="pwField" destination="3Af-FX-JRt" id="OL2-vm-JTi"/>
+                        <outlet property="statusLabel" destination="0iL-zu-Z9q" id="hKp-m9-ns3"/>
                         <outlet property="userField" destination="p3X-cl-sqV" id="dLh-ZU-WEb"/>
                     </connections>
                 </viewController>
@@ -270,6 +279,12 @@
                                 <rect key="frame" x="360" y="522.66666666666663" width="19.666666666666686" height="19"/>
                                 <color key="tintColor" systemColor="systemGreenColor"/>
                             </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="H2N-K6-chK">
+                                <rect key="frame" x="199" y="684" width="42" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="vcJ-Ge-QjL"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
@@ -287,18 +302,22 @@
                             <constraint firstItem="fQj-YQ-8zC" firstAttribute="top" secondItem="Qxm-ZK-rFJ" secondAttribute="bottom" constant="25" id="UYA-dx-vG2"/>
                             <constraint firstItem="Qxm-ZK-rFJ" firstAttribute="top" secondItem="SMu-T9-6Jo" secondAttribute="bottom" constant="25" id="VF7-gd-zfy"/>
                             <constraint firstItem="vcJ-Ge-QjL" firstAttribute="trailing" secondItem="lFc-Ml-xje" secondAttribute="trailing" constant="30" id="YPM-yK-GQm"/>
+                            <constraint firstItem="H2N-K6-chK" firstAttribute="centerX" secondItem="PZ9-kr-tWa" secondAttribute="centerX" id="o8q-rM-VN5"/>
                             <constraint firstItem="Wfr-sa-CLY" firstAttribute="leading" secondItem="PUN-b5-UCP" secondAttribute="leading" id="oTA-oM-eOx"/>
                             <constraint firstItem="EzA-jz-Qp1" firstAttribute="leading" secondItem="vcJ-Ge-QjL" secondAttribute="leading" constant="70" id="pMQ-eM-NQR"/>
                             <constraint firstItem="SMu-T9-6Jo" firstAttribute="top" secondItem="Wfr-sa-CLY" secondAttribute="bottom" constant="25" id="t4b-iH-aes"/>
                             <constraint firstItem="PUN-b5-UCP" firstAttribute="top" secondItem="vcJ-Ge-QjL" secondAttribute="top" constant="204" id="tQY-9A-bkS"/>
                             <constraint firstItem="EzA-jz-Qp1" firstAttribute="centerX" secondItem="PZ9-kr-tWa" secondAttribute="centerX" id="wH1-6t-Txj"/>
                             <constraint firstItem="SMu-T9-6Jo" firstAttribute="leading" secondItem="Wfr-sa-CLY" secondAttribute="leading" id="wRo-za-di1"/>
+                            <constraint firstItem="H2N-K6-chK" firstAttribute="top" secondItem="fQj-YQ-8zC" secondAttribute="bottom" constant="40" id="ytC-az-Cpq"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="JuW-4H-XUJ"/>
                     <connections>
                         <outlet property="confirmField" destination="SMu-T9-6Jo" id="DmX-Oj-gPV"/>
                         <outlet property="pwField" destination="Wfr-sa-CLY" id="hVD-qS-oQL"/>
+                        <outlet property="pwMatchImage" destination="IHX-a6-lzW" id="3Ow-Xy-Dbt"/>
+                        <outlet property="statusLabel" destination="H2N-K6-chK" id="MeS-nM-KwM"/>
                         <outlet property="userField" destination="PUN-b5-UCP" id="mW3-NF-OjF"/>
                     </connections>
                 </viewController>
@@ -309,7 +328,7 @@
         <!--Profile-->
         <scene sceneID="Rx1-c9-JPf">
             <objects>
-                <viewController id="kPt-Ow-f8S" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="ProfileViewController" id="kPt-Ow-f8S" customClass="ProfileViewController" customModule="munchies" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="hDl-EG-AJw">
                         <rect key="frame" x="0.0" y="0.0" width="440" height="956"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -329,6 +348,7 @@
                         </constraints>
                     </view>
                     <tabBarItem key="tabBarItem" title="Profile" image="person.fill" catalog="system" id="B0v-8g-ioZ"/>
+                    <navigationItem key="navigationItem" id="7YI-Lc-FnD"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="xGp-3h-N2t" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
@@ -337,7 +357,7 @@
         <!--List-->
         <scene sceneID="pqq-GS-Xix">
             <objects>
-                <viewController id="bAJ-6B-MWy" sceneMemberID="viewController">
+                <viewController id="bAJ-6B-MWy" customClass="ShoppingListViewController" customModule="munchies" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="O1n-UN-HDr">
                         <rect key="frame" x="0.0" y="0.0" width="440" height="956"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -365,7 +385,7 @@
         <!--Feed-->
         <scene sceneID="H9F-Pm-g6P">
             <objects>
-                <viewController id="FXG-Hn-u6H" sceneMemberID="viewController">
+                <viewController id="FXG-Hn-u6H" customClass="FeedViewController" customModule="munchies" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="r6f-ZG-6XK">
                         <rect key="frame" x="0.0" y="0.0" width="440" height="956"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -390,10 +410,10 @@
             </objects>
             <point key="canvasLocation" x="-1508.1818181818182" y="-640.16736401673643"/>
         </scene>
-        <!--Tab Bar Controller-->
+        <!--Main Tab Bar Controller-->
         <scene sceneID="xHK-Bh-ofU">
             <objects>
-                <tabBarController id="Btk-6q-Iq1" sceneMemberID="viewController">
+                <tabBarController storyboardIdentifier="MainTabBarController" id="Btk-6q-Iq1" customClass="MainTabBarController" customModule="munchies" customModuleProvider="target" sceneMemberID="viewController">
                     <tabBar key="tabBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="GU8-2M-qK2">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="49"/>
                         <autoresizingMask key="autoresizingMask"/>
