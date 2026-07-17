@@ -220,6 +220,17 @@
                                             </constraints>
                                         </tableViewCellContentView>
                                     </tableViewCell>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="segueCell" id="3wg-kS-nFC">
+                                        <rect key="frame" x="0.0" y="101" width="440" height="51"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="3wg-kS-nFC" id="Hft-32-1ml">
+                                            <rect key="frame" x="0.0" y="0.0" width="409.66666666666669" height="51"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                        </tableViewCellContentView>
+                                        <connections>
+                                            <segue destination="Uzl-dY-MCq" kind="show" id="Ntw-1h-Jl6"/>
+                                        </connections>
+                                    </tableViewCell>
                                 </prototypes>
                             </tableView>
                         </subviews>
@@ -240,6 +251,53 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Ilj-Xi-YGe" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="2283" y="854"/>
+        </scene>
+        <!--Custom Restrictions View Controller-->
+        <scene sceneID="DiE-QX-OMf">
+            <objects>
+                <viewController id="Uzl-dY-MCq" customClass="CustomRestrictionsViewController" customModule="munchies" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="nJv-i2-Eez">
+                        <rect key="frame" x="0.0" y="0.0" width="440" height="956"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="Rkc-c3-ZFJ">
+                                <rect key="frame" x="0.0" y="178" width="440" height="661"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <prototypes>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="customRestriction" id="F9d-ib-oE5">
+                                        <rect key="frame" x="0.0" y="50" width="440" height="51"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="F9d-ib-oE5" id="lLL-rz-9ZB">
+                                            <rect key="frame" x="0.0" y="0.0" width="440" height="51"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                </prototypes>
+                            </tableView>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="Ixf-1R-DXZ"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="Ixf-1R-DXZ" firstAttribute="bottom" secondItem="Rkc-c3-ZFJ" secondAttribute="bottom" id="95s-sp-Xmp"/>
+                            <constraint firstItem="Rkc-c3-ZFJ" firstAttribute="leading" secondItem="Ixf-1R-DXZ" secondAttribute="leading" id="Afy-YA-08g"/>
+                            <constraint firstItem="Ixf-1R-DXZ" firstAttribute="trailing" secondItem="Rkc-c3-ZFJ" secondAttribute="trailing" id="qWD-yA-kbW"/>
+                            <constraint firstItem="Rkc-c3-ZFJ" firstAttribute="top" secondItem="Ixf-1R-DXZ" secondAttribute="top" id="ytz-nd-SKs"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" id="Z8R-Vf-Psu">
+                        <barButtonItem key="rightBarButtonItem" image="plus" catalog="system" id="SDs-Ob-rI7">
+                            <connections>
+                                <action selector="onPressAdd:" destination="Uzl-dY-MCq" id="Bgl-Du-W3z"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                    <connections>
+                        <outlet property="tableView" destination="Rkc-c3-ZFJ" id="ClM-vo-PyV"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="2Tf-9z-0pe" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3091" y="862"/>
         </scene>
         <!--Feed-->
         <scene sceneID="H9F-Pm-g6P">
@@ -316,6 +374,7 @@
         <image name="line.3.horizontal.button.angledtop.vertical.right" catalog="system" width="121" height="128"/>
         <image name="magnifyingglass" catalog="system" width="128" height="117"/>
         <image name="person.fill" catalog="system" width="128" height="120"/>
+        <image name="plus" catalog="system" width="128" height="113"/>
         <image name="plus.app.fill" catalog="system" width="128" height="114"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>

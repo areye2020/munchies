@@ -12,6 +12,7 @@ class SettingsViewController: UIViewController, UITableViewDelegate, UITableView
     @IBOutlet weak var tableView:UITableView!
     let defaults:UserDefaults = UserDefaults.standard
     let screenTitle:String = "General Settings"
+    let backButtonTitle:String = "General"
     let settingsKey:String = "Settings"
     let switchCellIdentifier:String = "switchCell"
     let segueCellIdentifier:String = "segueCell"
@@ -25,7 +26,7 @@ class SettingsViewController: UIViewController, UITableViewDelegate, UITableView
     {
         super.viewDidLoad()
         self.title = screenTitle
-        self.navigationItem.backButtonTitle = screenTitle
+        self.navigationItem.backButtonTitle = backButtonTitle
         tableView.dataSource = self
         tableView.delegate = self
         if let data:Data = defaults.object(forKey: settingsKey) as? Data,
