@@ -10,7 +10,7 @@ import UIKit
 import FirebaseCore
 import FirebaseAuth
 
-class SignupViewController: UIViewController {
+class SignupViewController: UIViewController, UITextFieldDelegate {
 
     @IBOutlet weak var userField: RoundedTextField!
     @IBOutlet weak var pwField: RoundedTextField!
@@ -21,14 +21,28 @@ class SignupViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         userField.placeholder = "Email"
+        userField.delegate = self
         pwField.placeholder = "Password"
+        pwField.delegate = self
         confirmField.placeholder = "Confirm Password"
+        confirmField.delegate = self
         pwField.isSecureTextEntry = true
         confirmField.isSecureTextEntry = true
         pwField.addTarget(self, action: #selector(passwordsChanged), for: .editingChanged)
         confirmField.addTarget(self, action: #selector(passwordsChanged), for: .editingChanged)
         pwMatchImage.isHidden = true
         statusLabel.text = nil
+    }
+    
+    // Called when 'return' key pressed
+    func textFieldShouldReturn(_ textField:UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return true
+    }
+    
+    // Called when the user clicks on the view outside of the UITextField
+    override func touchesBegan(_ touches:Set<UITouch>, with event:UIEvent?) {
+        self.view.endEditing(true)
     }
     
     @IBAction func createPressed(_ sender: Any) {
