@@ -1,15 +1,13 @@
 //
-//  FeedViewController.swift
-//  Project: munchies
-//  Eid:
-//  Course: CS371L
-//  Created by Adriana Monica Reyes on 7/11/26.
-//  Logan Nhem working on Feed starting 7/20/26.
+//  FavoritesViewController.swift
+//  munchies
+//
+//  Created by Nhem, Logan on 7/20/26.
 //
 
 import UIKit
 
-class FeedViewController: UIViewController {
+class FavoritesViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
