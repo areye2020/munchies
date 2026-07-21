@@ -1,7 +1,8 @@
 //
 //  MainTabBarController.swift
-//  munchies
-//
+//  Project: munchies
+//  Eid: ln8223
+//  Course: CS371L
 //  Created by Nhem, Logan on 7/17/26.
 //
 
