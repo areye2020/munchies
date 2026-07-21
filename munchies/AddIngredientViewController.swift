@@ -15,6 +15,26 @@ class AddIngredientViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        // Setup background color
+            view.backgroundColor = UIColor(named: "SoftCream") ?? .systemBackground
+        
+        setupKeyboardDismissRecognizer()
+        
+        // Apply styling to the text field layout
+            ingredientTextField.borderStyle = .roundedRect
+            ingredientTextField.tintColor = UIColor(named: "BurntOrange") // Cursor color
+            
+            // Style the Add button programmatically
+            if let button = view.subviews.compactMap({ $0 as? UIButton }).first {
+                // Configure a modern iOS 15+ filled button style
+                var config = UIButton.Configuration.filled()
+                config.title = "Add to List"
+                config.baseBackgroundColor = UIColor(named: "BurntOrange")
+                config.baseForegroundColor = .white
+                config.cornerStyle = .large
+                
+                button.configuration = config
+            }
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -24,6 +44,15 @@ class AddIngredientViewController: UIViewController {
         ingredientTextField.becomeFirstResponder()
     }
     
+    private func setupKeyboardDismissRecognizer() {
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
+        tapGesture.cancelsTouchesInView = false
+        view.addGestureRecognizer(tapGesture)
+    }
+    
+    @objc private func dismissKeyboard() {
+        view.endEditing(true)
+    }
     
     @IBAction func addButtonTapped(_ sender: Any) {
         // make sure its not just empty spaces

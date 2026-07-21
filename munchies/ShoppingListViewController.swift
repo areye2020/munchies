@@ -35,6 +35,21 @@ class ShoppingListViewController: UIViewController, UITableViewDataSource, UITab
         
         tableView.dataSource = self
         tableView.delegate = self
+        
+        // Theme Layout Configurations
+            view.backgroundColor = UIColor(named: "SoftCream") ?? .systemBackground
+            tableView.backgroundColor = .clear // Let the parent view background show through
+            
+            // Color the '+' bar button item and navigation header accent colors
+            navigationController?.navigationBar.tintColor = UIColor(named: "BurntOrange")
+            
+            let appearance = UINavigationBarAppearance()
+            appearance.configureWithOpaqueBackground()
+            appearance.backgroundColor = UIColor(named: "SoftCream") ?? .systemBackground
+            appearance.titleTextAttributes = [.foregroundColor: UIColor(named: "BurntOrange") ?? .black]
+            
+            navigationController?.navigationBar.standardAppearance = appearance
+            navigationController?.navigationBar.scrollEdgeAppearance = appearance
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -67,6 +82,13 @@ class ShoppingListViewController: UIViewController, UITableViewDataSource, UITab
         cell.accessoryType = item.isChecked ? .checkmark : .none
         
         return cell
+    }
+    
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == .delete {
+            ingredients.remove(at: indexPath.row)
+            tableView.deleteRows(at: [indexPath], with: .fade)
+        }
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
