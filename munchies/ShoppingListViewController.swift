@@ -75,11 +75,30 @@ class ShoppingListViewController: UIViewController, UITableViewDataSource, UITab
         let cell = tableView.dequeueReusableCell(withIdentifier: "IngredientCell", for: indexPath)
         let item = ingredients[indexPath.row]
         
-        // set text tabel to item name
-        cell.textLabel?.text = item.name
+        // check if the text should be crossed out or regular
+        if item.isChecked {
+            // make the attributes for the crossed out text
+            let attributes: [NSAttributedString.Key: Any] = [
+                .strikethroughStyle: NSUnderlineStyle.single.rawValue,
+                .foregroundColor: UIColor.secondaryLabel // Fades the text slightly out
+            ]
+                
+            // name of ingredient
+            cell.textLabel?.attributedText = NSAttributedString(string: item.name, attributes: attributes)
+            cell.accessoryType = .checkmark
+        } else {
+                // if not then its normal text
+            let attributes: [NSAttributedString.Key: Any] = [
+                    .foregroundColor: UIColor.label
+            ]
+                
+            cell.textLabel?.attributedText = NSAttributedString(string: item.name, attributes: attributes)
+            cell.accessoryType = .none
+        }
         
-        // to handle the check mark
-        cell.accessoryType = item.isChecked ? .checkmark : .none
+        // color the checkmark to match burnt orange color
+        cell.tintColor = UIColor(named: "BurntOrange")
+        cell.backgroundColor = .clear
         
         return cell
     }
