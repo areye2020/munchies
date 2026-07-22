@@ -11,6 +11,8 @@ import PhotosUI
 class ProfileEditViewController: UIViewController, PHPickerViewControllerDelegate
 {
     @IBOutlet weak var profileImageView:UIImageView!
+    let accessMessage:String = "Access to your photo library is required to add or change your "
+        + "profile image"
     var pickerConfig:PHPickerConfiguration!
     var picker:PHPickerViewController!
     
@@ -60,17 +62,22 @@ class ProfileEditViewController: UIViewController, PHPickerViewControllerDelegat
             case PHAuthorizationStatus.notDetermined:
                 PHPhotoLibrary.requestAuthorization(for: PHAccessLevel.readWrite)
                 {authStatus in
-                    if authStatus == PHAuthorizationStatus.authorized || authStatus == PHAuthorizationStatus.limited
+                    if authStatus == PHAuthorizationStatus.authorized
+                        || authStatus == PHAuthorizationStatus.limited
                     {
                         self.present(self.picker, animated: true)
                     }
                 }
             case PHAuthorizationStatus.denied:
-                let alert = UIAlertController(title: "Photo Access", message: "Access to your photo library is required to add or change your profile image", preferredStyle: UIAlertController.Style.alert)
-                let cancelAction = UIAlertAction(title: "no thanks", style: UIAlertAction.Style.cancel)
-                let settingsAction = UIAlertAction(title: "open settings?", style: UIAlertAction.Style.default)
+                let alert:UIAlertController = UIAlertController(title: "Photo Access",
+                    message: accessMessage,
+                    preferredStyle: UIAlertController.Style.alert)
+                let cancelAction:UIAlertAction = UIAlertAction(title: "no thanks",
+                    style: UIAlertAction.Style.cancel)
+                let settingsAction:UIAlertAction = UIAlertAction(title: "open settings?",
+                    style: UIAlertAction.Style.default)
                 {alert in
-                    if let url = URL(string: UIApplication.openSettingsURLString)
+                    if let url:URL = URL(string: UIApplication.openSettingsURLString)
                     {
                         UIApplication.shared.open(url)
                     }
@@ -79,9 +86,9 @@ class ProfileEditViewController: UIViewController, PHPickerViewControllerDelegat
                 alert.addAction(settingsAction)
                 present(alert, animated: true)
             case PHAuthorizationStatus.restricted:
-                break
+                createAlert(title: "Photo Access", accessMessage)
             case PHAuthorizationStatus.limited:
-                break
+                present(picker, animated: true)
             default:
                 break
         }
@@ -89,8 +96,11 @@ class ProfileEditViewController: UIViewController, PHPickerViewControllerDelegat
     
     func createAlert(title:String, _ message:String)
     {
-        let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertController.Style.alert)
-        let okayAction = UIAlertAction(title: "okay", style: UIAlertAction.Style.default)
+        let alert:UIAlertController = UIAlertController(title: title,
+            message: message,
+            preferredStyle: UIAlertController.Style.alert)
+        let okayAction:UIAlertAction = UIAlertAction(title: "okay",
+            style: UIAlertAction.Style.default)
         alert.addAction(okayAction)
         present(alert, animated: true)
     }
