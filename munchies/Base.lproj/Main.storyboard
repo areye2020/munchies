@@ -3,6 +3,7 @@
     <device id="retina6_9" orientation="portrait" appearance="light"/>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="24504"/>
+        <capability name="Image references" minToolsVersion="12.0"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
@@ -644,14 +645,6 @@
                         <rect key="frame" x="0.0" y="0.0" width="440" height="956"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="r5S-Nr-7F8">
-                                <rect key="frame" x="355" y="178" width="85" height="35"/>
-                                <state key="normal" title="Button"/>
-                                <buttonConfiguration key="configuration" style="plain" title="settings"/>
-                                <connections>
-                                    <segue destination="7rg-4S-89o" kind="show" id="Q3D-63-C7v"/>
-                                </connections>
-                            </button>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="profile_placeholder" translatesAutoresizingMaskIntoConstraints="NO" id="nWz-1Y-ePH">
                                 <rect key="frame" x="140" y="238" width="160" height="160"/>
                                 <constraints>
@@ -662,21 +655,42 @@
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4Kq-Tr-MAu">
                                 <rect key="frame" x="167" y="408" width="106" height="35"/>
                                 <state key="normal" title="Button"/>
-                                <buttonConfiguration key="configuration" style="plain" title="Edit Avatar"/>
+                                <buttonConfiguration key="configuration" style="plain" title="Edit Avatar" cornerStyle="capsule">
+                                    <backgroundConfiguration key="background">
+                                        <color key="backgroundColor" name="ThemeColor"/>
+                                    </backgroundConfiguration>
+                                    <color key="baseForegroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </buttonConfiguration>
                                 <connections>
                                     <action selector="onEditImage:" destination="VbO-Pn-Qzg" eventType="touchUpInside" id="DjW-pE-Pve"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kpH-fb-WLw">
+                                <rect key="frame" x="390" y="193" width="35" height="35"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="35" id="7N3-YH-DOK"/>
+                                    <constraint firstAttribute="height" constant="35" id="UiJ-rh-z24"/>
+                                </constraints>
+                                <state key="normal" title="Button"/>
+                                <buttonConfiguration key="configuration" style="filled">
+                                    <imageReference key="image" image="gearshape.fill" catalog="system" symbolScale="large"/>
+                                    <color key="baseBackgroundColor" name="ThemeColor"/>
+                                </buttonConfiguration>
+                                <connections>
+                                    <action selector="loginPressed:" destination="KII-NU-bY6" eventType="touchUpInside" id="hhF-Wb-chA"/>
+                                    <segue destination="7rg-4S-89o" kind="show" id="YqC-OK-SlB"/>
                                 </connections>
                             </button>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="tWi-Uy-A3g"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
+                            <constraint firstItem="kpH-fb-WLw" firstAttribute="top" secondItem="tWi-Uy-A3g" secondAttribute="top" constant="15" id="4io-6q-XOK"/>
                             <constraint firstItem="4Kq-Tr-MAu" firstAttribute="centerX" secondItem="tzz-1o-sGq" secondAttribute="centerX" id="Cju-Xo-V25"/>
                             <constraint firstItem="nWz-1Y-ePH" firstAttribute="centerX" secondItem="tzz-1o-sGq" secondAttribute="centerX" id="TRl-dh-2Zb"/>
                             <constraint firstItem="nWz-1Y-ePH" firstAttribute="top" secondItem="tWi-Uy-A3g" secondAttribute="top" constant="60" id="cC6-dW-rj9"/>
                             <constraint firstItem="4Kq-Tr-MAu" firstAttribute="top" secondItem="nWz-1Y-ePH" secondAttribute="bottom" constant="10" id="rtc-Gn-BjN"/>
-                            <constraint firstItem="r5S-Nr-7F8" firstAttribute="top" secondItem="tWi-Uy-A3g" secondAttribute="top" id="sqB-Y4-ffl"/>
-                            <constraint firstItem="tWi-Uy-A3g" firstAttribute="trailing" secondItem="r5S-Nr-7F8" secondAttribute="trailing" id="uDm-Df-1iu"/>
+                            <constraint firstItem="tWi-Uy-A3g" firstAttribute="trailing" secondItem="kpH-fb-WLw" secondAttribute="trailing" constant="15" id="vOy-yT-RXD"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="l45-MS-Q7e"/>
@@ -804,43 +818,58 @@
                         <rect key="frame" x="0.0" y="0.0" width="440" height="956"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="iVi-d1-hjy">
-                                <rect key="frame" x="334.66666666666669" y="178" width="105.33333333333331" height="35"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rWf-TP-4z3">
+                                <rect key="frame" x="371.66666666666669" y="193" width="53.333333333333314" height="34.333333333333343"/>
                                 <state key="normal" title="Button"/>
-                                <buttonConfiguration key="configuration" style="plain" title="edit profile"/>
+                                <buttonConfiguration key="configuration" style="filled" title="Edit">
+                                    <color key="baseBackgroundColor" name="ThemeColor"/>
+                                </buttonConfiguration>
                                 <connections>
-                                    <segue destination="VbO-Pn-Qzg" kind="show" id="Y9d-1K-tdZ"/>
+                                    <action selector="loginPressed:" destination="KII-NU-bY6" eventType="touchUpInside" id="fkw-Gy-Y6G"/>
+                                    <segue destination="VbO-Pn-Qzg" kind="show" id="u4a-Nl-Nyw"/>
                                 </connections>
                             </button>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="profile_placeholder" translatesAutoresizingMaskIntoConstraints="NO" id="BaW-vK-gsF">
-                                <rect key="frame" x="50" y="208" width="128" height="128"/>
+                                <rect key="frame" x="25" y="278" width="128" height="128"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="128" id="6ZW-Fx-HAK"/>
                                     <constraint firstAttribute="width" constant="128" id="Rf8-Te-VNm"/>
                                 </constraints>
                             </imageView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="  Username  " textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dPC-yg-jWb">
-                                <rect key="frame" x="217.99999999999997" y="238" width="109.66666666666666" height="24"/>
-                                <color key="backgroundColor" systemColor="systemBrownColor"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="20"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Mex-8N-7yM">
+                                <rect key="frame" x="173" y="293" width="175" height="35"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" text=" Username  " lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dPC-yg-jWb">
+                                        <rect key="frame" x="10" y="5.6666666666666856" width="104.66666666666667" height="24"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                                        <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                                <color key="backgroundColor" name="ThemeColor"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="175" id="8Ew-CU-IsI"/>
+                                    <constraint firstItem="dPC-yg-jWb" firstAttribute="centerY" secondItem="Mex-8N-7yM" secondAttribute="centerY" id="HhK-KB-1gK"/>
+                                    <constraint firstItem="dPC-yg-jWb" firstAttribute="leading" secondItem="Mex-8N-7yM" secondAttribute="leading" constant="10" id="gDt-11-wbf"/>
+                                    <constraint firstAttribute="height" constant="35" id="yR3-9d-4Qp"/>
+                                </constraints>
+                            </view>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="xYR-QZ-UOq"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
-                            <constraint firstItem="dPC-yg-jWb" firstAttribute="top" secondItem="BaW-vK-gsF" secondAttribute="top" constant="30" id="7ha-JF-xa1"/>
-                            <constraint firstItem="BaW-vK-gsF" firstAttribute="leading" secondItem="xYR-QZ-UOq" secondAttribute="leading" constant="50" id="Pwo-DK-CtD"/>
-                            <constraint firstItem="xYR-QZ-UOq" firstAttribute="trailing" secondItem="iVi-d1-hjy" secondAttribute="trailing" id="U1l-BM-uSp"/>
-                            <constraint firstItem="dPC-yg-jWb" firstAttribute="leading" secondItem="BaW-vK-gsF" secondAttribute="trailing" constant="40" id="bqP-Qe-NDr"/>
-                            <constraint firstItem="iVi-d1-hjy" firstAttribute="top" secondItem="xYR-QZ-UOq" secondAttribute="top" id="nuM-qy-des"/>
-                            <constraint firstItem="BaW-vK-gsF" firstAttribute="top" secondItem="xYR-QZ-UOq" secondAttribute="top" constant="30" id="o6E-hE-yBj"/>
+                            <constraint firstItem="rWf-TP-4z3" firstAttribute="top" secondItem="xYR-QZ-UOq" secondAttribute="top" constant="15" id="18U-56-6bH"/>
+                            <constraint firstItem="BaW-vK-gsF" firstAttribute="leading" secondItem="xYR-QZ-UOq" secondAttribute="leading" constant="25" id="Pwo-DK-CtD"/>
+                            <constraint firstItem="Mex-8N-7yM" firstAttribute="top" secondItem="BaW-vK-gsF" secondAttribute="top" constant="15" id="Wsk-Ep-3KZ"/>
+                            <constraint firstItem="BaW-vK-gsF" firstAttribute="top" secondItem="xYR-QZ-UOq" secondAttribute="top" constant="100" id="o6E-hE-yBj"/>
+                            <constraint firstItem="xYR-QZ-UOq" firstAttribute="trailing" secondItem="rWf-TP-4z3" secondAttribute="trailing" constant="15" id="r4M-8I-D8w"/>
+                            <constraint firstItem="Mex-8N-7yM" firstAttribute="leading" secondItem="BaW-vK-gsF" secondAttribute="trailing" constant="20" id="tvL-3D-8vp"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="oAK-uT-WnS"/>
                     <connections>
                         <outlet property="profileImageView" destination="BaW-vK-gsF" id="YI0-oP-H7T"/>
+                        <outlet property="usernameBackground" destination="Mex-8N-7yM" id="i1n-5J-bdQ"/>
                         <outlet property="usernameLabel" destination="dPC-yg-jWb" id="bCT-qw-ECl"/>
                     </connections>
                 </viewController>
@@ -852,6 +881,7 @@
     <resources>
         <image name="checkmark.circle.fill" catalog="system" width="128" height="123"/>
         <image name="fork.knife" catalog="system" width="94" height="128"/>
+        <image name="gearshape.fill" catalog="system" width="128" height="123"/>
         <image name="line.3.horizontal.button.angledtop.vertical.right" catalog="system" width="121" height="128"/>
         <image name="magnifyingglass" catalog="system" width="128" height="117"/>
         <image name="munchiesLogoColor" width="700" height="700"/>
@@ -870,9 +900,6 @@
         </namedColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-        </systemColor>
-        <systemColor name="systemBrownColor">
-            <color red="0.67450980392156867" green="0.49803921568627452" blue="0.36862745098039218" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="systemGreenColor">
             <color red="0.20392156862745098" green="0.7803921568627451" blue="0.34901960784313724" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
