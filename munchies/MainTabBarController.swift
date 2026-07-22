@@ -1,15 +1,14 @@
 //
-//  FeedViewController.swift
+//  MainTabBarController.swift
 //  Project: munchies
-//  Eid:
+//  Eid: ln8223
 //  Course: CS371L
-//  Created by Adriana Monica Reyes on 7/11/26.
-//  Logan Nhem working on Feed starting 7/20/26.
+//  Created by Nhem, Logan on 7/17/26.
 //
 
 import UIKit
 
-class FeedViewController: UIViewController {
+class MainTabBarController: UITabBarController {
 
     override func viewDidLoad() {
         super.viewDidLoad()

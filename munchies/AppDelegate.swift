@@ -1,11 +1,13 @@
 //
 //  AppDelegate.swift
-//  munchies
-//
+//  Project: munchies
+//  Eid:
+//  Course: CS371L
 //  Created by Adriana Monica Reyes on 7/10/26.
 //
 
 import UIKit
+import FirebaseCore
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -14,6 +16,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
+        FirebaseApp.configure()
         return true
     }
 
