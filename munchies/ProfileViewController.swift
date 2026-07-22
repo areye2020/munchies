@@ -17,6 +17,6 @@ class ProfileViewController: UIViewController
         profileImageView.layer.cornerRadius = profileImageView.bounds.width / 2
         profileImageView.layer.masksToBounds = true
         usernameLabel.layer.cornerRadius = usernameLabel.bounds.height / 2
-        usernameLabel.layer.masksToBounds = true
+        usernameLabel.layer.masksToBounds = true // sigh
     }
 }
