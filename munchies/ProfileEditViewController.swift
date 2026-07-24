@@ -36,8 +36,16 @@ class ProfileEditViewController: UIViewController, PHPickerViewControllerDelegat
         if let user:FirebaseAuth.User = Auth.auth().currentUser
         {
             currentUser = User(UID: user.uid)
+            {(newUser) in
+                if newUser != nil
+                {
+                    self.usernameTextField.text = newUser!.username
+                } else
+                {
+                    print("could not fetch user data")
+                }
+            }
             usernameTextField.text = "wuh"
-            usernameTextField.text = currentUser.username
         }
     }
     

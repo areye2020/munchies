@@ -57,6 +57,47 @@ class User
         }
     }
     
+    init(UID:String, onCompletion:@escaping (User?) -> Void)
+    {
+        username = ""
+        restrictions = []
+        customRestrictions = []
+        let result = Firestore.firestore().collection(userCollectionID).whereField(FieldPath.documentID(), isEqualTo: "o6dcRLJro1b0P2mMhTHY0IlQDiT2")
+        result.getDocuments()
+        {(querySnapShot, error) in
+            if let error
+            {
+                print(error.localizedDescription)
+                handler(nil)
+            } else
+            {
+                if let docs:[QueryDocumentSnapshot] = querySnapShot?.documents,
+                   !docs.isEmpty
+                {
+                    // should only ever be one result
+                    let userDoc:[String:Any] = docs[0].data()
+                    self.username = userDoc["username"] as! String
+                    
+                    let restrictionNames:[String] = userDoc["restrictions"] as! [String]
+                    for i in 0 ..< restrictionNames.count
+                    {
+                        self.restrictions.append(Restriction(name: restrictionNames[i]))
+                    }
+                    let customDocRestrictions:[String] = userDoc["custom restrictions"] as! [String]
+                    for i in 0 ..< customDocRestrictions.count
+                    {
+                        self.customRestrictions.append(customDocRestrictions[i])
+                    }
+                    handler(self)
+                } else
+                {
+                    print("error retrieving documents")
+                    handler(nil)
+                }
+            }
+        }
+    }
+    
     func addCustomRestriction(ingredient:String)
     {
         customRestrictions.append(ingredient)
