@@ -10,15 +10,17 @@ import PhotosUI
 import FirebaseFirestore
 import FirebaseAuth
 
-class ProfileEditViewController: UIViewController, PHPickerViewControllerDelegate
+class ProfileEditViewController: UIViewController, PHPickerViewControllerDelegate, UITextFieldDelegate
 {
     @IBOutlet weak var profileImageView:UIImageView!
     @IBOutlet weak var usernameTextField:RoundedTextField!
+    let maxUsernameLength:Int = 16
     let accessMessage:String = "Access to your photo library is required to add or change your "
         + "profile image"
     let database:Firestore = Firestore.firestore()
     var pickerConfig:PHPickerConfiguration!
     var picker:PHPickerViewController!
+    var currentUser:User!
     
     override func viewDidLoad()
     {
@@ -30,10 +32,19 @@ class ProfileEditViewController: UIViewController, PHPickerViewControllerDelegat
         pickerConfig.selectionLimit = 1
         picker = PHPickerViewController(configuration: pickerConfig)
         picker.delegate = self
-        if let user:User = Auth.auth().currentUser
+        usernameTextField.delegate = self
+        if let user:FirebaseAuth.User = Auth.auth().currentUser
         {
-            usernameTextField.text = user.email // TODO
+            currentUser = User(UID: user.uid)
+            usernameTextField.text = "wuh"
+            usernameTextField.text = currentUser.username
         }
+    }
+    
+    func textField(_ textField:UITextField, shouldChangeCharactersIn range:NSRange, replacementString string:String) -> Bool
+    {
+        let newString:String = (textField.text as? NSString)!.replacingCharacters(in: range, with: string)
+        return newString.count <= maxUsernameLength
     }
 
     func picker(_ picker:PHPickerViewController, didFinishPicking results:[PHPickerResult])
