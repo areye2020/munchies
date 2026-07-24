@@ -818,7 +818,7 @@
                                 </connections>
                             </button>
                             <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="Username" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="vEL-nS-t5b" customClass="RoundedTextField" customModule="munchies" customModuleProvider="target">
-                                <rect key="frame" x="120" y="503" width="200" height="28"/>
+                                <rect key="frame" x="120" y="483" width="200" height="28"/>
                                 <color key="backgroundColor" name="TextField"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="200" id="ZwO-DQ-1dK"/>
@@ -827,7 +827,7 @@
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xZO-e1-Lg5">
-                                <rect key="frame" x="156" y="601" width="128" height="35"/>
+                                <rect key="frame" x="156" y="704" width="128" height="35"/>
                                 <state key="normal" title="Button"/>
                                 <buttonConfiguration key="configuration" style="plain" title="save changes">
                                     <backgroundConfiguration key="background">
@@ -839,6 +839,15 @@
                                     <action selector="onSaveChangePress:" destination="VbO-Pn-Qzg" eventType="touchUpInside" id="xeO-ga-keq"/>
                                 </connections>
                             </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="status" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lOw-V8-RSr">
+                                <rect key="frame" x="193" y="610" width="54" height="24"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" relation="lessThanOrEqual" constant="200" id="91a-Im-Gt1"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="tWi-Uy-A3g"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
@@ -847,10 +856,12 @@
                             <constraint firstItem="kpH-fb-WLw" firstAttribute="top" secondItem="tWi-Uy-A3g" secondAttribute="top" constant="15" id="4io-6q-XOK"/>
                             <constraint firstItem="vEL-nS-t5b" firstAttribute="centerX" secondItem="tzz-1o-sGq" secondAttribute="centerX" id="Amg-ze-Rg5"/>
                             <constraint firstItem="4Kq-Tr-MAu" firstAttribute="centerX" secondItem="tzz-1o-sGq" secondAttribute="centerX" id="Cju-Xo-V25"/>
+                            <constraint firstItem="tWi-Uy-A3g" firstAttribute="bottom" secondItem="xZO-e1-Lg5" secondAttribute="bottom" constant="100" id="MOW-sA-rzQ"/>
                             <constraint firstItem="nWz-1Y-ePH" firstAttribute="centerX" secondItem="tzz-1o-sGq" secondAttribute="centerX" id="TRl-dh-2Zb"/>
-                            <constraint firstItem="vEL-nS-t5b" firstAttribute="top" secondItem="4Kq-Tr-MAu" secondAttribute="bottom" constant="60" id="U3T-iq-wbc"/>
+                            <constraint firstItem="vEL-nS-t5b" firstAttribute="top" secondItem="4Kq-Tr-MAu" secondAttribute="bottom" constant="40" id="U3T-iq-wbc"/>
+                            <constraint firstItem="xZO-e1-Lg5" firstAttribute="top" secondItem="lOw-V8-RSr" secondAttribute="bottom" constant="70" id="a2w-MC-QRM"/>
                             <constraint firstItem="nWz-1Y-ePH" firstAttribute="top" secondItem="tWi-Uy-A3g" secondAttribute="top" constant="60" id="cC6-dW-rj9"/>
-                            <constraint firstItem="xZO-e1-Lg5" firstAttribute="top" secondItem="vEL-nS-t5b" secondAttribute="bottom" constant="70" id="g0T-S4-CjD"/>
+                            <constraint firstItem="lOw-V8-RSr" firstAttribute="centerX" secondItem="tzz-1o-sGq" secondAttribute="centerX" id="jlC-Sa-TW0"/>
                             <constraint firstItem="4Kq-Tr-MAu" firstAttribute="top" secondItem="nWz-1Y-ePH" secondAttribute="bottom" constant="10" id="rtc-Gn-BjN"/>
                             <constraint firstItem="tWi-Uy-A3g" firstAttribute="trailing" secondItem="kpH-fb-WLw" secondAttribute="trailing" constant="15" id="vOy-yT-RXD"/>
                         </constraints>
@@ -858,6 +869,7 @@
                     <navigationItem key="navigationItem" id="l45-MS-Q7e"/>
                     <connections>
                         <outlet property="profileImageView" destination="nWz-1Y-ePH" id="vmd-dV-hur"/>
+                        <outlet property="statusLabel" destination="lOw-V8-RSr" id="wMt-1W-eOP"/>
                         <outlet property="usernameTextField" destination="vEL-nS-t5b" id="4fp-kc-ERy"/>
                     </connections>
                 </viewController>

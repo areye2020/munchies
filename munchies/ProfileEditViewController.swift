@@ -14,6 +14,7 @@ class ProfileEditViewController: UIViewController, PHPickerViewControllerDelegat
 {
     @IBOutlet weak var profileImageView:UIImageView!
     @IBOutlet weak var usernameTextField:RoundedTextField!
+    @IBOutlet weak var statusLabel:UILabel!
     let maxUsernameLength:Int = 16
     let accessMessage:String = "Access to your photo library is required to add or change your "
         + "profile image"
@@ -33,6 +34,30 @@ class ProfileEditViewController: UIViewController, PHPickerViewControllerDelegat
         picker = PHPickerViewController(configuration: pickerConfig)
         picker.delegate = self
         usernameTextField.delegate = self
+        usernameTextField.font = UIFont.systemFont(ofSize: 22)
+        statusLabel.text = ""
+    }
+    
+    override func viewWillAppear(_ animated:Bool)
+    {
+        updateCurrentUser()
+    }
+    
+    // Called when 'return' key pressed
+    func textFieldShouldReturn(_ textField:UITextField) -> Bool
+    {
+        textField.resignFirstResponder()
+        return true
+    }
+    
+    // Called when the user clicks on the view outside of the UITextField
+    override func touchesBegan(_ touches:Set<UITouch>, with event:UIEvent?)
+    {
+        self.view.endEditing(true)
+    }
+    
+    func updateCurrentUser()
+    {
         if let user:FirebaseAuth.User = Auth.auth().currentUser
         {
             currentUser = User(UID: user.uid)
@@ -42,10 +67,12 @@ class ProfileEditViewController: UIViewController, PHPickerViewControllerDelegat
                     self.usernameTextField.text = newUser!.username
                 } else
                 {
-                    print("could not fetch user data")
+                    self.statusLabel.text = "error: could not retrieve user data"
                 }
             }
-            usernameTextField.text = "wuh"
+        } else
+        {
+            statusLabel.text = "error: could not get current user"
         }
     }
     
@@ -134,6 +161,39 @@ class ProfileEditViewController: UIViewController, PHPickerViewControllerDelegat
     
     @IBAction func onSaveChangePress(_ sender:Any)
     {
-        // TODO
+        if let newUsername:String = usernameTextField.text,
+           newUsername != ""
+        {
+            if newUsername != currentUser.username
+            {
+                let database:Firestore = Firestore.firestore()
+                database.collection(userCollectionID).whereField("username", isEqualTo: newUsername).getDocuments()
+                {(querySnapshot, error) in
+                    if let error
+                    {
+                        self.statusLabel.text = error.localizedDescription
+                    } else
+                    {
+                        if let querySnapshot,
+                           querySnapshot.documents.count > 0
+                        {
+                            self.statusLabel.text = "username already taken"
+                        } else
+                        {
+                            database.collection(userCollectionID).document(self.currentUser.uid!).updateData(["username": newUsername])
+                            {(error) in
+                                if let error
+                                {
+                                    self.statusLabel.text = error.localizedDescription
+                                } else
+                                {
+                                    self.navigationController?.popViewController(animated: true)
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
 }
