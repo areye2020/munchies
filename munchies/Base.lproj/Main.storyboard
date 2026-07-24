@@ -687,16 +687,31 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="22"/>
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xZO-e1-Lg5">
+                                <rect key="frame" x="156" y="600" width="128" height="35"/>
+                                <state key="normal" title="Button"/>
+                                <buttonConfiguration key="configuration" style="plain" title="save changes">
+                                    <backgroundConfiguration key="background">
+                                        <color key="backgroundColor" name="ThemeColor"/>
+                                    </backgroundConfiguration>
+                                    <color key="baseForegroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </buttonConfiguration>
+                                <connections>
+                                    <action selector="onSaveChangePress:" destination="VbO-Pn-Qzg" eventType="touchUpInside" id="xeO-ga-keq"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="tWi-Uy-A3g"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
+                            <constraint firstItem="xZO-e1-Lg5" firstAttribute="centerX" secondItem="tzz-1o-sGq" secondAttribute="centerX" id="3MA-yd-gZu"/>
                             <constraint firstItem="kpH-fb-WLw" firstAttribute="top" secondItem="tWi-Uy-A3g" secondAttribute="top" constant="15" id="4io-6q-XOK"/>
                             <constraint firstItem="vEL-nS-t5b" firstAttribute="centerX" secondItem="tzz-1o-sGq" secondAttribute="centerX" id="Amg-ze-Rg5"/>
                             <constraint firstItem="4Kq-Tr-MAu" firstAttribute="centerX" secondItem="tzz-1o-sGq" secondAttribute="centerX" id="Cju-Xo-V25"/>
                             <constraint firstItem="nWz-1Y-ePH" firstAttribute="centerX" secondItem="tzz-1o-sGq" secondAttribute="centerX" id="TRl-dh-2Zb"/>
                             <constraint firstItem="vEL-nS-t5b" firstAttribute="top" secondItem="4Kq-Tr-MAu" secondAttribute="bottom" constant="60" id="U3T-iq-wbc"/>
                             <constraint firstItem="nWz-1Y-ePH" firstAttribute="top" secondItem="tWi-Uy-A3g" secondAttribute="top" constant="60" id="cC6-dW-rj9"/>
+                            <constraint firstItem="xZO-e1-Lg5" firstAttribute="top" secondItem="vEL-nS-t5b" secondAttribute="bottom" constant="70" id="g0T-S4-CjD"/>
                             <constraint firstItem="4Kq-Tr-MAu" firstAttribute="top" secondItem="nWz-1Y-ePH" secondAttribute="bottom" constant="10" id="rtc-Gn-BjN"/>
                             <constraint firstItem="tWi-Uy-A3g" firstAttribute="trailing" secondItem="kpH-fb-WLw" secondAttribute="trailing" constant="15" id="vOy-yT-RXD"/>
                         </constraints>

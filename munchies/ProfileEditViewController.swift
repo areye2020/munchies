@@ -32,7 +32,7 @@ class ProfileEditViewController: UIViewController, PHPickerViewControllerDelegat
         picker.delegate = self
         if let user:User = Auth.auth().currentUser
         {
-            usernameTextField.text = user.displayName
+            usernameTextField.text = user.email // TODO
         }
     }
 
@@ -111,5 +111,10 @@ class ProfileEditViewController: UIViewController, PHPickerViewControllerDelegat
             style: UIAlertAction.Style.default)
         alert.addAction(okayAction)
         present(alert, animated: true)
+    }
+    
+    @IBAction func onSaveChangePress(_ sender:Any)
+    {
+        // TODO
     }
 }

@@ -65,7 +65,29 @@ class SignupViewController: UIViewController, UITextFieldDelegate {
                 self.statusLabel.text = error.localizedDescription
             } else {
                 self.statusLabel.text = nil
-                self.navigationController?.popViewController(animated: true)
+                // Login User
+                Auth.auth().signIn(withEmail: user, password: pass) { authResult, error in
+                    if let error = error as NSError? {
+                        self.statusLabel.text = error.localizedDescription
+                    } else {
+                        let newUser = Auth.auth().currentUser
+                        newUser?.displayName = user
+                        Auth.auth().updateCurrentUser(newUser)
+                        self.statusLabel.text = nil
+                        // Reset navigation stack
+                        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+
+                            guard let tabBarController = storyboard.instantiateViewController(
+                                withIdentifier: "MainTabBarController"
+                            ) as? UITabBarController else {
+                                print("Could not find tab bar controller")
+                                return
+                            }
+
+                            self.view.window?.rootViewController = tabBarController
+                            self.view.window?.makeKeyAndVisible()
+                    }
+                }
             }
         }
     }
