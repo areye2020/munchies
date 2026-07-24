@@ -70,9 +70,6 @@ class SignupViewController: UIViewController, UITextFieldDelegate {
                     if let error = error as NSError? {
                         self.statusLabel.text = error.localizedDescription
                     } else {
-                        let newUser = Auth.auth().currentUser
-                        newUser?.displayName = user
-                        Auth.auth().updateCurrentUser(newUser)
                         self.statusLabel.text = nil
                         // Reset navigation stack
                         let storyboard = UIStoryboard(name: "Main", bundle: nil)
