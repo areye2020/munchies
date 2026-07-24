@@ -28,11 +28,13 @@ class ProfileEditViewController: UIViewController, PHPickerViewControllerDelegat
         super.viewDidLoad()
         profileImageView.layer.cornerRadius = profileImageView.bounds.width / 2
         profileImageView.layer.masksToBounds = true
+        
         pickerConfig = PHPickerConfiguration()
         pickerConfig.filter = PHPickerFilter.images
         pickerConfig.selectionLimit = 1
         picker = PHPickerViewController(configuration: pickerConfig)
         picker.delegate = self
+        
         usernameTextField.delegate = self
         usernameTextField.font = UIFont.systemFont(ofSize: 22)
         statusLabel.text = ""
@@ -56,6 +58,7 @@ class ProfileEditViewController: UIViewController, PHPickerViewControllerDelegat
         self.view.endEditing(true)
     }
     
+    // retrieve the current user so that their data can be set correctly
     func updateCurrentUser()
     {
         if let user:FirebaseAuth.User = Auth.auth().currentUser
@@ -76,12 +79,16 @@ class ProfileEditViewController: UIViewController, PHPickerViewControllerDelegat
         }
     }
     
-    func textField(_ textField:UITextField, shouldChangeCharactersIn range:NSRange, replacementString string:String) -> Bool
+    // only allow usernames up to maxUsernameLength in length
+    func textField(_ textField:UITextField, shouldChangeCharactersIn range:NSRange,
+        replacementString string:String) -> Bool
     {
-        let newString:String = (textField.text as? NSString)!.replacingCharacters(in: range, with: string)
+        let newString:String = (textField.text as? NSString)!.replacingCharacters(in: range,
+            with: string)
         return newString.count <= maxUsernameLength
     }
 
+    // update the user's avatar
     func picker(_ picker:PHPickerViewController, didFinishPicking results:[PHPickerResult])
     {
         picker.dismiss(animated: true)
@@ -107,6 +114,9 @@ class ProfileEditViewController: UIViewController, PHPickerViewControllerDelegat
         }
     }
     
+    // attempt to open the user's photo library
+    // prompt the user to change their settings if they have denied access
+    // displays an appropriate error message otherwise
     @IBAction func onEditImage(_ sender:Any)
     {
         switch PHPhotoLibrary.authorizationStatus(for: PHAccessLevel.readWrite)
@@ -130,12 +140,12 @@ class ProfileEditViewController: UIViewController, PHPickerViewControllerDelegat
                     style: UIAlertAction.Style.cancel)
                 let settingsAction:UIAlertAction = UIAlertAction(title: "open settings?",
                     style: UIAlertAction.Style.default)
-                {alert in
-                    if let url:URL = URL(string: UIApplication.openSettingsURLString)
-                    {
-                        UIApplication.shared.open(url)
+                    {alert in
+                        if let url:URL = URL(string: UIApplication.openSettingsURLString)
+                        {
+                            UIApplication.shared.open(url)
+                        }
                     }
-                }
                 alert.addAction(cancelAction)
                 alert.addAction(settingsAction)
                 present(alert, animated: true)
@@ -148,6 +158,7 @@ class ProfileEditViewController: UIViewController, PHPickerViewControllerDelegat
         }
     }
     
+    // create an alert with the given title and message
     func createAlert(title:String, _ message:String)
     {
         let alert:UIAlertController = UIAlertController(title: title,
@@ -159,6 +170,8 @@ class ProfileEditViewController: UIViewController, PHPickerViewControllerDelegat
         present(alert, animated: true)
     }
     
+    // attempt to save the changes made to the user's profile
+    // TODO only username changes are saved
     @IBAction func onSaveChangePress(_ sender:Any)
     {
         if let newUsername:String = usernameTextField.text,
@@ -167,32 +180,45 @@ class ProfileEditViewController: UIViewController, PHPickerViewControllerDelegat
             if newUsername != currentUser.username
             {
                 let database:Firestore = Firestore.firestore()
-                database.collection(userCollectionID).whereField("username", isEqualTo: newUsername).getDocuments()
-                {(querySnapshot, error) in
-                    if let error
-                    {
-                        self.statusLabel.text = error.localizedDescription
-                    } else
-                    {
-                        if let querySnapshot,
-                           querySnapshot.documents.count > 0
-                        {
-                            self.statusLabel.text = "username already taken"
-                        } else
-                        {
-                            database.collection(userCollectionID).document(self.currentUser.uid!).updateData(["username": newUsername])
-                            {(error) in
-                                if let error
-                                {
-                                    self.statusLabel.text = error.localizedDescription
-                                } else
-                                {
-                                    self.navigationController?.popViewController(animated: true)
-                                }
-                            }
-                        }
-                    }
-                }
+                database.collection(userCollectionID).whereField("username",
+                    isEqualTo: newUsername).getDocuments(completion: handleSave)
+            }
+        }
+    }
+    
+    // helper function for onSaveChange
+    // query firestore to see if the new username is already taken
+    func handleSave(querySnapshot:QuerySnapshot?, error:(any Error)?)
+    {
+        if let error
+        {
+            statusLabel.text = error.localizedDescription
+        } else
+        {
+            if let querySnapshot,
+               querySnapshot.documents.count > 0
+            {
+                statusLabel.text = "username already taken"
+            } else
+            {
+                updateUsername()
+            }
+        }
+    }
+    
+    // helper function fr handleSave
+    // attempt to update the user's username
+    func updateUsername()
+    {
+        database.collection(userCollectionID).document(self.currentUser.uid!)
+            .updateData(["username": usernameTextField.text!])
+        {(error) in
+            if let error
+            {
+                self.statusLabel.text = error.localizedDescription
+            } else
+            {
+                self.navigationController?.popViewController(animated: true)
             }
         }
     }

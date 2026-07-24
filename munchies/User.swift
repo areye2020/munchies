@@ -6,6 +6,7 @@
 //
 import FirebaseFirestore
 
+// representation of a user as stored in firebase
 class User
 {
     var uid:String?
@@ -13,13 +14,13 @@ class User
     var restrictions:[Restriction]
     var customRestrictions:[String]
     
+    // attempts to generate a new User by retrieving the user with the same UID from firebase
     init(UID:String, onCompletion:@escaping (User?) -> Void)
     {
         username = ""
         restrictions = []
         customRestrictions = []
         
-        print("trying to get user with uid \(UID)")
         Firestore.firestore().collection(userCollectionID).document(UID).getDocument()
         {(documentSnapshot, error) in
             if let error
@@ -36,7 +37,8 @@ class User
                 {
                     self.restrictions.append(Restriction(name: restrictionNames[i]))
                 }
-                let customDocRestrictions:[String] = documentSnapshot["custom restrictions"] as! [String]
+                let customDocRestrictions:[String]
+                    = documentSnapshot["custom restrictions"] as! [String]
                 for i in 0 ..< customDocRestrictions.count
                 {
                     self.customRestrictions.append(customDocRestrictions[i])
