@@ -1,29 +1,37 @@
 //
 //  ProfileViewController.swift
-//  munchies
-//
+//  Project: munchies
+//  Eid:
+//  Course: CS371L
 //  Created by Adriana Monica Reyes on 7/11/26.
 //
 
 import UIKit
+import FirebaseAuth
 
-class ProfileViewController: UIViewController {
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
-    }
+class ProfileViewController: UIViewController
+{
+    @IBOutlet weak var profileImageView:UIImageView!
+    @IBOutlet weak var usernameBackground:UIView!
+    @IBOutlet weak var usernameLabel:UILabel!
+    var currentUser:User!
     
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
+    override func viewDidLoad()
+    {
+        super.viewDidLoad()
+        profileImageView.layer.cornerRadius = profileImageView.bounds.width / 2
+        profileImageView.layer.masksToBounds = true
+        usernameBackground.layer.cornerRadius = usernameBackground.bounds.height / 2
+        usernameLabel.layer.masksToBounds = true
+        if let user:FirebaseAuth.User = Auth.auth().currentUser
+        {
+            currentUser = User(UID: user.uid)
+            {(newUser) in
+                if newUser != nil
+                {
+                    self.usernameLabel.text = newUser!.username
+                }
+            }
+        }
     }
-    */
-
 }

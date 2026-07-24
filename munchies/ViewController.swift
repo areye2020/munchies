@@ -1,7 +1,8 @@
 //
 //  ViewController.swift
-//  munchies
-//
+//  Project: munchies
+//  Eid:
+//  Course: CS371L
 //  Created by Adriana Monica Reyes on 7/10/26.
 //
 
