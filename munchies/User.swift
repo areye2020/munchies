@@ -68,7 +68,7 @@ class User
             if let error
             {
                 print(error.localizedDescription)
-                handler(nil)
+                onCompletion(nil)
             } else
             {
                 if let docs:[QueryDocumentSnapshot] = querySnapShot?.documents,
@@ -88,11 +88,11 @@ class User
                     {
                         self.customRestrictions.append(customDocRestrictions[i])
                     }
-                    handler(self)
+                    onCompletion(self)
                 } else
                 {
                     print("error retrieving documents")
-                    handler(nil)
+                    onCompletion(nil)
                 }
             }
         }
