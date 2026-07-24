@@ -36,10 +36,7 @@ class Restriction
             {
                 if let docs:[QueryDocumentSnapshot] = querySnapshot?.documents
                 {
-                    print("trying to get ingredients for \(name)")
                     let restrictionDoc:[String:Any] = docs[0].data()
-//                    let docName:String = restrictionDoc["name"] as! String
-                    print(restrictionDoc)
                     let docIngredients:[String] = restrictionDoc["ingredients"] as! [String]
                     for i in 0 ..< docIngredients.count
                     {
