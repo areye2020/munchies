@@ -7,24 +7,107 @@
 //
 
 import UIKit
+import FirebaseFirestore
 
-class SearchViewController: UIViewController {
+class SearchViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate {
 
+    @IBOutlet weak var searchBar: UISearchBar!
+    @IBOutlet weak var tableView: UITableView!
+    
+    let db = Firestore.firestore()
+        
+    // allRecipes holds everything from the database
+    var allRecipes: [Recipe] = []
+        
+    // filteredRecipes is what the TableView actually displays
+    var filteredRecipes: [Recipe] = []
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        // Do any additional setup after loading the view.
+        // Connect the UI to the code
+        tableView.dataSource = self
+        tableView.delegate = self
+        searchBar.delegate = self
+                
+        // make the table view look a bit cleaner without empty rows
+        tableView.separatorStyle = .none
+                
+        fetchEverythingFromFirestore()
     }
     
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
+    // MARK: - Firestore Fetch
+    func fetchEverythingFromFirestore() {
+        db.collection("recipes").getDocuments { [weak self] snapshot, error in
+            if let error = error {
+                print("Error getting documents: \(error)")
+                return
+            }
+            
+            guard let documents = snapshot?.documents else { return }
+                
+            // Map the raw Firestore documents into your Swift Recipe objects
+            self?.allRecipes = documents.compactMap { doc in
+                try? doc.data(as: Recipe.self)
+            }
+                
+            // Initially, the search bar is empty, so show everything
+            self?.filteredRecipes = self?.allRecipes ?? []
+                
+            DispatchQueue.main.async {
+                self?.tableView.reloadData()
+            }
+        }
     }
-    */
+        
+    // Search Bar Logic
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        if searchText.isEmpty {
+            // If the user clears the search bar, show all recipes
+            filteredRecipes = allRecipes
+        } else {
+            // Filter character-by-character.
+            // .lowercased() ensures "Tom" matches "tomato"
+            filteredRecipes = allRecipes.filter { recipe in
+                return recipe.name.lowercased().contains(searchText.lowercased())
+            }
+        }
+            
+        // Refresh the table with the new filtered results
+        tableView.reloadData()
+    }
+        
+    // Dismiss the keyboard when the user taps "Search" on the keyboard
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        searchBar.resignFirstResponder()
+    }
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return filteredRecipes.count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: "RecipeCardCell", for: indexPath) as? RecipeCardCell else {
+                    return UITableViewCell()
+        }
+                
+        // Always use filteredRecipes for the table!
+        let recipe = filteredRecipes[indexPath.row]
+                
+        // Reuse the configure method you already built for Favorites
+        cell.configure(with: recipe)
+        
+        // If you don't want the pencil icon showing up on the search page at all,
+        // you can explicitly hide it here:
+        // cell.editButton?.isHidden = true
+    
+        return cell
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+            tableView.deselectRow(at: indexPath, animated: true)
+            // let selectedRecipe = filteredRecipes[indexPath.row]
+            // performSegue(withIdentifier: "goToDetail", sender: selectedRecipe)
+        }
 
 }

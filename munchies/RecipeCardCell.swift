@@ -25,17 +25,23 @@ class RecipeCardCell: UITableViewCell {
     }
     
     // gonna call this function from FavoritesViewController to populate the cell
-        func configure(with recipe: MockRecipe) {
-            titleLabel.text = recipe.title
-            cookTimeLabel.text = recipe.cookTime
+        func configure(with recipe: Recipe) {
+            titleLabel.text = recipe.name
             
-            // For the mock phase, we'll try to load a local asset or fallback to a system icon
-            if let image = UIImage(named: recipe.imageName) {
-                recipeImageView.image = image
-            } else {
-                recipeImageView.image = UIImage(systemName: "photo.fill")
-                recipeImageView.tintColor = UIColor(named: "ThemeColor")
-            }
+                let time = recipe.getTime(for: .cook)
+                if time.hours > 0 {
+                    cookTimeLabel.text = "\(time.hours) hr \(time.minutes) mins"
+                } else {
+                    cookTimeLabel.text = "\(time.minutes) mins"
+                }
+                
+                // Images work exactly the same!
+                if let image = UIImage(named: recipe.image) {
+                    recipeImageView.image = image
+                } else {
+                    recipeImageView.image = UIImage(systemName: "photo.fill")
+                    recipeImageView.tintColor = UIColor(named: "ThemeColor")
+                }
         }
 
 }

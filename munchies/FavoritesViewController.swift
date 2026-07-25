@@ -6,62 +6,77 @@
 //
 
 import UIKit
+import FirebaseFirestore
 
 class FavoritesViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
 
     @IBOutlet weak var segmentedControl: UISegmentedControl!
     @IBOutlet weak var tableView: UITableView!
-    
-    // This is the data that will populate the cards.
-    var uploadedRecipes: [MockRecipe] = [
-        MockRecipe(title: "Spicy Orange Chicken", cookTime: "30 mins", ingredients: "Chicken, Orange, Soy Sauce...", imageName: "orangeChicken"),
-        MockRecipe(title: "Enchiladas", cookTime: "15 mins", ingredients: "Tortillas, Beef, Jalapeno...", imageName: "enchiladas")
-    ]
-        
-    var savedRecipes: [MockRecipe] = [
-        MockRecipe(title: "Creamy Tomato Soup", cookTime: "45 mins", ingredients: "Tomatoes, Cream, Basil...", imageName: "tomatoSoup"),
-        MockRecipe(title: "Avocado Toast", cookTime: "5 mins", ingredients: "Bread, Avocado, Salt...", imageName: "avacadoToast"),
-        MockRecipe(title: "Tamales", cookTime: "25 mins", ingredients: "Masa, Pork, Onions...", imageName: "tamales")
-    ]
-    
-    // We use this computed property to figure out which array to show based on the segmented control
-    var currentRecipes: [MockRecipe] {
-        return segmentedControl.selectedSegmentIndex == 0 ? uploadedRecipes : savedRecipes
-    }
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
 
-        // tell table view this view controller will provide its data
-        tableView.dataSource = self
-        tableView.delegate = self
+    let db = Firestore.firestore()
         
-        // Match the segmented control styling to your orange theme
-        let themeColor = UIColor(named: "ThemeColor") ?? .orange
-        segmentedControl.selectedSegmentTintColor = themeColor
-        segmentedControl.setTitleTextAttributes([.foregroundColor: UIColor.white], for: .selected)
-        segmentedControl.setTitleTextAttributes([.foregroundColor: themeColor], for: .normal)
-    }
-    
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // Return the count of whichever array is currently active
-        return currentRecipes.count
-    }
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        // Dequeue using the exact identifier from your storyboard
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: "RecipeCardCell", for: indexPath) as? RecipeCardCell else {
-            return UITableViewCell()
+        // Change these from MockRecipe to Recipe
+        var uploadedRecipes: [Recipe] = []
+        var savedRecipes: [Recipe] = []
+        
+        var currentRecipes: [Recipe] {
+            return segmentedControl.selectedSegmentIndex == 0 ? uploadedRecipes : savedRecipes
         }
+        
+        override func viewDidLoad() {
+            super.viewDidLoad()
+            
+            tableView.dataSource = self
+            tableView.delegate = self
+            tableView.separatorStyle = .none
+
+            let themeColor = UIColor(named: "ThemeColor") ?? .orange
+            segmentedControl.selectedSegmentTintColor = themeColor
+            segmentedControl.setTitleTextAttributes([.foregroundColor: UIColor.white], for: .selected)
+            segmentedControl.setTitleTextAttributes([.foregroundColor: themeColor], for: .normal)
+            
+            fetchFavoritesAndUploads()
+        }
+        
+        func fetchFavoritesAndUploads() {
+            db.collection("recipes").getDocuments { [weak self] snapshot, error in
+                if let error = error {
+                    print("Error getting documents: \(error)")
+                    return
+                }
                 
-        // Grab the correct recipe based on the row index
-        let recipe = currentRecipes[indexPath.row]
+                guard let documents = snapshot?.documents else { return }
                 
-        // Pass the data to the cell so it can update its labels/images
-        cell.configure(with: recipe)
-    
-        return cell
-    }
+                // 1. Map all documents to Recipe objects
+                let allRecipes = documents.compactMap { try? $0.data(as: Recipe.self) }
+                
+                // 2. Filter into your two distinct arrays using "testUser"
+                self?.uploadedRecipes = allRecipes.filter { $0.authorID == "testUser" }
+                self?.savedRecipes = allRecipes.filter { recipe in
+                    return recipe.favoritedBy?.contains("testUser") ?? false
+                }
+                
+                // 3. Reload the UI on the main thread
+                DispatchQueue.main.async {
+                    self?.tableView.reloadData()
+                }
+            }
+        }
+        
+        func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+            return currentRecipes.count
+        }
+        
+        func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: "RecipeCardCell", for: indexPath) as? RecipeCardCell else {
+                return UITableViewCell()
+            }
+                    
+            let recipe = currentRecipes[indexPath.row]
+            cell.configure(with: recipe)
+        
+            return cell
+        }
     
     
     @IBAction func segmentChanged(_ sender: Any) {
@@ -72,9 +87,3 @@ class FavoritesViewController: UIViewController, UITableViewDataSource, UITableV
 
 }
 
-struct MockRecipe {
-    let title: String
-    let cookTime: String
-    let ingredients: String
-    let imageName: String
-}
