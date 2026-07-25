@@ -30,7 +30,7 @@ class AddRecipieViewController: UIViewController, UITableViewDelegate, UITableVi
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -56,13 +56,14 @@ class AddRecipieViewController: UIViewController, UITableViewDelegate, UITableVi
     }
     
     func createtRecipe() {
-        let recipe = Recipe(
-            name: nameField.text!,
-            servings: Int(calorieField.text!) ?? 0,
-            calories: Int(calorieField.text!) ?? 0,
-            prepTime: Int(prepHourField.text!)!*60 + (Int(prepMinField.text!) ?? 0),
-            cookTime: (Int(cookHourField.text!) ?? 0)*60 + (Int(cookMinField.text!) ?? 0),
-            ingredients: ingredients, instructions: instructionField.text!)
+        // placeholder
+        //        let recipe = Recipe(
+        //            name: nameField.text!,
+        //            servings: Int(calorieField.text!) ?? 0,
+        //            calories: Int(calorieField.text!) ?? 0,
+        //            prepTime: Int(prepHourField.text!)!*60 + (Int(prepMinField.text!) ?? 0),
+        //            cookTime: (Int(cookHourField.text!) ?? 0)*60 + (Int(cookMinField.text!) ?? 0),
+        //            ingredients: ingredients, instructions: instructionField.text!)
         
     }
     
