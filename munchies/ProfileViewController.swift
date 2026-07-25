@@ -23,6 +23,16 @@ class ProfileViewController: UIViewController
         profileImageView.layer.masksToBounds = true
         usernameBackground.layer.cornerRadius = usernameBackground.bounds.height / 2
         usernameLabel.layer.masksToBounds = true
+        usernameLabel.text = ""
+    }
+    
+    override func viewWillAppear(_ animated:Bool)
+    {
+        updateCurrentUser()
+    }
+    
+    func updateCurrentUser()
+    {
         if let user:FirebaseAuth.User = Auth.auth().currentUser
         {
             currentUser = User(UID: user.uid)
