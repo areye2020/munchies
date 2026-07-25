@@ -64,4 +64,16 @@ class User
     {
         customRestrictions.append(ingredient)
     }
+    
+    func hasRestriction(name:String) -> Bool
+    {
+        for restriction in restrictions
+        {
+            if restriction.name == name
+            {
+                return true
+            }
+        }
+        return false
+    }
 }

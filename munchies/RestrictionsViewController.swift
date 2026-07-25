@@ -6,13 +6,17 @@
 //
 
 import UIKit
+import FirebaseAuth
+import FirebaseFirestore
 
 class RestrictionsViewController: UIViewController, UITableViewDelegate, UITableViewDataSource
 {
     @IBOutlet weak var tableView: UITableView!
+    let database:Firestore = Firestore.firestore()
     let screenTitle:String = "Restrictions"
     let switchCellIdentifier:String = "switchCell"
     let segueCellIdentifier:String = "segueCell"
+    var currentUser:User!
     var restrictions:[String: [String]] =
        ["Gluten-free": ["gluten"],
         "Halal": ["pork"/*TODO*/],
@@ -21,14 +25,14 @@ class RestrictionsViewController: UIViewController, UITableViewDelegate, UITable
         "Peanut-free": ["peanuts"],
         "Vegan": ["meat", "dairy milk"/*TODO*/],
         "Vegetarian": ["meat"]]
-    var restrictionCells:[Setting] =
-       [Setting("Gluten-free", false),
-        Setting("Halal", false),
-        Setting("Kosher", false),
-        Setting("Lactose-free", false),
-        Setting("Peanut-free", false),
-        Setting("Vegan", false),
-        Setting("Vegetarian", false)]
+    var restrictionCells:[Setting] = []
+//       [Setting("Gluten-free", false),
+//        Setting("Halal", false),
+//        Setting("Kosher", false),
+//        Setting("Lactose-free", false),
+//        Setting("Peanut-free", false),
+//        Setting("Vegan", false),
+//        Setting("Vegetarian", false)]
     
     override func viewDidLoad()
     {
@@ -38,6 +42,47 @@ class RestrictionsViewController: UIViewController, UITableViewDelegate, UITable
         tableView.delegate = self
         tableView.dataSource = self
         restrictionCells.sort()
+    }
+    
+    override func viewWillAppear(_ animated:Bool)
+    {
+        updateCurrentUser()
+    }
+    
+    func updateCurrentUser()
+    {
+        if let user:FirebaseAuth.User = Auth.auth().currentUser
+        {
+            currentUser = User(UID: user.uid)
+            {(newUser) in
+                self.database.collection(restrictionCollectionID).getDocuments()
+                {(querySnapshot, error) in
+                    if let error
+                    {
+                        print(error.localizedDescription)
+                    } else
+                    {
+                        if let documents:[QueryDocumentSnapshot] = querySnapshot?.documents
+                        {
+                            self.restrictionCells = []
+                            for document in documents
+                            {
+                                let docFields:[String:Any] = document.data()
+                                let name:String = docFields[restrictionNameField] as! String
+                                var switchState:Bool = false
+                                if let newUser
+                                {
+                                    switchState = newUser.hasRestriction(name: name)
+                                }
+                                self.restrictionCells.append(Setting(name, switchState))
+                            }
+                        }
+                    }
+                    self.restrictionCells.sort()
+                    self.tableView.reloadData()
+                }
+            }
+        }
     }
     
     func tableView(_ tableView:UITableView, numberOfRowsInSection section:Int) -> Int
