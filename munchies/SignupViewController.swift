@@ -11,7 +11,7 @@ import FirebaseCore
 import FirebaseAuth
 
 class SignupViewController: UIViewController, UITextFieldDelegate {
-
+    
     @IBOutlet weak var userField: RoundedTextField!
     @IBOutlet weak var pwField: RoundedTextField!
     @IBOutlet weak var confirmField: RoundedTextField!
@@ -65,26 +65,18 @@ class SignupViewController: UIViewController, UITextFieldDelegate {
                 self.statusLabel.text = error.localizedDescription
             } else {
                 self.statusLabel.text = nil
-                // Login User
-                Auth.auth().signIn(withEmail: user, password: pass) { authResult, error in
-                    if let error = error as NSError? {
-                        self.statusLabel.text = error.localizedDescription
-                    } else {
-                        self.statusLabel.text = nil
-                        // Reset navigation stack
-                        let storyboard = UIStoryboard(name: "Main", bundle: nil)
-
-                            guard let tabBarController = storyboard.instantiateViewController(
-                                withIdentifier: "MainTabBarController"
-                            ) as? UITabBarController else {
-                                print("Could not find tab bar controller")
-                                return
-                            }
-
-                            self.view.window?.rootViewController = tabBarController
-                            self.view.window?.makeKeyAndVisible()
-                    }
+                // User is signed in, create profile
+                let storyboard = UIStoryboard(name: "Main", bundle: nil)
+                
+                guard let createProfileVC = storyboard.instantiateViewController(
+                    withIdentifier: "CreateProfileViewController"
+                ) as? CreateProfileViewController else {
+                    print("Could not find create profile vc")
+                    return
                 }
+                
+                self.view.window?.rootViewController = createProfileVC
+                self.view.window?.makeKeyAndVisible()
             }
         }
     }
@@ -94,14 +86,14 @@ class SignupViewController: UIViewController, UITextFieldDelegate {
             let pass = pwField.text,
             let confirm = confirmField.text
         else { return }
-
+        
         if confirm.isEmpty {
             pwMatchImage.isHidden = true
             return
         }
-
+        
         pwMatchImage.isHidden = false
-
+        
         if pass == confirm {
             pwMatchImage.image = UIImage(systemName: "checkmark.circle.fill")
             pwMatchImage.tintColor = .systemGreen
