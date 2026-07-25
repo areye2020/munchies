@@ -72,7 +72,7 @@ class RestrictionsViewController: UIViewController, UITableViewDelegate, UITable
                                 var switchState:Bool = false
                                 if let newUser
                                 {
-                                    switchState = newUser.hasRestriction(name: name)
+                                    switchState = newUser.restrictions.contains(name)
                                 }
                                 self.restrictionCells.append(Setting(name, switchState))
                             }
@@ -111,8 +111,7 @@ class RestrictionsViewController: UIViewController, UITableViewDelegate, UITable
         {
             let uiSwitch:UISwitch = UISwitch(frame: CGRect.zero)
             uiSwitch.tag = indexPath.row
-            // TODO
-//            uiSwitch.addTarget(self, action: #selector(self.onSwitchChanged), for: UIControl.Event.valueChanged)
+            uiSwitch.addTarget(self, action: #selector(self.handleSwitchChange), for: UIControl.Event.valueChanged)
             uiSwitch.isOn = setting.switchState!
             cell.accessoryView = uiSwitch
         }
@@ -121,5 +120,21 @@ class RestrictionsViewController: UIViewController, UITableViewDelegate, UITable
         cell.contentConfiguration = content
         
         return cell
+    }
+    
+    @objc func handleSwitchChange(sender:UISwitch)
+    {
+        let restriction:String = restrictionCells[sender.tag].title
+        if sender.isOn
+        {
+            currentUser.restrictions.append(restriction)
+        } else
+        {
+            if let restrictionIndex:Int = currentUser.restrictions.firstIndex(of: restriction)
+            {
+                currentUser.restrictions.remove(at: restrictionIndex)
+            }
+        }
+        currentUser.syncToDatabase()
     }
 }
