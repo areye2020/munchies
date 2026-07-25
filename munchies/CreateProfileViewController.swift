@@ -12,19 +12,21 @@ import FirebaseFirestore
 import FirebaseAuth
 
 // Adds the user to a profile in firestore
-class CreateProfileViewController: UIViewController {
+class CreateProfileViewController: UIViewController, UITextFieldDelegate, UITextViewDelegate {
     
     @IBOutlet weak var profileImageView: UIImageView!
     @IBOutlet weak var usernameField: UITextField!
     @IBOutlet weak var bioTextView: UITextView!
     @IBOutlet weak var statusLabel: UILabel!
     
+    let maxUsernameLength:Int = 16
     let db = Firestore.firestore()
+    var currentUser:User!
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        
+        usernameField.delegate = self
+        bioTextView.delegate = self
         
         profileImageView.layer.cornerRadius = profileImageView.frame.width / 2
         profileImageView.clipsToBounds = true
@@ -38,42 +40,57 @@ class CreateProfileViewController: UIViewController {
             right: 12
         )
         bioTextView.textContainer.lineFragmentPadding = 0
+        bioTextView.text = ""
         
-        statusLabel.text = nil
-        statusLabel.isHidden = true
+        statusLabel.text = ""
     }
     
+    // Called when 'return' key pressed
+    func textFieldShouldReturn(_ textField:UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return true
+    }
+    
+    // Called when the user clicks on the view outside of the UITextField
+    override func touchesBegan(_ touches:Set<UITouch>, with event:UIEvent?) {
+        self.view.endEditing(true)
+    }
+    
+    // only allow usernames up to maxUsernameLength in length
+    func textField(_ textField:UITextField, shouldChangeCharactersIn range:NSRange,
+        replacementString string:String) -> Bool {
+        let newString:String = (textField.text as? NSString)!.replacingCharacters(in: range,
+            with: string)
+        return newString.count <= maxUsernameLength
+    }
     
     @IBAction func donePressed(_ sender: Any) {
         if usernameField.text == "" {
             statusLabel.text = "Please choose a username"
-            statusLabel.isHidden = false
-            return
-        }
-        guard let uid = Auth.auth().currentUser?.uid else {
-                print("No logged in user")
+        } else {
+            guard let uid = Auth.auth().currentUser?.uid else {
+                statusLabel.text = "No logged in user"
                 return
             }
-
-            let profileData: [String: Any] = [
-                "username": usernameField.text ?? "",
-                "bio": bioTextView.text ?? "",
-                "profileImageURL": "",
-            ]
-
-            db.collection("users")
-                .document(uid)
-                .setData(profileData) { error in
-                    
-                    if let error = error {
-                        print("Error saving profile: \(error.localizedDescription)")
-                        return
+            currentUser = User(UID: uid) { (user) in
+                if user != nil {
+                    let newName = self.usernameField.text!
+                    let newBio = self.bioTextView.text!
+                    user!.updateUsernameAndBio(newName: newName, newBio: newBio) { (error) in
+                        if error != nil {
+                            self.statusLabel.text = error!.localizedDescription
+                        } else {
+                            print("New name saved successfully")
+                            self.statusLabel.text = ""
+                            self.goToMainApp()
+                        }
                     }
-
-                    print("Profile saved!")
-                    self.statusLabel.isHidden = true
-                    self.goToMainApp()
+                } else
+                {
+                    self.statusLabel.text = "Could not retrieve current user"
                 }
+            }
+        }
     }
     
     func goToMainApp() {
