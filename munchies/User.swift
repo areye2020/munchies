@@ -12,12 +12,26 @@ class User
 {
     var uid:String?
     var username:String?
+    var bio:String
+    var imageURL:String
     var restrictions:[Restriction]
     var customRestrictions:[String]
+    
+    init(UID:String, username:String)
+    {
+        uid = UID
+        self.username = username
+        bio = ""
+        imageURL = ""
+        restrictions = []
+        customRestrictions = []
+    }
     
     // attempts to generate a new User by retrieving the user with the same UID from firebase
     init(UID:String, onCompletion:@escaping (User?) -> Void)
     {
+        bio = ""
+        imageURL = ""
         restrictions = []
         customRestrictions = []
         
@@ -58,6 +72,22 @@ class User
             }
             onCompletion(self.uid != nil && self.username != nil ? self : nil)
         }
+    }
+    
+    func asDictionary() -> [String:Any]?
+    {
+        if uid == nil || username == nil
+        {
+            return nil
+        }
+        
+        var dict:[String:Any] = [:]
+        dict.updateValue(username!, forKey: userUsernameFieldID)
+        dict.updateValue(bio, forKey: userBioFieldID)
+        dict.updateValue(imageURL, forKey: userImageFieldID)
+        dict.updateValue(restrictions, forKey: userRestrictionsFieldID)
+        dict.updateValue(customRestrictions, forKey: userCustomRestrictionsID)
+        return dict
     }
     
     func addCustomRestriction(ingredient:String)
