@@ -1,0 +1,41 @@
+//
+//  RecipeCardCell.swift
+//  munchies
+//
+//  Created by Adriana Monica Reyes on 7/23/26.
+//
+
+import UIKit
+
+class RecipeCardCell: UITableViewCell {
+
+    @IBOutlet weak var recipeImageView: UIImageView!
+    @IBOutlet weak var titleLabel: UILabel!
+    @IBOutlet weak var cookTimeLabel: UILabel!
+    
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        // Initialization code
+    }
+
+    override func setSelected(_ selected: Bool, animated: Bool) {
+        super.setSelected(selected, animated: animated)
+
+        // Configure the view for the selected state
+    }
+    
+    // gonna call this function from FavoritesViewController to populate the cell
+        func configure(with recipe: MockRecipe) {
+            titleLabel.text = recipe.title
+            cookTimeLabel.text = recipe.cookTime
+            
+            // For the mock phase, we'll try to load a local asset or fallback to a system icon
+            if let image = UIImage(named: recipe.imageName) {
+                recipeImageView.image = image
+            } else {
+                recipeImageView.image = UIImage(systemName: "photo.fill")
+                recipeImageView.tintColor = UIColor(named: "ThemeColor")
+            }
+        }
+
+}

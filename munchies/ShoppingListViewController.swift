@@ -7,26 +7,17 @@
 //
 
 import UIKit
-
-// starting out just gonna have this struct hold the ingredient data
-// later will move to using core data to store on phone
-struct ShoppingListItem {
-    var name: String
-    // to track and make them crossed out
-    var isChecked: Bool = false
-}
+import CoreData
 
 class ShoppingListViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
 
     @IBOutlet weak var tableView: UITableView!
     
-    // to get it working first time hold our list of ingredients here
-    // use emojis in placeholder maybe look nicer
-        var ingredients: [ShoppingListItem] = [
-            ShoppingListItem(name: "🍎 Apples"),
-            ShoppingListItem(name: "🥛 Milk"),
-            ShoppingListItem(name: "🍞 Bread")
-        ]
+    // changed from [ShoppingListItem] to [Ingredient] to use the Core Data entity objects
+    var ingredients: [Ingredient] = []
+    
+    // reference to the database context created in AppDelegate
+    let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -50,6 +41,21 @@ class ShoppingListViewController: UIViewController, UITableViewDataSource, UITab
             
             navigationController?.navigationBar.standardAppearance = appearance
             navigationController?.navigationBar.scrollEdgeAppearance = appearance
+        
+        // fetch the data from the phone's storage when the screen loads
+        fetchIngredients()
+    }
+    
+    // helper method to retrieve items from Core Data
+    func fetchIngredients() {
+        do {
+            self.ingredients = try context.fetch(Ingredient.fetchRequest())
+            DispatchQueue.main.async {
+                self.tableView.reloadData()
+            }
+        } catch {
+            print("Failed to fetch ingredients: \(error)")
+        }
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -57,10 +63,17 @@ class ShoppingListViewController: UIViewController, UITableViewDataSource, UITab
             addVC.onIngredientAdded = { [weak self] newIngredientName in
                 guard let self = self else { return }
                 
-                let newItem = ShoppingListItem(name: newIngredientName, isChecked: false)
-                self.ingredients.append(newItem)
-                self.tableView.reloadData()
-                
+                // ADDED: Create a new Core Data Ingredient instead of a struct
+                let newItem = Ingredient(context: self.context)
+                newItem.name = newIngredientName
+                newItem.isChecked = false
+                // ADDED: Save it to the database, then re-fetch
+                do {
+                    try self.context.save()
+                    self.fetchIngredients()
+                } catch {
+                    print("Error saving item: \(error)")
+                }
             }
         }
     }
@@ -75,6 +88,8 @@ class ShoppingListViewController: UIViewController, UITableViewDataSource, UITab
         let cell = tableView.dequeueReusableCell(withIdentifier: "IngredientCell", for: indexPath)
         let item = ingredients[indexPath.row]
         
+        let itemName = item.name ?? "Unknown Item"
+        
         // check if the text should be crossed out or regular
         if item.isChecked {
             // make the attributes for the crossed out text
@@ -84,7 +99,7 @@ class ShoppingListViewController: UIViewController, UITableViewDataSource, UITab
             ]
                 
             // name of ingredient
-            cell.textLabel?.attributedText = NSAttributedString(string: item.name, attributes: attributes)
+            cell.textLabel?.attributedText = NSAttributedString(string: itemName, attributes: attributes)
             cell.accessoryType = .checkmark
         } else {
                 // if not then its normal text
@@ -92,7 +107,7 @@ class ShoppingListViewController: UIViewController, UITableViewDataSource, UITab
                     .foregroundColor: UIColor.label
             ]
                 
-            cell.textLabel?.attributedText = NSAttributedString(string: item.name, attributes: attributes)
+            cell.textLabel?.attributedText = NSAttributedString(string: itemName, attributes: attributes)
             cell.accessoryType = .none
         }
         
@@ -105,6 +120,15 @@ class ShoppingListViewController: UIViewController, UITableViewDataSource, UITab
     
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
+            
+            let itemToRemove = ingredients[indexPath.row]
+            context.delete(itemToRemove)
+            do {
+                try context.save()
+            } catch {
+                print("Error deleting item: \(error)")
+            }
+            
             ingredients.remove(at: indexPath.row)
             tableView.deleteRows(at: [indexPath], with: .fade)
         }
@@ -115,6 +139,12 @@ class ShoppingListViewController: UIViewController, UITableViewDataSource, UITab
         
         // toggle the checked stat and refresh the row
         ingredients[indexPath.row].isChecked.toggle()
+        do {
+            try context.save()
+        } catch {
+            print("Error saving checkmark toggle: \(error)")
+        }
+        
         tableView.reloadRows(at: [indexPath], with: .automatic)
     }
 

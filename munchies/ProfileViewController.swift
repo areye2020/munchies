@@ -7,17 +7,41 @@
 //
 
 import UIKit
+import FirebaseAuth
 
 class ProfileViewController: UIViewController
 {
-    @IBOutlet weak var profileImageView: UIImageView!
-    @IBOutlet weak var usernameLabel: UILabel!
+    @IBOutlet weak var profileImageView:UIImageView!
+    @IBOutlet weak var usernameBackground:UIView!
+    @IBOutlet weak var usernameLabel:UILabel!
+    var currentUser:User!
+    
     override func viewDidLoad()
     {
         super.viewDidLoad()
         profileImageView.layer.cornerRadius = profileImageView.bounds.width / 2
         profileImageView.layer.masksToBounds = true
-        usernameLabel.layer.cornerRadius = usernameLabel.bounds.height / 2
-        usernameLabel.layer.masksToBounds = true // sigh
+        usernameBackground.layer.cornerRadius = usernameBackground.bounds.height / 2
+        usernameLabel.layer.masksToBounds = true
+        usernameLabel.text = ""
+    }
+    
+    override func viewWillAppear(_ animated:Bool)
+    {
+        updateCurrentUser()
+    }
+    
+    func updateCurrentUser()
+    {
+        if let user:FirebaseAuth.User = Auth.auth().currentUser
+        {
+            currentUser = User(UID: user.uid)
+            {(newUser) in
+                if newUser != nil
+                {
+                    self.usernameLabel.text = newUser!.username
+                }
+            }
+        }
     }
 }
