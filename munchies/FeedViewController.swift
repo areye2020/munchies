@@ -13,7 +13,11 @@ import FirebaseFirestore
 class FeedViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
     
     let db = Firestore.firestore()
+    let detailSegueID = "DetailSegue"
+    
     var recipes: [Recipe] = []
+    var selectedRecipe: Recipe?
+    
     @IBOutlet weak var recipeCollectionView: UICollectionView!
     @IBOutlet weak var emptyStatusLabel: UILabel!
     
@@ -114,6 +118,21 @@ class FeedViewController: UIViewController, UICollectionViewDataSource, UICollec
             bottom: 12,
             right: 12
         )
+    }
+    
+    func collectionView(
+        _ collectionView: UICollectionView,
+        didSelectItemAt indexPath: IndexPath
+    ) {
+        selectedRecipe = recipes[indexPath.item]
+        performSegue(withIdentifier: detailSegueID, sender: self)
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "ShowRecipeDetail" {
+            let destination = segue.destination as! RecipeDetailViewController
+            destination.recipe = selectedRecipe
+        }
     }
     
 }

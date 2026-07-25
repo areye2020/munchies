@@ -222,6 +222,21 @@
             </objects>
             <point key="canvasLocation" x="1592.7272727272727" y="-640.16736401673643"/>
         </scene>
+        <!--View Controller-->
+        <scene sceneID="C7a-HK-V4c">
+            <objects>
+                <viewController id="ddH-p5-s32" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="ima-VT-Jce">
+                        <rect key="frame" x="0.0" y="0.0" width="440" height="956"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <viewLayoutGuide key="safeArea" id="Xpa-Tg-zxI"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="PFE-ul-iHp" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-45" y="1993"/>
+        </scene>
         <!--Login View Controller-->
         <scene sceneID="MV1-sq-yyX">
             <objects>
@@ -571,6 +586,22 @@
             </objects>
             <point key="canvasLocation" x="3001" y="398"/>
         </scene>
+        <!--Recipe Detail View Controller-->
+        <scene sceneID="ihb-pt-XaD">
+            <objects>
+                <viewController id="al3-3R-OFp" customClass="RecipeDetailViewController" customModule="munchies" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="9VS-lT-bCq">
+                        <rect key="frame" x="0.0" y="0.0" width="440" height="778"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <viewLayoutGuide key="safeArea" id="IF5-Ne-DPx"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="pOS-ch-TbM"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="u9r-Zv-b3w" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-3233" y="-127"/>
+        </scene>
         <!--Feed View Controller-->
         <scene sceneID="H9F-Pm-g6P">
             <objects>
@@ -698,6 +729,7 @@
                     <connections>
                         <outlet property="emptyStatusLabel" destination="84E-gc-uUg" id="MrV-k0-p5h"/>
                         <outlet property="recipeCollectionView" destination="KMm-Hm-LTK" id="BUV-AP-cw9"/>
+                        <segue destination="al3-3R-OFp" kind="show" identifier="DetailSegue" id="7s1-Zn-bwY"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="OCR-NF-Y3u" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
