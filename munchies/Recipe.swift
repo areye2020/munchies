@@ -6,18 +6,22 @@
 //
 
 import Foundation
+import FirebaseFirestore
 
 class Recipe: Codable, Sendable {
+    @DocumentID var id: String?
     var name: String
-    var author: String
+    var author: String?
     var image: String
-    var servings: Int
-    var prepTime: Int
+    var servings: Int?
+    var prepTime: Int?
     var cookTime: Int
     var ingredients: [String]
     var instructions: String
+    var authorID: String?
+    var favoritedBy: [String]?
     
-    init(name: String, author: String, image: String, servings: Int, prepTime: Int,cookTime: Int, ingredients: [String], instructions: String) {
+    init(name: String, author : String? = nil, image: String, servings: Int? = nil, prepTime: Int? = nil,cookTime: Int, ingredients: [String], instructions: String, authorID: String? = nil, favoritedBy: [String]? = nil) {
         self.name = name
         self.author = author
         self.image = image
@@ -26,6 +30,8 @@ class Recipe: Codable, Sendable {
         self.cookTime = cookTime
         self.ingredients = ingredients
         self.instructions = instructions
+        self.authorID = authorID
+        self.favoritedBy = favoritedBy
     }
     
     
@@ -38,13 +44,16 @@ class Recipe: Codable, Sendable {
     //  this is helpful conversion method for related cooking times
     //  enter the desired time type through the enum
     func getTime(for time: TimeType) -> (hours: Int, minutes: Int){
+        // If prepTime is nil, treat it as 0 minutes
+        let safePrep = prepTime ?? 0
+        
         switch time {
         case .prep:
-            return (hours: prepTime/60, minutes: prepTime%60)
+            return (hours: (prepTime ?? 60)/60, minutes: (prepTime ?? 60)%60)
         case .cook:
             return (hours: cookTime/60, minutes: cookTime%60)
         case .total:
-            let totalTime = prepTime + cookTime
+            let totalTime = (prepTime ?? 60) + cookTime
             return (hours: totalTime/60, minutes: totalTime%60)
             
         }
