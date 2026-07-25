@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="24506" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="Ky2-UP-J8A">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="24506" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="Btk-6q-Iq1">
     <device id="retina6_9" orientation="portrait" appearance="light"/>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="24504"/>
@@ -7,6 +7,7 @@
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="collection view cell content view" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -220,6 +221,21 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="7CI-Gd-aRg" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1592.7272727272727" y="-640.16736401673643"/>
+        </scene>
+        <!--View Controller-->
+        <scene sceneID="C7a-HK-V4c">
+            <objects>
+                <viewController id="ddH-p5-s32" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="ima-VT-Jce">
+                        <rect key="frame" x="0.0" y="0.0" width="440" height="956"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <viewLayoutGuide key="safeArea" id="Xpa-Tg-zxI"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="PFE-ul-iHp" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-45" y="1993"/>
         </scene>
         <!--Login View Controller-->
         <scene sceneID="MV1-sq-yyX">
@@ -570,6 +586,22 @@
             </objects>
             <point key="canvasLocation" x="3001" y="398"/>
         </scene>
+        <!--Recipe Detail View Controller-->
+        <scene sceneID="ihb-pt-XaD">
+            <objects>
+                <viewController id="al3-3R-OFp" customClass="RecipeDetailViewController" customModule="munchies" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="9VS-lT-bCq">
+                        <rect key="frame" x="0.0" y="0.0" width="440" height="778"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <viewLayoutGuide key="safeArea" id="IF5-Ne-DPx"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="pOS-ch-TbM"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="u9r-Zv-b3w" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-3233" y="-127"/>
+        </scene>
         <!--Feed View Controller-->
         <scene sceneID="H9F-Pm-g6P">
             <objects>
@@ -579,9 +611,9 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="HUNGRY?" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3kR-LA-MRk">
-                                <rect key="frame" x="30" y="0.0" width="138" height="36"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="30"/>
-                                <color key="textColor" name="ThemeColor"/>
+                                <rect key="frame" x="30" y="0.0" width="143" height="36"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="30"/>
+                                <color key="textColor" name="BurntOrange"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Explore these recipes" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qcH-mQ-0sP">
@@ -596,12 +628,90 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="KMm-Hm-LTK">
+                                <rect key="frame" x="0.0" y="191" width="440" height="470"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="EFi-9b-Q3C">
+                                    <size key="itemSize" width="350" height="450"/>
+                                    <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                                    <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                                    <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                </collectionViewFlowLayout>
+                                <cells>
+                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="RecipeFeedCell" id="YaH-Tw-LaM" customClass="RecipeCollectionViewCell" customModule="munchies" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="0.0" width="202" height="262.60000000000002"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <collectionViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="8FC-vn-bVj">
+                                            <rect key="frame" x="0.0" y="0.0" width="202" height="262.60000000000002"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="57C-lN-rr7">
+                                                    <rect key="frame" x="0.0" y="0.0" width="202" height="120"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="120" id="zne-57-pTf"/>
+                                                    </constraints>
+                                                </imageView>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="authorLabel" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dAA-X7-4Uv">
+                                                    <rect key="frame" x="15" y="190" width="167" height="20"/>
+                                                    <fontDescription key="fontDescription" name="Georgia" family="Georgia" pointSize="17"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="timeLabel" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="M0M-zr-cH0">
+                                                    <rect key="frame" x="15" y="140" width="167" height="20"/>
+                                                    <fontDescription key="fontDescription" name="Georgia" family="Georgia" pointSize="17"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="titleLabel" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gRO-zB-t4k" customClass="RecipeTitleLabel" customModule="munchies" customModuleProvider="target">
+                                                    <rect key="frame" x="0.0" y="100" width="192" height="20"/>
+                                                    <fontDescription key="fontDescription" name="Georgia" family="Georgia" pointSize="17"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstAttribute="trailing" secondItem="57C-lN-rr7" secondAttribute="trailing" id="03f-VS-NfU"/>
+                                                <constraint firstItem="57C-lN-rr7" firstAttribute="leading" secondItem="8FC-vn-bVj" secondAttribute="leading" id="5J8-Q2-jPs"/>
+                                                <constraint firstItem="M0M-zr-cH0" firstAttribute="leading" secondItem="8FC-vn-bVj" secondAttribute="leading" constant="15" id="6BB-cs-IEc"/>
+                                                <constraint firstAttribute="trailing" secondItem="gRO-zB-t4k" secondAttribute="trailing" constant="10" id="6W4-ma-Mxs"/>
+                                                <constraint firstItem="M0M-zr-cH0" firstAttribute="top" secondItem="57C-lN-rr7" secondAttribute="bottom" constant="20" id="903-fK-HWb"/>
+                                                <constraint firstAttribute="trailing" secondItem="dAA-X7-4Uv" secondAttribute="trailing" constant="20" id="GSQ-U8-BHQ"/>
+                                                <constraint firstItem="gRO-zB-t4k" firstAttribute="leading" secondItem="8FC-vn-bVj" secondAttribute="leading" id="a2b-If-MSi"/>
+                                                <constraint firstItem="gRO-zB-t4k" firstAttribute="top" secondItem="57C-lN-rr7" secondAttribute="bottom" constant="-20" id="bP8-wQ-obP"/>
+                                                <constraint firstItem="dAA-X7-4Uv" firstAttribute="top" secondItem="M0M-zr-cH0" secondAttribute="bottom" constant="30" id="eAW-7Y-wSC"/>
+                                                <constraint firstAttribute="trailing" secondItem="M0M-zr-cH0" secondAttribute="trailing" constant="20" id="faP-2G-ehZ"/>
+                                                <constraint firstItem="57C-lN-rr7" firstAttribute="top" secondItem="8FC-vn-bVj" secondAttribute="top" id="hxb-BI-qSM"/>
+                                                <constraint firstItem="dAA-X7-4Uv" firstAttribute="leading" secondItem="M0M-zr-cH0" secondAttribute="leading" id="ofS-no-IyP"/>
+                                            </constraints>
+                                        </collectionViewCellContentView>
+                                        <size key="customSize" width="202" height="262.60000000000002"/>
+                                        <connections>
+                                            <outlet property="authorLabel" destination="dAA-X7-4Uv" id="nTj-SM-JxM"/>
+                                            <outlet property="recipeImage" destination="57C-lN-rr7" id="3ro-ye-N0V"/>
+                                            <outlet property="timeLabel" destination="M0M-zr-cH0" id="bkc-Q6-cjc"/>
+                                            <outlet property="titleLabel" destination="gRO-zB-t4k" id="qgG-ny-SK5"/>
+                                        </connections>
+                                    </collectionViewCell>
+                                </cells>
+                            </collectionView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="No recipes yet!" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="84E-gc-uUg">
+                                <rect key="frame" x="163" y="162" width="119" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" name="Georgia" family="Georgia" pointSize="18"/>
+                                <color key="textColor" name="TextFieldAccent"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="2vF-ug-C3p"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
+                            <constraint firstItem="2vF-ug-C3p" firstAttribute="trailing" secondItem="KMm-Hm-LTK" secondAttribute="trailing" id="24n-yx-U7I"/>
                             <constraint firstItem="qcH-mQ-0sP" firstAttribute="leading" secondItem="3kR-LA-MRk" secondAttribute="leading" id="40I-gV-9XE"/>
+                            <constraint firstItem="2vF-ug-C3p" firstAttribute="bottom" secondItem="KMm-Hm-LTK" secondAttribute="bottom" id="M6V-Ot-Pi7"/>
+                            <constraint firstItem="KMm-Hm-LTK" firstAttribute="leading" secondItem="2vF-ug-C3p" secondAttribute="leading" id="TTH-au-nes"/>
                             <constraint firstItem="h4p-t2-tfS" firstAttribute="leading" secondItem="3kR-LA-MRk" secondAttribute="leading" id="aMy-Jz-XBg"/>
+                            <constraint firstItem="KMm-Hm-LTK" firstAttribute="top" secondItem="h4p-t2-tfS" secondAttribute="bottom" constant="80" id="dR2-RV-tfF"/>
                             <constraint firstItem="h4p-t2-tfS" firstAttribute="top" secondItem="qcH-mQ-0sP" secondAttribute="bottom" constant="18" id="dk0-9N-h25"/>
                             <constraint firstItem="qcH-mQ-0sP" firstAttribute="top" secondItem="3kR-LA-MRk" secondAttribute="bottom" constant="8" symbolic="YES" id="hkw-AJ-VM3"/>
                             <constraint firstItem="3kR-LA-MRk" firstAttribute="leading" secondItem="2vF-ug-C3p" secondAttribute="leading" constant="30" id="j34-aJ-cdI"/>
@@ -616,10 +726,15 @@
                             </connections>
                         </barButtonItem>
                     </navigationItem>
+                    <connections>
+                        <outlet property="emptyStatusLabel" destination="84E-gc-uUg" id="MrV-k0-p5h"/>
+                        <outlet property="recipeCollectionView" destination="KMm-Hm-LTK" id="BUV-AP-cw9"/>
+                        <segue destination="al3-3R-OFp" kind="show" identifier="DetailSegue" id="7s1-Zn-bwY"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="OCR-NF-Y3u" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-2284" y="-127"/>
+            <point key="canvasLocation" x="-2285.4545454545455" y="-127.40585774058577"/>
         </scene>
         <!--Favorites View Controller-->
         <scene sceneID="z9m-TX-EC7">
@@ -1221,6 +1336,9 @@
         <image name="plus" catalog="system" width="128" height="113"/>
         <image name="plus.app.fill" catalog="system" width="128" height="114"/>
         <image name="profile_placeholder" width="3336" height="3000"/>
+        <namedColor name="BurntOrange">
+            <color red="0.80000001192092896" green="0.46700000762939453" blue="0.13300000131130219" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
         <namedColor name="TextField">
             <color red="0.87058823529411766" green="0.87058823529411766" blue="0.94509803921568625" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
@@ -1237,10 +1355,10 @@
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
         <systemColor name="systemGray6Color">
-            <color red="0.94901960780000005" green="0.94901960780000005" blue="0.96862745100000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.94901960784313721" green="0.94901960784313721" blue="0.96862745098039216" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="systemGreenColor">
-            <color red="0.20392156859999999" green="0.78039215689999997" blue="0.34901960780000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.20392156862745098" green="0.7803921568627451" blue="0.34901960784313724" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
     </resources>
 </document>
