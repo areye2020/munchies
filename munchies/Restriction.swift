@@ -35,10 +35,16 @@ class Restriction
                 print(error.localizedDescription)
             } else
             {
-                let docIngredients:[String] = documentSnapShot?.data()!["ingredients"] as! [String]
-                for ingredient:String in docIngredients
+                if let docIngredients:[String]
+                    = documentSnapShot?.data()![restrictionIngredientFieldID] as? [String]
                 {
-                    self.ingredients.append(ingredient)
+                    for ingredient:String in docIngredients
+                    {
+                        self.ingredients.append(ingredient)
+                    }
+                } else
+                {
+                    print("could not retrieve restriction ingredients")
                 }
             }
         }

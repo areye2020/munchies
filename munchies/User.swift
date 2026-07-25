@@ -5,19 +5,19 @@
 //  Created by Kirkland, Kaden E on 7/24/26.
 //
 import FirebaseFirestore
+import FirebaseAuth
 
 // representation of a user as stored in firebase
 class User
 {
     var uid:String?
-    var username:String
+    var username:String?
     var restrictions:[Restriction]
     var customRestrictions:[String]
     
     // attempts to generate a new User by retrieving the user with the same UID from firebase
     init(UID:String, onCompletion:@escaping (User?) -> Void)
     {
-        username = ""
         restrictions = []
         customRestrictions = []
         
@@ -26,29 +26,37 @@ class User
             if let error
             {
                 print(error.localizedDescription)
-                onCompletion(nil)
             } else if let documentSnapshot
             {
-                self.username = documentSnapshot["username"] as! String
                 self.uid = UID
-                
-                let restrictionNames:[String] = documentSnapshot["restrictions"] as! [String]
-                for i in 0 ..< restrictionNames.count
+                if let username:String = documentSnapshot[userUsernameFieldID] as? String
                 {
-                    self.restrictions.append(Restriction(name: restrictionNames[i]))
-                }
-                let customDocRestrictions:[String]
-                    = documentSnapshot["custom restrictions"] as! [String]
-                for i in 0 ..< customDocRestrictions.count
+                    self.username = username
+                } else if let currentUser:FirebaseAuth.User = Auth.auth().currentUser
                 {
-                    self.customRestrictions.append(customDocRestrictions[i])
+                    self.username = currentUser.email!
                 }
-                onCompletion(self)
+                if let restrictionNames:[String]
+                    = documentSnapshot[userRestrictionsFieldID] as? [String]
+                {
+                    for i in 0 ..< restrictionNames.count
+                    {
+                        self.restrictions.append(Restriction(name: restrictionNames[i]))
+                    }
+                }
+                if let customDocRestrictions:[String]
+                    = documentSnapshot[userCustomRestrictionsID] as? [String]
+                {
+                    for i in 0 ..< customDocRestrictions.count
+                    {
+                        self.customRestrictions.append(customDocRestrictions[i])
+                    }
+                }
             } else
             {
                 print("error: could not retrieve user data")
-                onCompletion(nil)
             }
+            onCompletion(self.uid != nil && self.username != nil ? self : nil)
         }
     }
     
