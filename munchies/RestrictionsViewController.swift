@@ -41,7 +41,6 @@ class RestrictionsViewController: UIViewController, UITableViewDelegate, UITable
         self.navigationItem.backButtonTitle = screenTitle
         tableView.delegate = self
         tableView.dataSource = self
-        restrictionCells.sort()
     }
     
     override func viewWillAppear(_ animated:Bool)
@@ -135,6 +134,5 @@ class RestrictionsViewController: UIViewController, UITableViewDelegate, UITable
                 currentUser.restrictions.remove(at: restrictionIndex)
             }
         }
-        currentUser.syncToDatabase()
     }
 }
