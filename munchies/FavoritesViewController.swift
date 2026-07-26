@@ -80,10 +80,29 @@ class FavoritesViewController: UIViewController, UITableViewDataSource, UITableV
             }
                     
             let recipe = currentRecipes[indexPath.row]
-            cell.configure(with: recipe)
-        
+            
+            // Determine editability: true if we are on the Uploaded segment (index 0), false otherwise
+            let isCurrentSegmentEditable = (segmentedControl.selectedSegmentIndex == 0)
+            
+            // Pass both the recipe and the editability status to the cell
+            cell.configure(with: recipe, isEditable: isCurrentSegmentEditable)
+            
+            cell.editAction = { [weak self] in
+                // This triggers the segue and passes the specific recipe as the sender
+                self?.performSegue(withIdentifier: "toEditRecipe", sender: recipe)
+            }
             return cell
         }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "toEditRecipe",
+           let destinationVC = segue.destination as? EditRecipieViewController,
+           let selectedRecipe = sender as? Recipe {
+            
+            // Pass the recipe object to the edit screen
+            destinationVC.recipe = selectedRecipe
+        }
+    }
     
     
     @IBAction func segmentChanged(_ sender: Any) {
@@ -91,6 +110,8 @@ class FavoritesViewController: UIViewController, UITableViewDataSource, UITableV
         // so it loads the data from the other array.
         tableView.reloadData()
     }
+    
+    
 
 }
 
