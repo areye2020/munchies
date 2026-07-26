@@ -25,7 +25,7 @@ let userImageFieldID:String = "profileImageURL"
 let jpgCompression:CGFloat = 0.8
 let profileImagesPath:String = "profileImages/"
 let megabyte:Int64 = 1024 * 1024
-let maxImageSize:Int64 = 2 * megabyte
+let maxImageSize:Int64 = 5 * megabyte
 
 // username constants
 let maxUsernameLength:Int = 16

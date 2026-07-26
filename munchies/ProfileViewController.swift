@@ -42,16 +42,19 @@ class ProfileViewController: UIViewController
             {(newUser) in
                 if newUser != nil
                 {
-                    let storageRef:Storage = Storage.storage()
-                    let profilePicRef:StorageReference = storageRef.reference().child("\(profileImagesPath)\(newUser!.uid!).jpg")
-                    profilePicRef.getData(maxSize: maxImageSize)
-                    {(data, error) in
-                        if let error
-                        {
-                            print(error.localizedDescription)
-                        } else
-                        {
-                            self.profileImageView.image = UIImage(data: data!)
+                    if newUser!.imageURL != ""
+                    {
+                        let storageRef:Storage = Storage.storage()
+                        let profilePicRef:StorageReference = storageRef.reference().child(newUser!.imageURL)
+                        profilePicRef.getData(maxSize: maxImageSize)
+                        {(data, error) in
+                            if let error
+                            {
+                                print(error.localizedDescription)
+                            } else
+                            {
+                                self.profileImageView.image = UIImage(data: data!)
+                            }
                         }
                     }
                     self.usernameLabel.text = newUser!.username
