@@ -26,6 +26,7 @@ class CustomRestrictionsViewController: UIViewController, UITableViewDelegate,
         super.viewDidLoad()
         tableView.delegate = self
         tableView.dataSource = self
+        self.tabBarController?.setTabBarHidden(true, animated: false)
     }
     
     override func viewWillAppear(_ animated:Bool)

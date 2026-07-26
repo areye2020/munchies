@@ -41,6 +41,7 @@ class RestrictionsViewController: UIViewController, UITableViewDelegate, UITable
         self.navigationItem.backButtonTitle = screenTitle
         tableView.delegate = self
         tableView.dataSource = self
+        self.tabBarController?.setTabBarHidden(true, animated: false)
     }
     
     override func viewWillAppear(_ animated:Bool)

@@ -43,7 +43,13 @@ class ProfileEditViewController: UIViewController, PHPickerViewControllerDelegat
     
     override func viewWillAppear(_ animated:Bool)
     {
+        self.tabBarController?.setTabBarHidden(true, animated: true)
         updateCurrentUser()
+    }
+    
+    override func viewWillDisappear(_ animated:Bool)
+    {
+        self.tabBarController?.setTabBarHidden(false, animated: true)
     }
     
     // Called when 'return' key pressed
