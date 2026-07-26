@@ -47,6 +47,11 @@ class AddRecipieViewController: UIViewController, UITableViewDelegate, UITableVi
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        // nagivation title
+        navigationController?.navigationBar.titleTextAttributes = [
+            .foregroundColor: UIColor.orange,
+            .font: UIFont.systemFont(ofSize: 20)
+        ]
         
         IngredientsTableView.delegate = self
         IngredientsTableView.dataSource = self
@@ -55,12 +60,6 @@ class AddRecipieViewController: UIViewController, UITableViewDelegate, UITableVi
         // Register a basic cell for the input row as well
         IngredientsTableView.register(UITableViewCell.self, forCellReuseIdentifier: addIngredientCellIdentifier)
 
-        // Configure any text fields to use number pads where appropriate
-        calorieField.keyboardType = .numberPad
-        prepHourField.keyboardType = .numberPad
-        prepMinField.keyboardType = .numberPad
-        cookHourField.keyboardType = .numberPad
-        cookMinField.keyboardType = .numberPad
         
         // Enable tapping the image view to edit/select a recipe image
         let tap = UITapGestureRecognizer(target: self, action: #selector(onEditImage))
