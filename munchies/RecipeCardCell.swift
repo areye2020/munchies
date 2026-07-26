@@ -46,7 +46,7 @@ class RecipeCardCell: UITableViewCell {
                 }
                 
                 // Images work exactly the same!
-            if let image = UIImage(named: recipe.image) {
+            if let image = UIImage(named: recipe.image!) {
                     recipeImageView.image = image
                 } else {
                     recipeImageView.image = UIImage(systemName: "photo.fill")
