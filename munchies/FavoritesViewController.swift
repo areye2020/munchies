@@ -7,6 +7,7 @@
 
 import UIKit
 import FirebaseFirestore
+import FirebaseAuth
 
 class FavoritesViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
 
@@ -39,6 +40,12 @@ class FavoritesViewController: UIViewController, UITableViewDataSource, UITableV
         }
         
         func fetchFavoritesAndUploads() {
+            // 1. Safely grab the current logged-in user's UID
+            guard let currentUserID = Auth.auth().currentUser?.uid else {
+                print("No user is currently logged in. Cannot fetch specific recipes.")
+                return
+            }
+        
             db.collection("recipes").getDocuments { [weak self] snapshot, error in
                 if let error = error {
                     print("Error getting documents: \(error)")
@@ -46,17 +53,17 @@ class FavoritesViewController: UIViewController, UITableViewDataSource, UITableV
                 }
                 
                 guard let documents = snapshot?.documents else { return }
-                
-                // 1. Map all documents to Recipe objects
+            
+                // 2. Map all documents to Recipe objects
                 let allRecipes = documents.compactMap { try? $0.data(as: Recipe.self) }
-                
-                // 2. Filter into your two distinct arrays using "testUser"
-                self?.uploadedRecipes = allRecipes.filter { $0.authorID == "testUser" }
+            
+                // 3. Filter into your two distinct arrays using the real currentUserID
+                self?.uploadedRecipes = allRecipes.filter { $0.authorID == currentUserID }
                 self?.savedRecipes = allRecipes.filter { recipe in
-                    return recipe.favoritedBy?.contains("testUser") ?? false
+                    return recipe.favoritedBy?.contains(currentUserID) ?? false
                 }
-                
-                // 3. Reload the UI on the main thread
+            
+                // 4. Reload the UI on the main thread
                 DispatchQueue.main.async {
                     self?.tableView.reloadData()
                 }

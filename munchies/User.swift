@@ -66,6 +66,7 @@ class User
     }
     
     // attempts to generate a new User by retrieving the user with the same UID from firebase
+    // passes the new User or nil to onComplettion
     init(UID:String, onCompletion:@escaping (User?) -> Void)
     {
         bio = ""
