@@ -53,7 +53,7 @@ class RecipeCardCell: UITableViewCell {
                     recipeImageView.tintColor = UIColor(named: "ThemeColor")
                 }
         
-            editButton.isHidden = !isEditable
+            editButton?.isHidden = !isEditable
         }
 
 }
