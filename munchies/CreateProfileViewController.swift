@@ -10,15 +10,17 @@ import UIKit
 import FirebaseCore
 import FirebaseFirestore
 import FirebaseAuth
+import FirebaseStorage
 
 // Adds the user to a profile in firestore
-class CreateProfileViewController: UIViewController, UITextFieldDelegate, UITextViewDelegate {
+class CreateProfileViewController: UIViewController, UITextFieldDelegate, UITextViewDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
     @IBOutlet weak var profileImageView: UIImageView!
     @IBOutlet weak var usernameField: UITextField!
     @IBOutlet weak var bioTextView: UITextView!
     @IBOutlet weak var statusLabel: UILabel!
     
+    var selectedPFP = false
     let maxUsernameLength:Int = 16
     let db = Firestore.firestore()
     var currentUser:User!
@@ -30,6 +32,13 @@ class CreateProfileViewController: UIViewController, UITextFieldDelegate, UIText
         
         profileImageView.layer.cornerRadius = profileImageView.frame.width / 2
         profileImageView.clipsToBounds = true
+        
+        profileImageView.isUserInteractionEnabled = true
+        
+        let tapGesture = UITapGestureRecognizer(target: self,
+                                                action: #selector(profileImageTapped))
+        
+        profileImageView.addGestureRecognizer(tapGesture)
         
         bioTextView.layer.cornerRadius = 12
         bioTextView.clipsToBounds = true
@@ -58,50 +67,153 @@ class CreateProfileViewController: UIViewController, UITextFieldDelegate, UIText
     
     // only allow usernames up to maxUsernameLength in length
     func textField(_ textField:UITextField, shouldChangeCharactersIn range:NSRange,
-        replacementString string:String) -> Bool {
+                   replacementString string:String) -> Bool {
         let newString:String = (textField.text as? NSString)!.replacingCharacters(in: range,
-            with: string)
+                                                                                  with: string)
         return newString.count <= maxUsernameLength
     }
     
+    // Gesture function for selecting profile picture, choose options through action sheet
+    @objc func profileImageTapped() {
+        let alert = UIAlertController(title: "Profile Picture", message: "Choose a source", preferredStyle: .actionSheet)
+        
+        alert.addAction(UIAlertAction(title: "Camera", style: .default) {_ in
+            self.openCamera()
+        })
+        alert.addAction(UIAlertAction(title: "Photo Library", style: .default) {_ in
+            self.openPhotoLibrary()
+        })
+        
+        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
+        present(alert, animated: true)
+    }
+    
+    func openCamera() {
+        guard UIImagePickerController.isSourceTypeAvailable(.camera) else {
+            let alert = UIAlertController(
+                title: "Camera Unavailable",
+                message: "The iOS Simulator doesn't have a camera. Please use a physical device to test this feature.",
+                preferredStyle: .alert
+            )
+            
+            alert.addAction(UIAlertAction(title: "OK", style: .default))
+            present(alert, animated: true)
+            return
+        }
+        
+        let picker = UIImagePickerController()
+        picker.delegate = self
+        picker.sourceType = .camera
+        present(picker, animated: true)
+    }
+    
+    func openPhotoLibrary() {
+        let picker = UIImagePickerController()
+        picker.delegate = self
+        picker.sourceType = .photoLibrary
+        present(picker, animated: true)
+    }
+    // Receive image
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        if let image = info[.originalImage] as? UIImage {
+            profileImageView.image = image
+            selectedPFP = true
+        }
+        
+        picker.dismiss(animated: true)
+    }
+    
+    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+        picker.dismiss(animated: true)
+    }
+    
     @IBAction func donePressed(_ sender: Any) {
-        if usernameField.text == "" {
+        guard let username = usernameField.text, !username.isEmpty else {
             statusLabel.text = "Please choose a username"
-        } else {
-            guard let uid = Auth.auth().currentUser?.uid else {
-                statusLabel.text = "No logged in user"
+            return
+        }
+        
+        // Get Firebase UID
+        guard let uid = Auth.auth().currentUser?.uid else {
+            statusLabel.text = "No logged in user"
+            return
+        }
+        
+        // Create local User object
+        currentUser = User(UID: uid) { newUser in
+            let saveProfile: (String) -> Void = { imageURL in
+                guard let user = newUser else {
+                    self.statusLabel.text = "Could not create user"
+                    return
+                }
+                
+                user.imageURL = imageURL
+                
+                user.updateUsernameAndBio(
+                    newName: username,
+                    newBio: self.bioTextView.text
+                ) { error in
+                    
+                    if let error = error {
+                        self.statusLabel.text = error.localizedDescription
+                    } else {
+                        self.goToMainApp()
+                    }
+                }
+            }
+            
+            if self.selectedPFP {
+                self.uploadProfileImage(uid: uid) { imageURL in
+                    saveProfile(imageURL ?? "")
+                }
+            } else {
+                saveProfile("")
+            }
+        }
+    }
+    
+    func uploadProfileImage(uid: String, completion: @escaping (String?) -> Void) {
+        guard let image = profileImageView.image else {
+            completion(nil)
+            return
+        }
+        
+        guard let imageData = image.jpegData(compressionQuality: 0.8) else {
+            completion(nil)
+            return
+        }
+        
+        let storageRef = Storage.storage()
+            .reference()
+            .child("profileImages/\(uid).jpg")
+        
+        storageRef.putData(imageData, metadata: nil) { metadata, error in
+            if let error = error {
+                print("Upload failed")
+                completion(nil)
                 return
             }
-            currentUser = User(UID: uid) { (user) in
-                if user != nil {
-                    let newName = self.usernameField.text!
-                    let newBio = self.bioTextView.text!
-                    user!.updateUsernameAndBio(newName: newName, newBio: newBio) { (error) in
-                        if error != nil {
-                            self.statusLabel.text = error!.localizedDescription
-                        } else {
-                            print("New name saved successfully")
-                            self.statusLabel.text = ""
-                            self.goToMainApp()
-                        }
-                    }
-                } else
-                {
-                    self.statusLabel.text = "Could not retrieve current user"
+            
+            storageRef.downloadURL { url, error in
+                if let error = error {
+                    print("Could not get URL")
+                    completion(nil)
+                    return
                 }
+                completion(url?.absoluteString)
             }
         }
     }
     
     func goToMainApp() {
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
-
+        
         guard let tabBarController = storyboard.instantiateViewController(
             withIdentifier: "MainTabBarController"
         ) as? UITabBarController else {
             return
         }
-
+        
         self.view.window?.rootViewController = tabBarController
         self.view.window?.makeKeyAndVisible()
     }

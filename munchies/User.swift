@@ -14,9 +14,33 @@ class User
     var uid:String?
     var username:String?
     var bio:String
+    {
+        didSet
+        {
+            self.syncToDatabase()
+        }
+    }
     var imageURL:String
-    var restrictions:[Restriction]
+    {
+        didSet
+        {
+            self.syncToDatabase()
+        }
+    }
+    var restrictions:[String]
+    {
+        didSet
+        {
+            self.syncToDatabase()
+        }
+    }
     var customRestrictions:[String]
+    {
+        didSet
+        {
+            self.syncToDatabase()
+        }
+    }
     
     enum UserError: Error, LocalizedError
     {
@@ -83,7 +107,7 @@ class User
                 {
                     for i in 0 ..< restrictionNames.count
                     {
-                        self.restrictions.append(Restriction(name: restrictionNames[i]))
+                        self.restrictions.append(restrictionNames[i])
                     }
                 }
                 if let customDocRestrictions:[String]
@@ -119,18 +143,18 @@ class User
                     self.username = newName
                     self.bio = newBio
                     print(newName)
-                    self.database.collection(userCollectionID).document(self.uid!).setData(self.asDictionary()!)
+                    self.syncToDatabase()
                     onCompletetion(nil)
                 }
             }
         }
     }
     
-    func addCustomRestriction(ingredient:String)
+    func syncToDatabase()
     {
-        customRestrictions.append(ingredient)
+            database.collection(userCollectionID).document(self.uid!).setData(self.asDictionary()!)
     }
-    
+
     func asDictionary() -> [String:Any]?
     {
         if uid == nil || username == nil

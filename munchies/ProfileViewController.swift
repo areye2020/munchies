@@ -14,6 +14,7 @@ class ProfileViewController: UIViewController
     @IBOutlet weak var profileImageView:UIImageView!
     @IBOutlet weak var usernameBackground:UIView!
     @IBOutlet weak var usernameLabel:UILabel!
+    @IBOutlet weak var bioLabel:UILabel!
     var currentUser:User!
     
     override func viewDidLoad()
@@ -24,6 +25,7 @@ class ProfileViewController: UIViewController
         usernameBackground.layer.cornerRadius = usernameBackground.bounds.height / 2
         usernameLabel.layer.masksToBounds = true
         usernameLabel.text = ""
+        bioLabel.text = ""
     }
     
     override func viewWillAppear(_ animated:Bool)
@@ -40,6 +42,7 @@ class ProfileViewController: UIViewController
                 if newUser != nil
                 {
                     self.usernameLabel.text = newUser!.username
+                    self.bioLabel.text = newUser!.bio
                 }
             }
         }
