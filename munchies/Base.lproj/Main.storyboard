@@ -455,7 +455,7 @@
         <!--Login View Controller-->
         <scene sceneID="MV1-sq-yyX">
             <objects>
-                <viewController id="KII-NU-bY6" customClass="LoginViewController" customModule="munchies" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="login" id="KII-NU-bY6" customClass="LoginViewController" customModule="munchies" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="brp-st-JDU">
                         <rect key="frame" x="0.0" y="0.0" width="440" height="956"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -1342,6 +1342,9 @@
                                     </backgroundConfiguration>
                                     <color key="baseForegroundColor" systemColor="systemRedColor"/>
                                 </buttonConfiguration>
+                                <connections>
+                                    <action selector="onLogOut:" destination="VbO-Pn-Qzg" eventType="touchUpInside" id="iAL-y5-MGv"/>
+                                </connections>
                             </button>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="tWi-Uy-A3g"/>

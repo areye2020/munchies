@@ -223,4 +223,38 @@ class ProfileEditViewController: UIViewController, PHPickerViewControllerDelegat
             }
         }
     }
+    
+    @IBAction func onLogOut(_ sender:Any)
+    {
+        var hasUnsavedChanges:Bool = false
+        if usernameTextField.text != currentUser.username! // add bio stuff
+        {
+            hasUnsavedChanges = true
+        }
+        let alert:UIAlertController = UIAlertController(title: "Logging Out",
+            message: "\(hasUnsavedChanges ? "You haved unsaved changes. " : "")"
+                + "Are you sure you want to log out?",
+            preferredStyle: UIAlertController.Style.alert)
+        let cancelAction:UIAlertAction = UIAlertAction(title: "cancel", style: UIAlertAction.Style.cancel)
+        let imSureAction:UIAlertAction = UIAlertAction(title: "I'm sure", style: UIAlertAction.Style.destructive, handler: logoutHandler)
+        alert.addAction(cancelAction)
+        alert.addAction(imSureAction)
+        present(alert, animated: true)
+    }
+    
+    func logoutHandler(alertAction:UIAlertAction)
+    {
+        do
+        {
+            try Auth.auth().signOut()
+            let initialViewController = self.storyboard!.instantiateViewController(withIdentifier: "login")
+            let navController = UINavigationController.init(rootViewController: initialViewController)
+
+            self.view.window?.rootViewController = navController
+            self.view.window?.makeKeyAndVisible()
+        } catch
+        {
+            
+        }
+    }
 }
