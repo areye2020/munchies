@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2B617B253015964700CCA2D9 /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = 2B617B243015964700CCA2D9 /* FirebaseStorage */; };
 		2BEE1568300AE0B200491910 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 2BEE1567300AE0B200491910 /* FirebaseAuth */; };
 		2BEE156A300AE0B200491910 /* FirebaseCore in Frameworks */ = {isa = PBXBuildFile; productRef = 2BEE1569300AE0B200491910 /* FirebaseCore */; };
 		2BEE156C300AE0B200491910 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 2BEE156B300AE0B200491910 /* FirebaseFirestore */; };
@@ -43,6 +44,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				2BEE156A300AE0B200491910 /* FirebaseCore in Frameworks */,
+				2B617B253015964700CCA2D9 /* FirebaseStorage in Frameworks */,
 				2BEE1568300AE0B200491910 /* FirebaseAuth in Frameworks */,
 				2BEE156C300AE0B200491910 /* FirebaseFirestore in Frameworks */,
 			);
@@ -51,10 +53,18 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		2B617B233015964700CCA2D9 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		71E33292300177F500D87C54 = {
 			isa = PBXGroup;
 			children = (
 				71E3329D300177F500D87C54 /* munchies */,
+				2B617B233015964700CCA2D9 /* Frameworks */,
 				71E3329C300177F500D87C54 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -90,6 +100,7 @@
 				2BEE1567300AE0B200491910 /* FirebaseAuth */,
 				2BEE1569300AE0B200491910 /* FirebaseCore */,
 				2BEE156B300AE0B200491910 /* FirebaseFirestore */,
+				2B617B243015964700CCA2D9 /* FirebaseStorage */,
 			);
 			productName = munchies;
 			productReference = 71E3329B300177F500D87C54 /* munchies.app */;
@@ -162,6 +173,8 @@
 				CURRENT_PROJECT_VERSION = 1;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = munchies/Info.plist;
+				INFOPLIST_KEY_NSCameraUsageDescription = "Allow camera access to take your profile picture";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "Allow photo library access to choose your profile picture";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
@@ -194,6 +207,8 @@
 				CURRENT_PROJECT_VERSION = 1;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = munchies/Info.plist;
+				INFOPLIST_KEY_NSCameraUsageDescription = "Allow camera access to take your profile picture";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "Allow photo library access to choose your profile picture";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
@@ -371,6 +386,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		2B617B243015964700CCA2D9 /* FirebaseStorage */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 2BEE1566300AE0B200491910 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseStorage;
+		};
 		2BEE1567300AE0B200491910 /* FirebaseAuth */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 2BEE1566300AE0B200491910 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
