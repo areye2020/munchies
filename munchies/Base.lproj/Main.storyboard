@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="24765" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="KII-NU-bY6">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="24506" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="KII-NU-bY6">
     <device id="retina6_9" orientation="portrait" appearance="light"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="24743"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="24504"/>
         <capability name="Image references" minToolsVersion="12.0"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
@@ -1333,6 +1333,16 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3cS-ru-wwH">
+                                <rect key="frame" x="179" y="784" width="82" height="35"/>
+                                <state key="normal" title="Button"/>
+                                <buttonConfiguration key="configuration" style="plain" title="Log out">
+                                    <backgroundConfiguration key="background">
+                                        <color key="backgroundColor" name="ThemeColor"/>
+                                    </backgroundConfiguration>
+                                    <color key="baseForegroundColor" systemColor="systemRedColor"/>
+                                </buttonConfiguration>
+                            </button>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="tWi-Uy-A3g"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
@@ -1346,9 +1356,11 @@
                             <constraint firstItem="vEL-nS-t5b" firstAttribute="top" secondItem="4Kq-Tr-MAu" secondAttribute="bottom" constant="40" id="U3T-iq-wbc"/>
                             <constraint firstItem="xZO-e1-Lg5" firstAttribute="top" secondItem="lOw-V8-RSr" secondAttribute="bottom" constant="70" id="a2w-MC-QRM"/>
                             <constraint firstItem="nWz-1Y-ePH" firstAttribute="top" secondItem="tWi-Uy-A3g" secondAttribute="top" constant="60" id="cC6-dW-rj9"/>
+                            <constraint firstItem="tWi-Uy-A3g" firstAttribute="bottom" secondItem="3cS-ru-wwH" secondAttribute="bottom" constant="20" id="die-Rd-m0Z"/>
                             <constraint firstItem="lOw-V8-RSr" firstAttribute="centerX" secondItem="tzz-1o-sGq" secondAttribute="centerX" id="jlC-Sa-TW0"/>
                             <constraint firstItem="4Kq-Tr-MAu" firstAttribute="top" secondItem="nWz-1Y-ePH" secondAttribute="bottom" constant="10" id="rtc-Gn-BjN"/>
                             <constraint firstItem="tWi-Uy-A3g" firstAttribute="trailing" secondItem="kpH-fb-WLw" secondAttribute="trailing" constant="15" id="vOy-yT-RXD"/>
+                            <constraint firstItem="3cS-ru-wwH" firstAttribute="centerX" secondItem="tzz-1o-sGq" secondAttribute="centerX" id="zFe-Y3-cCi"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="l45-MS-Q7e"/>
@@ -1575,6 +1587,9 @@
         </systemColor>
         <systemColor name="systemGreenColor">
             <color red="0.20392156859999999" green="0.78039215689999997" blue="0.34901960780000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
+        <systemColor name="systemRedColor">
+            <color red="1" green="0.23137254900000001" blue="0.18823529410000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
     </resources>
 </document>
