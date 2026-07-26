@@ -140,35 +140,35 @@ class CreateProfileViewController: UIViewController, UITextFieldDelegate, UIText
         }
         
         // Create local User object
-        currentUser = User(UID: uid, username: username)
-        
-        let saveProfile: (String) -> Void = { imageURL in
-            guard let user = self.currentUser else {
-                self.statusLabel.text = "Could not create user"
-                return
-            }
-            
-            user.imageURL = imageURL
-            
-            user.updateUsernameAndBio(
-                newName: username,
-                newBio: self.bioTextView.text
-            ) { error in
+        currentUser = User(UID: uid) { newUser in
+            let saveProfile: (String) -> Void = { imageURL in
+                guard let user = newUser else {
+                    self.statusLabel.text = "Could not create user"
+                    return
+                }
                 
-                if let error = error {
-                    self.statusLabel.text = error.localizedDescription
-                } else {
-                    self.goToMainApp()
+                user.imageURL = imageURL
+                
+                user.updateUsernameAndBio(
+                    newName: username,
+                    newBio: self.bioTextView.text
+                ) { error in
+                    
+                    if let error = error {
+                        self.statusLabel.text = error.localizedDescription
+                    } else {
+                        self.goToMainApp()
+                    }
                 }
             }
-        }
-        
-        if selectedPFP {
-            uploadProfileImage(uid: uid) { imageURL in
-                saveProfile(imageURL ?? "")
+            
+            if self.selectedPFP {
+                self.uploadProfileImage(uid: uid) { imageURL in
+                    saveProfile(imageURL ?? "")
+                }
+            } else {
+                saveProfile("")
             }
-        } else {
-            saveProfile("")
         }
     }
     
