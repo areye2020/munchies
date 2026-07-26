@@ -36,6 +36,14 @@ class FavoritesViewController: UIViewController, UITableViewDataSource, UITableV
             segmentedControl.setTitleTextAttributes([.foregroundColor: UIColor.white], for: .selected)
             segmentedControl.setTitleTextAttributes([.foregroundColor: themeColor], for: .normal)
             
+            //fetchFavoritesAndUploads()
+        }
+    
+        override func viewWillAppear(_ animated: Bool) {
+            super.viewWillAppear(animated)
+            
+            // This forces the app to re-fetch the data from Firestore
+            // every single time you navigate back to this screen.
             fetchFavoritesAndUploads()
         }
         

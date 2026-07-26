@@ -1213,6 +1213,7 @@
                                                         <subviews>
                                                             <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2Wr-hr-hlf">
                                                                 <rect key="frame" x="0.0" y="12" width="158.33333333333334" height="44"/>
+                                                                <color key="tintColor" name="ThemeColor"/>
                                                                 <state key="normal" title="Button"/>
                                                                 <buttonConfiguration key="configuration" style="plain" title="-">
                                                                     <fontDescription key="titleFontDescription" type="boldSystem" pointSize="25"/>
@@ -1233,6 +1234,7 @@
                                                             </label>
                                                             <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="daj-Og-t9F">
                                                                 <rect key="frame" x="212.3333333333334" y="12" width="116.33333333333334" height="44"/>
+                                                                <color key="tintColor" name="ThemeColor"/>
                                                                 <state key="normal" title="Button"/>
                                                                 <buttonConfiguration key="configuration" style="plain" title="+">
                                                                     <fontDescription key="titleFontDescription" type="boldSystem" pointSize="25"/>
@@ -1392,6 +1394,7 @@
                     </view>
                     <navigationItem key="navigationItem" id="I4G-ff-oyN">
                         <barButtonItem key="rightBarButtonItem" title="Save" id="5nH-hf-PqI">
+                            <color key="tintColor" name="ThemeColor"/>
                             <connections>
                                 <action selector="saveTapped:" destination="cSC-PQ-Rzv" id="HuH-Qt-JrQ"/>
                             </connections>
