@@ -9,6 +9,7 @@ import UIKit
 import PhotosUI
 import FirebaseFirestore
 import FirebaseAuth
+import FirebaseStorage
 
 class ProfileEditViewController: UIViewController, PHPickerViewControllerDelegate, UITextFieldDelegate, UITextViewDelegate
 {
@@ -16,15 +17,19 @@ class ProfileEditViewController: UIViewController, PHPickerViewControllerDelegat
     @IBOutlet weak var usernameTextField:RoundedTextField!
     @IBOutlet weak var bioTextView:UITextView!
     @IBOutlet weak var statusLabel:UILabel!
-    let maxUsernameLength:Int = 16
-    let maxBioLength:Int = 160
+    let storage:Storage = Storage.storage()
     let accessMessage:String = "Access to your photo library is required to add or change your "
         + "profile image"
     let usernameTextFieldFontSize:CGFloat = 22
     let database:Firestore = Firestore.firestore()
     var pickerConfig:PHPickerConfiguration!
     var picker:PHPickerViewController!
+    var newImageRef:StorageReference!
     var currentUser:User!
+    
+    var usernameSaved:Bool = true
+    var bioSaved:Bool = true
+    var avatarSaved:Bool = false
     
     override func viewDidLoad()
     {
@@ -75,10 +80,24 @@ class ProfileEditViewController: UIViewController, PHPickerViewControllerDelegat
         {
             currentUser = User(UID: user.uid)
             {(newUser) in
-                if newUser != nil
+                if let newUser
                 {
-                    self.usernameTextField.text = newUser!.username
-                    self.bioTextView.text = newUser!.bio
+                    if newUser.imageURL != ""
+                    {
+                        let profilePicRef:StorageReference = self.storage.reference(forURL: newUser.imageURL)
+                        profilePicRef.getData(maxSize: maxImageSize)
+                        {(data, error) in
+                            if let error
+                            {
+                                self.statusLabel.text = error.localizedDescription
+                            } else
+                            {
+                                self.profileImageView.image = UIImage(data: data!)
+                            }
+                        }
+                    }
+                    self.usernameTextField.text = newUser.username
+                    self.bioTextView.text = newUser.bio
                 } else
                 {
                     self.statusLabel.text = "error: could not retrieve user data"
@@ -125,6 +144,7 @@ class ProfileEditViewController: UIViewController, PHPickerViewControllerDelegat
                         DispatchQueue.main.sync
                         {
                             self.profileImageView.image = image
+                            self.avatarSaved = false
                         }
                     }
                 }
@@ -192,6 +212,31 @@ class ProfileEditViewController: UIViewController, PHPickerViewControllerDelegat
     // TODO only username changes are saved
     @IBAction func onSaveChangePress(_ sender:Any)
     {
+        statusLabel.text = ""
+        usernameSaved = false
+        bioSaved = false
+        
+        if !avatarSaved
+        {
+            if currentUser.imageURL != ""
+            {
+                let oldImageRef:StorageReference = storage.reference(forURL: currentUser.imageURL)
+                oldImageRef.delete()
+                {(error) in
+                    if let error
+                    {
+                        self.addToStatus(error.localizedDescription)
+                    } else
+                    {
+                        self.imageChanged()
+                    }
+                }
+            } else
+            {
+                imageChanged()
+            }
+        }
+        
         if let newUsername:String = usernameTextField.text,
            newUsername != ""
         {
@@ -201,30 +246,91 @@ class ProfileEditViewController: UIViewController, PHPickerViewControllerDelegat
                 {(error) in
                     if error != nil
                     {
-                        self.statusLabel.text = error?.localizedDescription
+                        self.addToStatus(error!.localizedDescription)
                     } else
                     {
-                        self.navigationController?.popViewController(animated: true)
+                        self.usernameSaved = true
+                        self.addToStatus("username saved!")
                     }
                 }
+            } else
+            {
+                usernameSaved = true
             }
         }
         
         if let newBio:String = bioTextView.text,
            newBio != ""
         {
-            currentUser.bio = newBio
-            self.navigationController?.popViewController(animated: true)
+            if newBio != currentUser.bio
+            {
+                currentUser.bio = newBio
+                bioSaved = true
+                addToStatus("bio saved!")
+            } else
+            {
+                bioSaved = true
+            }
+        }
+    }
+    
+
+    
+    func imageChanged()
+    {
+        if let newImage:UIImage = profileImageView.image
+        {
+            if let newImageData:Data = newImage.jpegData(compressionQuality: jpgCompression)
+            {
+                newImageRef = storage.reference()
+                    .child("\(profileImagesPath)\(currentUser.uid!).jpg")
+                newImageRef.putData(newImageData, completion: uploadImage)
+            } else
+            {
+                addToStatus("error: could not compress image")
+            }
+        } else
+        {
+            addToStatus("error: could not upload new image")
+        }
+    }
+    
+    func uploadImage(metadata:StorageMetadata?, error:(any Error)?)
+    {
+        if let error
+        {
+            addToStatus(error.localizedDescription)
+        } else
+        {
+            newImageRef.downloadURL()
+            {(url, error) in
+                if let error
+                {
+                    self.addToStatus(error.localizedDescription)
+                } else
+                {
+                    self.avatarSaved = true
+                    self.currentUser.imageURL = url!.absoluteString
+                    self.addToStatus("avatar saved!")
+                }
+            }
+        }
+    }
+    
+    func addToStatus(_ message:String)
+    {
+        if statusLabel.text == ""
+        {
+            statusLabel.text = message
+        } else
+        {
+            statusLabel.text! += "\n" + message
         }
     }
     
     @IBAction func onLogOut(_ sender:Any)
     {
-        var hasUnsavedChanges:Bool = false
-        if usernameTextField.text != currentUser.username! // add bio stuff
-        {
-            hasUnsavedChanges = true
-        }
+        let hasUnsavedChanges:Bool = !(usernameSaved && bioSaved && avatarSaved)
         let alert:UIAlertController = UIAlertController(title: "Logging Out",
             message: "\(hasUnsavedChanges ? "You haved unsaved changes. " : "")"
                 + "Are you sure you want to log out?",

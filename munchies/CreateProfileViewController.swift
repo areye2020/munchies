@@ -21,7 +21,6 @@ class CreateProfileViewController: UIViewController, UITextFieldDelegate, UIText
     @IBOutlet weak var statusLabel: UILabel!
     
     var selectedPFP = false
-    let maxUsernameLength:Int = 16
     let db = Firestore.firestore()
     var currentUser:User!
     
@@ -67,10 +66,18 @@ class CreateProfileViewController: UIViewController, UITextFieldDelegate, UIText
     
     // only allow usernames up to maxUsernameLength in length
     func textField(_ textField:UITextField, shouldChangeCharactersIn range:NSRange,
-                   replacementString string:String) -> Bool {
+        replacementString string:String) -> Bool {
         let newString:String = (textField.text as? NSString)!.replacingCharacters(in: range,
                                                                                   with: string)
         return newString.count <= maxUsernameLength
+    }
+    
+    // only allow bios up to maxBioLength in length
+    func textView(_ textView:UITextView, shouldChangeTextIn range:NSRange,
+        replacementText text:String) -> Bool {
+        let newString:String = (textView.text as? NSString)!.replacingCharacters(in: range,
+            with: text)
+        return newString.count <= maxBioLength
     }
     
     // Gesture function for selecting profile picture, choose options through action sheet
@@ -178,14 +185,14 @@ class CreateProfileViewController: UIViewController, UITextFieldDelegate, UIText
             return
         }
         
-        guard let imageData = image.jpegData(compressionQuality: 0.8) else {
+        guard let imageData = image.jpegData(compressionQuality: jpgCompression) else {
             completion(nil)
             return
         }
         
         let storageRef = Storage.storage()
             .reference()
-            .child("profileImages/\(uid).jpg")
+            .child("\(profileImagesPath)\(uid).jpg")
         
         storageRef.putData(imageData, metadata: nil) { metadata, error in
             if let error = error {
