@@ -78,6 +78,7 @@ class ProfileEditViewController: UIViewController, PHPickerViewControllerDelegat
                 if newUser != nil
                 {
                     self.usernameTextField.text = newUser!.username
+                    self.bioTextView.text = newUser!.bio
                 } else
                 {
                     self.statusLabel.text = "error: could not retrieve user data"
