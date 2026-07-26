@@ -14,9 +14,33 @@ class User
     var uid:String?
     var username:String?
     var bio:String
+    {
+        didSet
+        {
+            self.syncToDatabase()
+        }
+    }
     var imageURL:String
+    {
+        didSet
+        {
+            self.syncToDatabase()
+        }
+    }
     var restrictions:[String]
+    {
+        didSet
+        {
+            self.syncToDatabase()
+        }
+    }
     var customRestrictions:[String]
+    {
+        didSet
+        {
+            self.syncToDatabase()
+        }
+    }
     
     enum UserError: Error, LocalizedError
     {
