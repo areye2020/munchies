@@ -38,8 +38,8 @@ class RecipeCollectionViewCell: UICollectionViewCell {
         timeLabel.text = "\(time.hours)h \(time.minutes)m"
         
         // Try to use the uploaded image
-        guard !recipe.image.isEmpty,
-              let url = URL(string: recipe.image) else {
+        guard !recipe.image!.isEmpty,
+              let url = URL(string: recipe.image!) else {
             return
         }
         

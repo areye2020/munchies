@@ -44,7 +44,7 @@ class EditRecipieViewController: UIViewController {
         nameTextField.text = recipe.name
         instructionsTextView.text = recipe.instructions
         
-        recipieImageView.image = UIImage(named: recipe.image) ?? UIImage(systemName: "photo")
+        recipieImageView.image = UIImage(named: recipe.image!) ?? UIImage(systemName: "photo")
         
         // 2. Set up the Servings Stepper
         currentServings = recipe.servings ?? 1
