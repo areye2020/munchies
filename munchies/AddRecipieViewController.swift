@@ -6,7 +6,7 @@
 //  Created by Adriana Monica Reyes on 7/11/26.
 //
 
-// Auth.auth(0.currentUser.uid
+// Auth.auth().currentUser.uid
 
 
 import UIKit
@@ -140,6 +140,13 @@ class AddRecipieViewController: UIViewController, UITableViewDelegate, UITableVi
     @IBAction func plusServing(_ sender: Any) {
         servingField.text = String(Int(servingField.text!)! + 1)
     }
+    
+    
+    @IBAction func AddButton(_ sender: UIBarButtonItem) {
+        createtRecipe()
+        // seque to the favorites screen
+    }
+    
     
     func createtRecipe() {
         // placeholder
