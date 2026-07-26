@@ -17,7 +17,7 @@ class ProfileEditViewController: UIViewController, PHPickerViewControllerDelegat
     @IBOutlet weak var usernameTextField:RoundedTextField!
     @IBOutlet weak var bioTextView:UITextView!
     @IBOutlet weak var statusLabel:UILabel!
-    let storageRef:StorageReference = Storage.storage().reference()
+    let storage:Storage = Storage.storage()
     let accessMessage:String = "Access to your photo library is required to add or change your "
         + "profile image"
     let usernameTextFieldFontSize:CGFloat = 22
@@ -84,7 +84,7 @@ class ProfileEditViewController: UIViewController, PHPickerViewControllerDelegat
                 {
                     if newUser.imageURL != ""
                     {
-                        let profilePicRef:StorageReference = self.storageRef.child(newUser.imageURL)
+                        let profilePicRef:StorageReference = self.storage.reference(forURL: newUser.imageURL)
                         profilePicRef.getData(maxSize: maxImageSize)
                         {(data, error) in
                             if let error
@@ -220,7 +220,7 @@ class ProfileEditViewController: UIViewController, PHPickerViewControllerDelegat
         {
             if currentUser.imageURL != ""
             {
-                let oldImageRef:StorageReference = storageRef.child("\(profileImagesPath)\(currentUser.uid!).jpg")
+                let oldImageRef:StorageReference = storage.reference(forURL: currentUser.imageURL)
                 oldImageRef.delete()
                 {(error) in
                     if let error
@@ -282,7 +282,7 @@ class ProfileEditViewController: UIViewController, PHPickerViewControllerDelegat
         {
             if let newImageData:Data = newImage.jpegData(compressionQuality: jpgCompression)
             {
-                newImageRef = storageRef
+                newImageRef = storage.reference()
                     .child("\(profileImagesPath)\(currentUser.uid!).jpg")
                 newImageRef.putData(newImageData, completion: uploadImage)
             } else

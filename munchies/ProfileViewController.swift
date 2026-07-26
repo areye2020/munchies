@@ -45,7 +45,7 @@ class ProfileViewController: UIViewController
                     if newUser!.imageURL != ""
                     {
                         let storageRef:Storage = Storage.storage()
-                        let profilePicRef:StorageReference = storageRef.reference().child(newUser!.imageURL)
+                        let profilePicRef:StorageReference = storageRef.reference(forURL: newUser!.imageURL)
                         profilePicRef.getData(maxSize: maxImageSize)
                         {(data, error) in
                             if let error
