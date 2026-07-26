@@ -95,7 +95,7 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
         let recipe = filteredRecipes[indexPath.row]
                 
         // Reuse the configure method you already built for Favorites
-        cell.configure(with: recipe)
+        cell.configure(with: recipe, isEditable: false)
         
         // If you don't want the pencil icon showing up on the search page at all,
         // you can explicitly hide it here:
