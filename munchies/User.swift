@@ -152,7 +152,7 @@ class User
     
     func syncToDatabase()
     {
-        database.collection(userCollectionID).document(self.uid!).setData(self.asDictionary()!)
+            database.collection(userCollectionID).document(self.uid!).setData(self.asDictionary()!)
     }
 
     func asDictionary() -> [String:Any]?
