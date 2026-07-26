@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="24506" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="KII-NU-bY6">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="24506" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="Btk-6q-Iq1">
     <device id="retina6_9" orientation="portrait" appearance="light"/>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="24504"/>
@@ -867,13 +867,13 @@
                                                     </constraints>
                                                 </imageView>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="authorLabel" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dAA-X7-4Uv">
-                                                    <rect key="frame" x="15" y="190" width="167" height="20"/>
+                                                    <rect key="frame" x="30" y="190" width="152" height="20"/>
                                                     <fontDescription key="fontDescription" name="Georgia" family="Georgia" pointSize="17"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="timeLabel" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="M0M-zr-cH0">
-                                                    <rect key="frame" x="15" y="140" width="167" height="20"/>
+                                                    <rect key="frame" x="30" y="140" width="152" height="20"/>
                                                     <fontDescription key="fontDescription" name="Georgia" family="Georgia" pointSize="17"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
@@ -884,20 +884,31 @@
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
+                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="clock.fill" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="Gst-bj-fTE">
+                                                    <rect key="frame" x="2" y="140.66666666666666" width="25" height="19"/>
+                                                    <color key="tintColor" name="ThemeColor"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="14" id="HQ4-Sh-H9G"/>
+                                                        <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="14" id="KGO-L6-4Db"/>
+                                                        <constraint firstAttribute="width" constant="25" id="Sm4-Pq-uFB"/>
+                                                    </constraints>
+                                                </imageView>
                                             </subviews>
                                             <constraints>
                                                 <constraint firstAttribute="trailing" secondItem="57C-lN-rr7" secondAttribute="trailing" id="03f-VS-NfU"/>
                                                 <constraint firstItem="57C-lN-rr7" firstAttribute="leading" secondItem="8FC-vn-bVj" secondAttribute="leading" id="5J8-Q2-jPs"/>
-                                                <constraint firstItem="M0M-zr-cH0" firstAttribute="leading" secondItem="8FC-vn-bVj" secondAttribute="leading" constant="15" id="6BB-cs-IEc"/>
+                                                <constraint firstItem="M0M-zr-cH0" firstAttribute="leading" secondItem="8FC-vn-bVj" secondAttribute="leading" constant="30" id="6BB-cs-IEc"/>
                                                 <constraint firstAttribute="trailing" secondItem="gRO-zB-t4k" secondAttribute="trailing" constant="10" id="6W4-ma-Mxs"/>
                                                 <constraint firstItem="M0M-zr-cH0" firstAttribute="top" secondItem="57C-lN-rr7" secondAttribute="bottom" constant="20" id="903-fK-HWb"/>
                                                 <constraint firstAttribute="trailing" secondItem="dAA-X7-4Uv" secondAttribute="trailing" constant="20" id="GSQ-U8-BHQ"/>
+                                                <constraint firstItem="M0M-zr-cH0" firstAttribute="leading" secondItem="Gst-bj-fTE" secondAttribute="trailing" constant="3" id="Myr-Vx-a5Z"/>
                                                 <constraint firstItem="gRO-zB-t4k" firstAttribute="leading" secondItem="8FC-vn-bVj" secondAttribute="leading" id="a2b-If-MSi"/>
                                                 <constraint firstItem="gRO-zB-t4k" firstAttribute="top" secondItem="57C-lN-rr7" secondAttribute="bottom" constant="-20" id="bP8-wQ-obP"/>
                                                 <constraint firstItem="dAA-X7-4Uv" firstAttribute="top" secondItem="M0M-zr-cH0" secondAttribute="bottom" constant="30" id="eAW-7Y-wSC"/>
                                                 <constraint firstAttribute="trailing" secondItem="M0M-zr-cH0" secondAttribute="trailing" constant="20" id="faP-2G-ehZ"/>
                                                 <constraint firstItem="57C-lN-rr7" firstAttribute="top" secondItem="8FC-vn-bVj" secondAttribute="top" id="hxb-BI-qSM"/>
                                                 <constraint firstItem="dAA-X7-4Uv" firstAttribute="leading" secondItem="M0M-zr-cH0" secondAttribute="leading" id="ofS-no-IyP"/>
+                                                <constraint firstItem="Gst-bj-fTE" firstAttribute="centerY" secondItem="M0M-zr-cH0" secondAttribute="centerY" id="u8G-LP-caw"/>
                                             </constraints>
                                         </collectionViewCellContentView>
                                         <size key="customSize" width="202" height="262.60000000000002"/>
