@@ -9,6 +9,7 @@ import UIKit
 import PhotosUI
 import FirebaseFirestore
 import FirebaseAuth
+import FirebaseStorage
 
 class ProfileEditViewController: UIViewController, PHPickerViewControllerDelegate, UITextFieldDelegate, UITextViewDelegate
 {
@@ -16,8 +17,7 @@ class ProfileEditViewController: UIViewController, PHPickerViewControllerDelegat
     @IBOutlet weak var usernameTextField:RoundedTextField!
     @IBOutlet weak var bioTextView:UITextView!
     @IBOutlet weak var statusLabel:UILabel!
-    let maxUsernameLength:Int = 16
-    let maxBioLength:Int = 160
+    let storageRef:StorageReference = Storage.storage().reference()
     let accessMessage:String = "Access to your photo library is required to add or change your "
         + "profile image"
     let usernameTextFieldFontSize:CGFloat = 22
@@ -25,6 +25,7 @@ class ProfileEditViewController: UIViewController, PHPickerViewControllerDelegat
     var pickerConfig:PHPickerConfiguration!
     var picker:PHPickerViewController!
     var currentUser:User!
+    var hasChangedImage:Bool = false
     
     override func viewDidLoad()
     {
@@ -125,6 +126,7 @@ class ProfileEditViewController: UIViewController, PHPickerViewControllerDelegat
                         DispatchQueue.main.sync
                         {
                             self.profileImageView.image = image
+                            self.hasChangedImage = true
                         }
                     }
                 }
@@ -202,9 +204,29 @@ class ProfileEditViewController: UIViewController, PHPickerViewControllerDelegat
                     if error != nil
                     {
                         self.statusLabel.text = error?.localizedDescription
-                    } else
+                    } else if !self.hasChangedImage
                     {
                         self.navigationController?.popViewController(animated: true)
+                    }
+                }
+            }
+            if hasChangedImage
+            {
+                let oldImage:StorageReference = storageRef.child("\(profileImagesPath)\(currentUser.uid!).jpg")
+                oldImage.delete()
+                {(error) in
+                    if let error
+                    {
+                        self.statusLabel.text = error.localizedDescription
+                    } else
+                    {
+                        if let newImage:UIImage = self.profileImageView.image
+                        {
+                            if let newImageData = newImage.jpegData(compressionQuality: jpgCompression)
+                            {
+                                // TODO
+                            }
+                        }
                     }
                 }
             }
