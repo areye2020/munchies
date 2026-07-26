@@ -16,8 +16,6 @@ class ProfileViewController: UIViewController
     @IBOutlet weak var usernameBackground:UIView!
     @IBOutlet weak var usernameLabel:UILabel!
     @IBOutlet weak var bioLabel:UILabel!
-    let megaByte:Int64 = 1024 * 1024
-    var maxImageSize:Int64!
     var currentUser:User!
     
     override func viewDidLoad()
@@ -29,7 +27,6 @@ class ProfileViewController: UIViewController
         usernameLabel.layer.masksToBounds = true
         usernameLabel.text = ""
         bioLabel.text = ""
-        maxImageSize = 2 * megaByte
     }
     
     override func viewWillAppear(_ animated:Bool)
@@ -46,8 +43,8 @@ class ProfileViewController: UIViewController
                 if newUser != nil
                 {
                     let storageRef:Storage = Storage.storage()
-                    let profilePicRef:StorageReference = storageRef.reference().child("profileImages/\(newUser!.uid!).jpg")
-                    profilePicRef.getData(maxSize: self.maxImageSize)
+                    let profilePicRef:StorageReference = storageRef.reference().child("\(profileImagesPath)\(newUser!.uid!).jpg")
+                    profilePicRef.getData(maxSize: maxImageSize)
                     {(data, error) in
                         if let error
                         {
