@@ -1382,6 +1382,7 @@
                     </view>
                     <navigationItem key="navigationItem" id="l45-MS-Q7e"/>
                     <connections>
+                        <outlet property="bioTextView" destination="hzb-5T-Skp" id="tUT-0l-4ch"/>
                         <outlet property="profileImageView" destination="nWz-1Y-ePH" id="vmd-dV-hur"/>
                         <outlet property="statusLabel" destination="lOw-V8-RSr" id="wMt-1W-eOP"/>
                         <outlet property="usernameTextField" destination="vEL-nS-t5b" id="4fp-kc-ERy"/>

@@ -10,12 +10,14 @@ import PhotosUI
 import FirebaseFirestore
 import FirebaseAuth
 
-class ProfileEditViewController: UIViewController, PHPickerViewControllerDelegate, UITextFieldDelegate
+class ProfileEditViewController: UIViewController, PHPickerViewControllerDelegate, UITextFieldDelegate, UITextViewDelegate
 {
     @IBOutlet weak var profileImageView:UIImageView!
     @IBOutlet weak var usernameTextField:RoundedTextField!
+    @IBOutlet weak var bioTextView:UITextView!
     @IBOutlet weak var statusLabel:UILabel!
     let maxUsernameLength:Int = 16
+    let maxBioLength:Int = 160
     let accessMessage:String = "Access to your photo library is required to add or change your "
         + "profile image"
     let usernameTextFieldFontSize:CGFloat = 22
@@ -37,6 +39,7 @@ class ProfileEditViewController: UIViewController, PHPickerViewControllerDelegat
         picker.delegate = self
         
         usernameTextField.delegate = self
+        bioTextView.delegate = self
         usernameTextField.font = UIFont.systemFont(ofSize: usernameTextFieldFontSize)
         statusLabel.text = ""
     }
@@ -93,6 +96,13 @@ class ProfileEditViewController: UIViewController, PHPickerViewControllerDelegat
         let newString:String = (textField.text as? NSString)!.replacingCharacters(in: range,
             with: string)
         return newString.count <= maxUsernameLength
+    }
+    
+    func textView(_ textView:UITextView, shouldChangeTextIn range:NSRange, replacementText text:String) -> Bool
+    {
+        let newString:String = (textView.text as? NSString)!.replacingCharacters(in: range,
+            with: text)
+        return newString.count <= maxBioLength
     }
 
     // update the user's avatar
@@ -186,47 +196,24 @@ class ProfileEditViewController: UIViewController, PHPickerViewControllerDelegat
         {
             if newUsername != currentUser.username
             {
-                let database:Firestore = Firestore.firestore()
-                database.collection(userCollectionID).whereField(userUsernameFieldID,
-                    isEqualTo: newUsername).getDocuments(completion: handleSave)
+                currentUser.updateUsernameAndBio(newName: newUsername, newBio: bioTextView.text)
+                {(error) in
+                    if error != nil
+                    {
+                        self.statusLabel.text = error?.localizedDescription
+                    } else
+                    {
+                        self.navigationController?.popViewController(animated: true)
+                    }
+                }
             }
         }
-    }
-    
-    // helper function for onSaveChange
-    // query firestore to see if the new username is already taken
-    func handleSave(querySnapshot:QuerySnapshot?, error:(any Error)?)
-    {
-        if let error
+        
+        if let newBio:String = bioTextView.text,
+           newBio != ""
         {
-            statusLabel.text = error.localizedDescription
-        } else
-        {
-            if let querySnapshot,
-               querySnapshot.documents.count > 0
-            {
-                statusLabel.text = "username already taken"
-            } else
-            {
-                updateUsername()
-            }
-        }
-    }
-    
-    // helper function fr handleSave
-    // attempt to update the user's username
-    func updateUsername()
-    {
-        database.collection(userCollectionID).document(self.currentUser.uid!)
-            .updateData([userUsernameFieldID: usernameTextField.text!])
-        {(error) in
-            if let error
-            {
-                self.statusLabel.text = error.localizedDescription
-            } else
-            {
-                self.navigationController?.popViewController(animated: true)
-            }
+            currentUser.bio = newBio
+            self.navigationController?.popViewController(animated: true)
         }
     }
     
