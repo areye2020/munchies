@@ -6,11 +6,13 @@
 //  Created by Adriana Monica Reyes on 7/11/26.
 //
 
-// Auth.auth().currentUser.uid
+// Auth.auth().currentUser?.uid
 
 
 import UIKit
 import PhotosUI
+import FirebaseAuth
+import FirebaseFirestore
 
 class AddRecipieViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate, PHPickerViewControllerDelegate {
     
@@ -33,6 +35,8 @@ class AddRecipieViewController: UIViewController, UITableViewDelegate, UITableVi
     
     var recipeList:[Recipe] = []
     var ingredients:[String] = []
+   
+    let db = Firestore.firestore()
     
     @IBOutlet weak var recipeImage: UIImageView!
     private let accessMessage:String = "Access to your photo library is required to add a recipe image"
@@ -49,7 +53,7 @@ class AddRecipieViewController: UIViewController, UITableViewDelegate, UITableVi
         super.viewDidLoad()
         // nagivation title
         navigationController?.navigationBar.titleTextAttributes = [
-            .foregroundColor: UIColor.orange,
+            .foregroundColor: UIColor(named: "ThemeColor") ?? UIColor.orange,
             .font: UIFont.systemFont(ofSize: 20)
         ]
         
@@ -148,15 +152,83 @@ class AddRecipieViewController: UIViewController, UITableViewDelegate, UITableVi
     
     
     func createtRecipe() {
-        // placeholder
-        //        let recipe = Recipe(
-        //            name: nameField.text!,
-        //            servings: Int(calorieField.text!) ?? 0,
-        //            calories: Int(calorieField.text!) ?? 0,
-        //            prepTime: Int(prepHourField.text!)!*60 + (Int(prepMinField.text!) ?? 0),
-        //            cookTime: (Int(cookHourField.text!) ?? 0)*60 + (Int(cookMinField.text!) ?? 0),
-        //            ingredients: ingredients, instructions: instructionField.text!)
-        
+        // Gather and validate basic fields
+        let name = (nameField.text ?? "").trimmingCharacters(in: .whitespacesAndNewlines)
+        let instructions = (instructionField.text ?? "").trimmingCharacters(in: .whitespacesAndNewlines)
+
+        // Parse numeric fields with safe defaults
+        let servings = Int(servingField.text ?? "") ?? 0
+
+        let prepHours = Int(prepHourField.text ?? "") ?? 0
+        let prepMins = Int(prepMinField.text ?? "") ?? 0
+        let cookHours = Int(cookHourField.text ?? "") ?? 0
+        let cookMins = Int(cookMinField.text ?? "") ?? 0
+
+        let prepTime = max(0, prepHours) * 60 + max(0, prepMins)
+        let cookTime = max(0, cookHours) * 60 + max(0, cookMins)
+
+        // Optional: calories if needed later
+        let calories = Int(calorieField.text ?? "")
+
+        // Current user info
+        let authorID = Auth.auth().currentUser?.uid
+        let authorName = Auth.auth().currentUser?.displayName
+
+        // Image handling: use the UIImage directly or convert to data depending on your Recipe model
+        let image = recipeImage.image
+
+        // Minimal validation
+        guard !name.isEmpty else {
+            createAlert(title: "Missing Name", "Please enter a recipe name.")
+            return
+        }
+
+        // Create the recipe. Adjust parameter labels/types to match your actual Recipe initializer.
+        // This assumes a Recipe initializer something like:
+        // Recipe(name: String, author: String?, image: UIImage?, servings: Int, prepTime: Int, cookTime: Int, ingredients: [String], instructions: String, authorID: String?)
+        let recipe = Recipe(
+            name: name,
+            author: authorName,
+            servings: servings,
+            calories: calories,
+            prepTime: prepTime,
+            cookTime: cookTime,
+            ingredients: ingredients,
+            instructions: instructions,
+            authorID: authorID
+        )
+
+        // TODO: Append to local list, save to backend, or pass back via delegate as needed
+        recipeList.append(recipe)
+
+        // Save to Firestore
+        var data: [String: Any] = [
+            "name": name,
+            "author": authorName as Any,
+            "servings": servings,
+            "prepTime": prepTime,
+            "cookTime": cookTime,
+            "ingredients": ingredients,
+            "instructions": instructions,
+            "authorID": authorID as Any,
+            "createdAt": FieldValue.serverTimestamp()
+        ]
+        if let calories = calories { data["calories"] = calories }
+        // If you later add an image URL string, include it as data["image"]
+
+        db.collection("recipes").addDocument(data: data) { [weak self] error in
+            guard let self = self else { return }
+            if let error = error {
+                self.createAlert(title: "Save Failed", "Could not save recipe: \(error.localizedDescription)")
+            } else {
+                // Navigate to favorites on success
+                DispatchQueue.main.async {
+                    self.performSegue(withIdentifier: "favoritesSegue", sender: self)
+                }
+            }
+        }
+
+        // seque to the favorites view controlelr favoritesSegue
     }
     
     // Attempt to open the user's photo library; prompt for settings if denied
