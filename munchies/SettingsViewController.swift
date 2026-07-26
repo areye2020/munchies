@@ -47,6 +47,12 @@ class SettingsViewController: UIViewController, UITableViewDelegate, UITableView
                 defaults.set(encodedSettings, forKey: settingsKey)
             }
         }
+        self.tabBarController?.setTabBarHidden(true, animated: false)
+    }
+    
+    override func viewWillAppear(_ animated:Bool)
+    {
+        self.tabBarController?.setTabBarHidden(true, animated: false)
     }
     
     override func shouldPerformSegue(withIdentifier identifier:String, sender:Any?) -> Bool

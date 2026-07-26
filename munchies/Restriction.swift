@@ -7,7 +7,7 @@
 
 import FirebaseFirestore
 
-class Restriction
+class Restriction: Equatable
 {
     var name:String
     var ingredients:[String]
@@ -28,15 +28,16 @@ class Restriction
     {
         self.name = name
         self.ingredients = []
-        Firestore.firestore().collection(restrictionCollectionID).document(name).getDocument()
-        {(documentSnapShot, error) in
+        Firestore.firestore().collection(restrictionCollectionID).whereField(restrictionNameField, isEqualTo: name).getDocuments()
+        {(querySnapshot, error) in
             if let error
             {
                 print(error.localizedDescription)
-            } else
+            } else if let docs:[QueryDocumentSnapshot] = querySnapshot?.documents
             {
+                let documentSnapshot:QueryDocumentSnapshot = docs[0]
                 if let docIngredients:[String]
-                    = documentSnapShot?.data()![restrictionIngredientFieldID] as? [String]
+                    = documentSnapshot.data()[restrictionIngredientFieldID] as? [String]
                 {
                     for ingredient:String in docIngredients
                     {
@@ -47,6 +48,31 @@ class Restriction
                     print("could not retrieve restriction ingredients")
                 }
             }
+            
         }
+//        {(documentSnapShot, error) in
+//            if let error
+//            {
+//                print(error.localizedDescription)
+//            } else
+//            {
+//                if let docIngredients:[String]
+//                    = documentSnapShot?.data()![restrictionIngredientFieldID] as? [String]
+//                {
+//                    for ingredient:String in docIngredients
+//                    {
+//                        self.ingredients.append(ingredient)
+//                    }
+//                } else
+//                {
+//                    print("could not retrieve restriction ingredients")
+//                }
+//            }
+//        }
+    }
+    
+    static func == (lhs:Restriction, rhs:Restriction) -> Bool
+    {
+        return lhs.name == rhs.name
     }
 }

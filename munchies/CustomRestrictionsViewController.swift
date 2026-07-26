@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import FirebaseAuth
 
 class CustomRestrictionsViewController: UIViewController, UITableViewDelegate,
     UITableViewDataSource
@@ -16,27 +17,43 @@ class CustomRestrictionsViewController: UIViewController, UITableViewDelegate,
     let addMessage:String = ""
     let editTitle:String = "Edit Entry"
     let editMessage:String = ""
-    var restrictions:[String] = ["testing?"]
     var alertTextField:UITextField!
     var editIndex:Int = -1
+    var currentUser:User!
     
     override func viewDidLoad()
     {
         super.viewDidLoad()
         tableView.delegate = self
         tableView.dataSource = self
+        self.tabBarController?.setTabBarHidden(true, animated: false)
+    }
+    
+    override func viewWillAppear(_ animated:Bool)
+    {
+        currentUser = User(UID: Auth.auth().currentUser!.uid)
+        {(user) in
+            if user == nil
+            {
+                self.createErrorAlert(message: "could not retrieve user data")
+            } else
+            {
+                self.currentUser.customRestrictions = self.currentUser.customRestrictions.sorted()
+                self.tableView.reloadData()
+            }
+        }
     }
     
     func tableView(_ tableView:UITableView, numberOfRowsInSection section:Int) -> Int
     {
-        return restrictions.count
+        return currentUser.customRestrictions.count
     }
     
     func tableView(_ tableView:UITableView, cellForRowAt indexPath:IndexPath) -> UITableViewCell
     {
         let cell:UITableViewCell = tableView.dequeueReusableCell(withIdentifier: restrictionCellIdentifier, for: indexPath)
         var content:UIListContentConfiguration = cell.defaultContentConfiguration()
-        content.text = restrictions[indexPath.row]
+        content.text = currentUser.customRestrictions[indexPath.row]
         cell.contentConfiguration = content
         return cell
     }
@@ -59,8 +76,7 @@ class CustomRestrictionsViewController: UIViewController, UITableViewDelegate,
     {
         if editingStyle == UITableViewCell.EditingStyle.delete
         {
-            print(restrictions)
-            restrictions.remove(at: indexPath.row)
+            currentUser.customRestrictions.remove(at: indexPath.row)
             tableView.deleteRows(at: [indexPath], with: UITableView.RowAnimation.fade)
         }
     }
@@ -73,8 +89,12 @@ class CustomRestrictionsViewController: UIViewController, UITableViewDelegate,
             if newRestriction != ""
             {
                 newRestriction = newRestriction.lowercased()
-                restrictions.append(newRestriction)
-                tableView.reloadData()
+                if !currentUser.customRestrictions.contains(newRestriction)
+                {
+                    currentUser.customRestrictions.append(newRestriction)
+                    currentUser.customRestrictions = currentUser.customRestrictions.sorted()
+                    tableView.reloadData()
+                }
             }
         } catch
         {
@@ -90,7 +110,8 @@ class CustomRestrictionsViewController: UIViewController, UITableViewDelegate,
             if newRestriction != "" && editIndex >= 0
             {
                 newRestriction = newRestriction.lowercased()
-                restrictions[editIndex] = newRestriction
+                currentUser.customRestrictions[editIndex] = newRestriction
+                currentUser.customRestrictions = currentUser.customRestrictions.sorted()
                 tableView.reloadData()
                 editIndex = -1
             } else
