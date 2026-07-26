@@ -5,94 +5,122 @@
 //  Created by Kirkland, Kaden E on 7/24/26.
 //
 import FirebaseFirestore
+import FirebaseAuth
 
+// representation of a user as stored in firebase
 class User
 {
-    var username:String
+    let database:Firestore = Firestore.firestore()
+    var uid:String?
+    var username:String?
+    var bio:String
+    var imageURL:String
     var restrictions:[Restriction]
     var customRestrictions:[String]
     
-    init(username:String)
+    enum UserError: Error, LocalizedError
     {
+        public var errorDescription:String?
+        {
+            switch self
+            {
+                case .usernameTaken:
+                    return NSLocalizedString("this username is already taken", comment: "produced when a user attempts to update their username to one that is already taken")
+            }
+        }
+        case usernameTaken
+    }
+    
+    init(UID:String, username:String)
+    {
+        uid = UID
         self.username = username
+        bio = ""
+        imageURL = ""
         restrictions = []
         customRestrictions = []
     }
     
-    init(UID:String)
+    // attempts to generate a new User by retrieving the user with the same UID from firebase
+    // passes the new User or nil to onComplettion
+    init(UID:String, onCompletion:@escaping (User?) -> Void)
     {
-        username = ""
+        bio = ""
+        imageURL = ""
         restrictions = []
         customRestrictions = []
-        let result = Firestore.firestore().collection(userCollectionID).whereField(FieldPath.documentID(), isEqualTo: "o6dcRLJro1b0P2mMhTHY0IlQDiT2")
-        result.getDocuments()
-        {(querySnapShot, error) in
+        
+        database.collection(userCollectionID).document(UID).getDocument()
+        {(documentSnapshot, error) in
             if let error
             {
                 print(error.localizedDescription)
-            } else
+            } else if let documentSnapshot
             {
-                if let docs:[QueryDocumentSnapshot] = querySnapShot?.documents,
-                   !docs.isEmpty
+                // try to get the user's username; user their email as a default
+                self.uid = UID
+                if let username:String = documentSnapshot[userUsernameFieldID] as? String
                 {
-                    // should only ever be one result
-                    let userDoc:[String:Any] = docs[0].data()
-                    self.username = userDoc["username"] as! String
-                    
-                    let restrictionNames:[String] = userDoc["restrictions"] as! [String]
+                    self.username = username
+                } else if let currentUser:FirebaseAuth.User = Auth.auth().currentUser
+                {
+                    self.username = currentUser.email!
+                }
+                
+                // get user's bio and profile image
+                if let bio:String = documentSnapshot[userBioFieldID] as? String
+                {
+                    self.bio = bio
+                }
+                if let imageURL:String = documentSnapshot[userImageFieldID] as? String
+                {
+                    self.imageURL = imageURL
+                }
+                
+                // get user's restrictions and custom restrictions
+                if let restrictionNames:[String]
+                    = documentSnapshot[userRestrictionsFieldID] as? [String]
+                {
                     for i in 0 ..< restrictionNames.count
                     {
                         self.restrictions.append(Restriction(name: restrictionNames[i]))
                     }
-                    let customDocRestrictions:[String] = userDoc["custom restrictions"] as! [String]
+                }
+                if let customDocRestrictions:[String]
+                    = documentSnapshot[userCustomRestrictionsID] as? [String]
+                {
                     for i in 0 ..< customDocRestrictions.count
                     {
                         self.customRestrictions.append(customDocRestrictions[i])
                     }
-                } else
-                {
-                    print("error retrieving documents")
                 }
+            } else
+            {
+                print("error: could not retrieve user data")
             }
+            onCompletion(self.uid != nil && self.username != nil ? self : nil)
         }
     }
     
-    init(UID:String, onCompletion:@escaping (User?) -> Void)
+    func updateUsernameAndBio(newName:String, newBio:String, onCompletetion:@escaping ((any Error)?) -> Void)
     {
-        username = ""
-        restrictions = []
-        customRestrictions = []
-        let result = Firestore.firestore().collection(userCollectionID).whereField(FieldPath.documentID(), isEqualTo: "o6dcRLJro1b0P2mMhTHY0IlQDiT2")
-        result.getDocuments()
-        {(querySnapShot, error) in
+        database.collection(userCollectionID).whereField(userUsernameFieldID, isEqualTo: newName).getDocuments()
+        {(querySnapshot, error) in
             if let error
             {
-                print(error.localizedDescription)
-                onCompletion(nil)
+                onCompletetion(error)
             } else
             {
-                if let docs:[QueryDocumentSnapshot] = querySnapShot?.documents,
-                   !docs.isEmpty
+                if querySnapshot!.documents.count > 0
                 {
-                    // should only ever be one result
-                    let userDoc:[String:Any] = docs[0].data()
-                    self.username = userDoc["username"] as! String
-                    
-                    let restrictionNames:[String] = userDoc["restrictions"] as! [String]
-                    for i in 0 ..< restrictionNames.count
-                    {
-                        self.restrictions.append(Restriction(name: restrictionNames[i]))
-                    }
-                    let customDocRestrictions:[String] = userDoc["custom restrictions"] as! [String]
-                    for i in 0 ..< customDocRestrictions.count
-                    {
-                        self.customRestrictions.append(customDocRestrictions[i])
-                    }
-                    onCompletion(self)
+                    onCompletetion(UserError.usernameTaken)
                 } else
                 {
-                    print("error retrieving documents")
-                    onCompletion(nil)
+                    self.username = newName
+                    self.bio = newBio
+                    print(newName)
+                    self.database.collection(userCollectionID).document(self.uid!).setData(self.asDictionary()!)
+                    onCompletetion(nil)
                 }
             }
         }
@@ -101,5 +129,21 @@ class User
     func addCustomRestriction(ingredient:String)
     {
         customRestrictions.append(ingredient)
+    }
+    
+    func asDictionary() -> [String:Any]?
+    {
+        if uid == nil || username == nil
+        {
+            return nil
+        }
+        
+        var dict:[String:Any] = [:]
+        dict.updateValue(username!, forKey: userUsernameFieldID)
+        dict.updateValue(bio, forKey: userBioFieldID)
+        dict.updateValue(imageURL, forKey: userImageFieldID)
+        dict.updateValue(restrictions, forKey: userRestrictionsFieldID)
+        dict.updateValue(customRestrictions, forKey: userCustomRestrictionsID)
+        return dict
     }
 }

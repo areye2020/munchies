@@ -22,26 +22,29 @@ class Restriction
         }
     }
     
+    // attempt to generate a Restriction object by retrieving data that matches the given name
+    // from firestore
     init(name:String)
     {
         self.name = name
         self.ingredients = []
-        let queryResult:Query = Firestore.firestore().collection(restrictionCollectionID)
-        queryResult.whereField("name", isEqualTo: name).getDocuments()
-        {(querySnapshot, error) in
+        Firestore.firestore().collection(restrictionCollectionID).document(name).getDocument()
+        {(documentSnapShot, error) in
             if let error
             {
                 print(error.localizedDescription)
             } else
             {
-                if let docs:[QueryDocumentSnapshot] = querySnapshot?.documents
+                if let docIngredients:[String]
+                    = documentSnapShot?.data()![restrictionIngredientFieldID] as? [String]
                 {
-                    let restrictionDoc:[String:Any] = docs[0].data()
-                    let docIngredients:[String] = restrictionDoc["ingredients"] as! [String]
-                    for i in 0 ..< docIngredients.count
+                    for ingredient:String in docIngredients
                     {
-                        self.ingredients.append(docIngredients[i])
+                        self.ingredients.append(ingredient)
                     }
+                } else
+                {
+                    print("could not retrieve restriction ingredients")
                 }
             }
         }
