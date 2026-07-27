@@ -167,11 +167,8 @@ class User
                 {
                     let docDictionary:[String:Any] = doc.data()
                     let currentRestriction:String = docDictionary[restrictionNameFieldID] as! String
-                    print(currentRestriction)
                     if self.restrictions.firstIndex(of: currentRestriction) != nil
                     {
-                        print(docDictionary)
-                        print(docDictionary[restrictionIngredientsFieldID])
                         let currentIngredients:[String] = docDictionary[restrictionIngredientsFieldID] as! [String]
                         userRestrictions.append(Restriction(name: currentRestriction, ingredients: currentIngredients))
                     }
