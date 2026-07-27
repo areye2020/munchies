@@ -67,13 +67,14 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
                             } else
                             {
                                 self?.allRecipes = allowedRecipes!
-                                // Initially, the search bar is empty, so show everything
                                 self?.filteredRecipes = self?.allRecipes ?? []
                                 DispatchQueue.main.async {
                                     if let sBar = self?.searchBar {
+                                        // Filtering the results immediately ensures the user's
+                                        // search will still apply if they leave the screen and
+                                        // return
                                         self?.filterWithSearchBar(sBar, textDidChange: self?.searchBar.text ?? "")
-                                    } else
-                                    {
+                                    } else {
                                         self?.tableView.reloadData()
                                     }
                                 }
