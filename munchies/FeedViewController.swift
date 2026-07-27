@@ -9,12 +9,14 @@
 
 import UIKit
 import FirebaseFirestore
+import FirebaseAuth
 
 class FeedViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
     
     let db = Firestore.firestore()
     let detailSegueID = "DetailSegue"
     
+    var currentUser:User!
     var recipes: [Recipe] = []
     var selectedRecipe: Recipe?
     
@@ -25,9 +27,15 @@ class FeedViewController: UIViewController, UICollectionViewDataSource, UICollec
         super.viewDidLoad()
         recipeCollectionView.dataSource = self
         recipeCollectionView.delegate = self
-        fetchRecipes()
         emptyStatusLabel.isHidden = true
         // Do any additional setup after loading the view.
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        if let uid = Auth.auth().currentUser?.uid
+        {
+            currentUser = User(UID:uid, onCompletion: fetchRecipes)
+        }
     }
     
     func collectionView(
@@ -37,9 +45,9 @@ class FeedViewController: UIViewController, UICollectionViewDataSource, UICollec
         recipes.count
     }
     
-    func fetchRecipes() {
-        db.collection(recipeCollectionID).getDocuments { snapshot, error in
-            
+
+    func fetchRecipes(user:User?) {
+        db.collection("recipes").getDocuments { snapshot, error in
             if let error = error {
                 print("Error getting recipes: \(error)")
                 return
@@ -49,14 +57,32 @@ class FeedViewController: UIViewController, UICollectionViewDataSource, UICollec
                 return
             }
             
-            self.recipes = documents.compactMap { document in
+            let allRecipes = documents.compactMap { document in
                 try? document.data(as: Recipe.self)
             }
             
-            DispatchQueue.main.async {
-                self.emptyStatusLabel.isHidden = !self.recipes.isEmpty
-                self.recipeCollectionView.reloadData()
+            if let user {
+                user.withoutRestrictedRecipes(recipes: allRecipes) { allowedRecipes, error in
+                    if let error {
+                        print(error.localizedDescription)
+                    } else
+                    {
+                        self.recipes = allowedRecipes!
+                        DispatchQueue.main.async {
+                            self.emptyStatusLabel.isHidden = !self.recipes.isEmpty
+                            self.recipeCollectionView.reloadData()
+                        }
+                    }
+                }
+            } else
+            {
+                self.recipes = allRecipes
+                DispatchQueue.main.async {
+                    self.emptyStatusLabel.isHidden = !self.recipes.isEmpty
+                    self.recipeCollectionView.reloadData()
+                }
             }
+            
         }
     }
     
