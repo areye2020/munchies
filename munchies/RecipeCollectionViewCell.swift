@@ -20,7 +20,7 @@ class RecipeCollectionViewCell: UICollectionViewCell {
         
         contentView.layer.cornerRadius = 12
         contentView.layer.masksToBounds = true
-        contentView.backgroundColor = .systemGray6
+        contentView.backgroundColor = UIColor(named: "ThemeColor")
         
         recipeImage.contentMode = .scaleAspectFill
         recipeImage.clipsToBounds = true
