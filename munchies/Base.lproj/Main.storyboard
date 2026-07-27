@@ -866,6 +866,7 @@
                         <subviews>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Q7g-mR-zzL">
                                 <rect key="frame" x="30" y="0.0" width="380" height="190"/>
+                                <color key="tintColor" name="BurntOrange"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="190" id="9cd-n1-47m"/>
                                 </constraints>
@@ -1058,15 +1059,9 @@
                                 <color key="textColor" name="TextFieldAccent"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Categories" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="h4p-t2-tfS">
-                                <rect key="frame" x="30" y="89" width="95" height="22"/>
-                                <fontDescription key="fontDescription" type="boldSystem" pointSize="18"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="KMm-Hm-LTK">
-                                <rect key="frame" x="0.0" y="191" width="440" height="470"/>
-                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <rect key="frame" x="0.0" y="111" width="440" height="550"/>
+                                <color key="backgroundColor" name="BackgroundColor"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="EFi-9b-Q3C">
                                     <size key="itemSize" width="350" height="450"/>
                                     <size key="headerReferenceSize" width="0.0" height="0.0"/>
@@ -1088,7 +1083,7 @@
                                                     </constraints>
                                                 </imageView>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="authorLabel" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dAA-X7-4Uv">
-                                                    <rect key="frame" x="30" y="190" width="152" height="20"/>
+                                                    <rect key="frame" x="30" y="180" width="152" height="20"/>
                                                     <fontDescription key="fontDescription" name="Georgia" family="Georgia" pointSize="17"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
@@ -1107,7 +1102,7 @@
                                                 </label>
                                                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="clock.fill" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="Gst-bj-fTE">
                                                     <rect key="frame" x="2" y="140.66666666666666" width="25" height="19"/>
-                                                    <color key="tintColor" name="ThemeColor"/>
+                                                    <color key="tintColor" systemColor="systemBackgroundColor"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="14" id="HQ4-Sh-H9G"/>
                                                         <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="14" id="KGO-L6-4Db"/>
@@ -1125,7 +1120,7 @@
                                                 <constraint firstItem="M0M-zr-cH0" firstAttribute="leading" secondItem="Gst-bj-fTE" secondAttribute="trailing" constant="3" id="Myr-Vx-a5Z"/>
                                                 <constraint firstItem="gRO-zB-t4k" firstAttribute="leading" secondItem="8FC-vn-bVj" secondAttribute="leading" id="a2b-If-MSi"/>
                                                 <constraint firstItem="gRO-zB-t4k" firstAttribute="top" secondItem="57C-lN-rr7" secondAttribute="bottom" constant="-20" id="bP8-wQ-obP"/>
-                                                <constraint firstItem="dAA-X7-4Uv" firstAttribute="top" secondItem="M0M-zr-cH0" secondAttribute="bottom" constant="30" id="eAW-7Y-wSC"/>
+                                                <constraint firstItem="dAA-X7-4Uv" firstAttribute="top" secondItem="M0M-zr-cH0" secondAttribute="bottom" constant="20" id="eAW-7Y-wSC"/>
                                                 <constraint firstAttribute="trailing" secondItem="M0M-zr-cH0" secondAttribute="trailing" constant="20" id="faP-2G-ehZ"/>
                                                 <constraint firstItem="57C-lN-rr7" firstAttribute="top" secondItem="8FC-vn-bVj" secondAttribute="top" id="hxb-BI-qSM"/>
                                                 <constraint firstItem="dAA-X7-4Uv" firstAttribute="leading" secondItem="M0M-zr-cH0" secondAttribute="leading" id="ofS-no-IyP"/>
@@ -1142,27 +1137,26 @@
                                     </collectionViewCell>
                                 </cells>
                             </collectionView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="No recipes yet!" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="84E-gc-uUg">
-                                <rect key="frame" x="163" y="162" width="119" height="21"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No recipes yet!" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="84E-gc-uUg">
+                                <rect key="frame" x="160.66666666666666" y="91" width="118.99999999999997" height="21"/>
                                 <fontDescription key="fontDescription" name="Georgia" family="Georgia" pointSize="18"/>
                                 <color key="textColor" name="TextFieldAccent"/>
                                 <nil key="highlightedColor"/>
                             </label>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="2vF-ug-C3p"/>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <color key="backgroundColor" name="BackgroundColor"/>
                         <constraints>
                             <constraint firstItem="2vF-ug-C3p" firstAttribute="trailing" secondItem="KMm-Hm-LTK" secondAttribute="trailing" id="24n-yx-U7I"/>
                             <constraint firstItem="qcH-mQ-0sP" firstAttribute="leading" secondItem="3kR-LA-MRk" secondAttribute="leading" id="40I-gV-9XE"/>
+                            <constraint firstItem="KMm-Hm-LTK" firstAttribute="top" secondItem="qcH-mQ-0sP" secondAttribute="bottom" constant="40" id="9EM-o9-KmP"/>
                             <constraint firstItem="2vF-ug-C3p" firstAttribute="bottom" secondItem="KMm-Hm-LTK" secondAttribute="bottom" id="M6V-Ot-Pi7"/>
                             <constraint firstItem="KMm-Hm-LTK" firstAttribute="leading" secondItem="2vF-ug-C3p" secondAttribute="leading" id="TTH-au-nes"/>
-                            <constraint firstItem="h4p-t2-tfS" firstAttribute="leading" secondItem="3kR-LA-MRk" secondAttribute="leading" id="aMy-Jz-XBg"/>
-                            <constraint firstItem="KMm-Hm-LTK" firstAttribute="top" secondItem="h4p-t2-tfS" secondAttribute="bottom" constant="80" id="dR2-RV-tfF"/>
-                            <constraint firstItem="h4p-t2-tfS" firstAttribute="top" secondItem="qcH-mQ-0sP" secondAttribute="bottom" constant="18" id="dk0-9N-h25"/>
                             <constraint firstItem="qcH-mQ-0sP" firstAttribute="top" secondItem="3kR-LA-MRk" secondAttribute="bottom" constant="8" symbolic="YES" id="hkw-AJ-VM3"/>
                             <constraint firstItem="3kR-LA-MRk" firstAttribute="leading" secondItem="2vF-ug-C3p" secondAttribute="leading" constant="30" id="j34-aJ-cdI"/>
+                            <constraint firstItem="84E-gc-uUg" firstAttribute="centerX" secondItem="r6f-ZG-6XK" secondAttribute="centerX" id="re9-d4-Ecp"/>
                             <constraint firstItem="3kR-LA-MRk" firstAttribute="top" secondItem="2vF-ug-C3p" secondAttribute="top" id="tKM-nA-nPk"/>
+                            <constraint firstItem="84E-gc-uUg" firstAttribute="top" secondItem="qcH-mQ-0sP" secondAttribute="bottom" constant="20" id="ySJ-Zz-KWE"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" largeTitleDisplayMode="always" id="CMP-Kc-K5m">
@@ -1695,9 +1689,10 @@
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="JN1-ju-DlR" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Feed" image="fork.knife" catalog="system" id="8LX-aY-NHg"/>
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" translucent="NO" id="gMe-ii-VZ0">
+                    <navigationBar key="navigationBar" opaque="NO" contentMode="scaleToFill" translucent="NO" id="gMe-ii-VZ0">
                         <rect key="frame" x="0.0" y="124" width="440" height="54"/>
                         <autoresizingMask key="autoresizingMask"/>
+                        <color key="backgroundColor" name="BackgroundColor"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
                     <connections>
@@ -2196,7 +2191,7 @@
     <inferredMetricsTieBreakers>
         <segue reference="4tW-D2-tRj"/>
         <segue reference="HAF-cC-uHm"/>
-        <segue reference="nA0-ma-fTO"/>
+        <segue reference="7s1-Zn-bwY"/>
     </inferredMetricsTieBreakers>
     <resources>
         <image name="bookmark.square.fill" catalog="system" width="128" height="114"/>
