@@ -5,12 +5,15 @@
 //  Course: CS371L
 //  Created by Adriana Monica Reyes on 7/11/26.
 //
+
 // Auth.auth().currentUser?.uid
+
+
 import UIKit
 import PhotosUI
 import FirebaseAuth
 import FirebaseFirestore
-import FirebaseStorage
+
 class AddRecipieViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate, PHPickerViewControllerDelegate {
     
     @IBOutlet weak var nameField: UITextField!
@@ -32,11 +35,8 @@ class AddRecipieViewController: UIViewController, UITableViewDelegate, UITableVi
     
     var recipeList:[Recipe] = []
     var ingredients:[String] = []
-    
+   
     let db = Firestore.firestore()
-    // for later use in stroing
-    var authorID = Auth.auth().currentUser?.uid
-    var authorName: String = "Unknown"
     
     @IBOutlet weak var recipeImage: UIImageView!
     private let accessMessage:String = "Access to your photo library is required to add a recipe image"
@@ -56,7 +56,6 @@ class AddRecipieViewController: UIViewController, UITableViewDelegate, UITableVi
             .foregroundColor: UIColor(named: "ThemeColor") ?? UIColor.orange,
             .font: UIFont.systemFont(ofSize: 20)
         ]
-        recipeImage.image = UIImage(named: "munchiesLogoColor")
         
         IngredientsTableView.delegate = self
         IngredientsTableView.dataSource = self
@@ -64,25 +63,16 @@ class AddRecipieViewController: UIViewController, UITableViewDelegate, UITableVi
         IngredientsTableView.register(UITableViewCell.self, forCellReuseIdentifier: ingredientCellIdentifier)
         // Register a basic cell for the input row as well
         IngredientsTableView.register(UITableViewCell.self, forCellReuseIdentifier: addIngredientCellIdentifier)
+
         
         // Enable tapping the image view to edit/select a recipe image
         let tap = UITapGestureRecognizer(target: self, action: #selector(onEditImage))
         recipeImage.isUserInteractionEnabled = true
         recipeImage.addGestureRecognizer(tap)
-        
-        fetchUsername()
-    }
-    
-    func fetchUsername(){
-        guard let authorID = authorID else { return }
-        db.collection("users").document(authorID).getDocument { [weak self] snapshot, error in
-            if let data = snapshot?.data(), let username = data["username"] as? String {
-                self?.authorName = username
-            }
-        }
     }
     
     func numberOfSections(in tableView: UITableView) -> Int { return 2 }
+
     // Remove section header titles and spacing
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat { return CGFloat.leastNormalMagnitude }
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? { return nil }
@@ -181,88 +171,80 @@ class AddRecipieViewController: UIViewController, UITableViewDelegate, UITableVi
         // Gather and validate basic fields
         let name = (nameField.text ?? "").trimmingCharacters(in: .whitespacesAndNewlines)
         let instructions = (instructionField.text ?? "").trimmingCharacters(in: .whitespacesAndNewlines)
+
         // Parse numeric fields with safe defaults
         let servings = Int(servingField.text ?? "") ?? 0
+
         let prepHours = Int(prepHourField.text ?? "") ?? 0
         let prepMins = Int(prepMinField.text ?? "") ?? 0
         let cookHours = Int(cookHourField.text ?? "") ?? 0
         let cookMins = Int(cookMinField.text ?? "") ?? 0
+
         let prepTime = max(0, prepHours) * 60 + max(0, prepMins)
         let cookTime = max(0, cookHours) * 60 + max(0, cookMins)
+
+        // Optional: calories if needed later
         let calories = Int(calorieField.text ?? "")
-        let favoritedBy:[String] = []
-        // currruent user info is already done
-        // Create the Firestore doc reference up front so we have an ID to use
-        // for both the storage path and the document itself.
-        let recipeRef = db.collection("recipes").document()
-        let recipeID = recipeRef.documentID
-        
+
+        // Current user info
+        let authorID = Auth.auth().currentUser?.uid
+        let authorName = Auth.auth().currentUser?.displayName
+
+        // Image handling: use the UIImage directly or convert to data depending on your Recipe model
+        let image = recipeImage.image
+
         // Minimal validation
         guard !name.isEmpty else {
             createAlert(title: "Missing Name", "Please enter a recipe name.")
             return
         }
-        let saveRecipe: (String) -> Void = { imageURL in
-            var data: [String: Any] = [
-                "name": name,
-                "author": self.authorName,
-                "servings": servings,
-                "prepTime": prepTime,
-                "cookTime": cookTime,
-                "ingredients": self.ingredients,
-                "instructions": instructions,
-                "authorID": self.authorID as Any,
-                "favoritedBy": favoritedBy,
-                "createdAt": FieldValue.serverTimestamp()
-            ]
-            if let calories = calories { data["calories"] = calories }
-            if !imageURL.isEmpty { data["image"] = imageURL }
-            
-            recipeRef.setData(data) { [weak self] error in
-                guard let self = self else { return }
-                if let error = error {
-                    self.createAlert(title: "Save Failed", "Could not save recipe: \(error.localizedDescription)")
-                } else {
-                    DispatchQueue.main.async {
-                        self.performSegue(withIdentifier: "favoriteSegue", sender: self)
-                    }
-                }
-            }
-        }
-        // Only upload if the user actually picked an image
-        if let image = recipeImage.image {
-            uploadRecipeImage(recipeID: recipeID, image: image) { imageURL in
-                saveRecipe(imageURL ?? "")
-            }
-        } else {
-            saveRecipe("")
-        }
-    }
-    
-    
-    func uploadRecipeImage(recipeID: String, image: UIImage, completion: @escaping (String?) -> Void) {
-        guard let imageData = image.jpegData(compressionQuality: 0.8) else {
-            completion(nil)
-            return
-        }
-        let storageRef = Storage.storage()
-            .reference()
-            .child("recipeImages/\(recipeID).jpg")
-        storageRef.putData(imageData, metadata: nil) { metadata, error in
+
+        // Create the recipe. Adjust parameter labels/types to match your actual Recipe initializer.
+        // This assumes a Recipe initializer something like:
+        // Recipe(name: String, author: String?, image: UIImage?, servings: Int, prepTime: Int, cookTime: Int, ingredients: [String], instructions: String, authorID: String?)
+        let recipe = Recipe(
+            name: name,
+            author: authorName,
+            servings: servings,
+            calories: calories,
+            prepTime: prepTime,
+            cookTime: cookTime,
+            ingredients: ingredients,
+            instructions: instructions,
+            authorID: authorID
+        )
+
+        // TODO: Append to local list, save to backend, or pass back via delegate as needed
+        recipeList.append(recipe)
+
+        // Save to Firestore
+        var data: [String: Any] = [
+            "name": name,
+            "author": authorName as Any,
+            "servings": servings,
+            "prepTime": prepTime,
+            "cookTime": cookTime,
+            "ingredients": ingredients,
+            "instructions": instructions,
+            "authorID": authorID as Any,
+            "createdAt": FieldValue.serverTimestamp()
+        ]
+        if let calories = calories { data["calories"] = calories }
+        // If you later add an image URL string, include it as data["image"]
+
+        db.collection("recipes").addDocument(data: data) { [weak self] error in
+            guard let self = self else { return }
             if let error = error {
-                print("Upload failed: \(error.localizedDescription)")
-                completion(nil)
-                return
-            }
-            storageRef.downloadURL { url, error in
-                if let error = error {
-                    print("Could not get URL: \(error.localizedDescription)")
-                    completion(nil)
-                    return
+                self.createAlert(title: "Save Failed", "Could not save recipe: \(error.localizedDescription)")
+            } else {
+                // Navigate to favorites on success
+                DispatchQueue.main.async {
+                    self.performSegue(withIdentifier: "favoritesSegue", sender: self)
                 }
-                completion(url?.absoluteString)
             }
         }
+
+        // seque to the favorites view controlelr favoritesSegue
     }
     
     // Attempt to open the user's photo library; prompt for settings if denied
@@ -311,4 +293,3 @@ class AddRecipieViewController: UIViewController, UITableViewDelegate, UITableVi
     }
     
 }
-

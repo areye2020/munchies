@@ -155,7 +155,7 @@ class FeedViewController: UIViewController, UICollectionViewDataSource, UICollec
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == detailSegueID {
+        if segue.identifier == "ShowRecipeDetail" {
             let destination = segue.destination as! RecipeDetailViewController
             destination.recipe = selectedRecipe
         }
