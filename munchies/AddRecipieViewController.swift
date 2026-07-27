@@ -114,15 +114,31 @@ class AddRecipieViewController: UIViewController, UITableViewDelegate, UITableVi
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         let raw = textField.text ?? ""
-        let trimmed = raw.trimmingCharacters(in: .whitespacesAndNewlines)
-        guard !trimmed.isEmpty else {
+        var final = ""
+        do {
+            let trimmed = try removeExtraWhitespace(string: raw)
+            final = trimmed.lowercased()
+        } catch {
+            print("error: could not add ingredient")
+        }
+        
+        guard !final.isEmpty else {
             textField.resignFirstResponder()
             return true
         }
-        ingredients.append(trimmed)
+        ingredients.append(final)
         IngredientsTableView.reloadSections(IndexSet(integer: 0), with: .automatic)
         textField.text = ""
         return true
+    }
+    
+    func removeExtraWhitespace(string:String) throws -> String
+    {
+        var newString:String = ""
+        try newString = string.replacing(Regex("^\\s+"), with: "")
+        try newString.replace(Regex("\\s+$"), with: "")
+        try newString.replace(Regex("\\s+"), with: " ")
+        return newString
     }
     
     func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool { return indexPath.section == 0 }
