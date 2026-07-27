@@ -33,6 +33,7 @@ let recipeInstructionsFieldID:String = "instructions"
 let recipeNameFieldID:String = "name"
 let recipePrepTimeFieldID:String = "prepTime"
 let recipeServingsFieldID:String = "servings"
+let recipeImagesPath:String = "recipeImages/"
 
 // user profile image constants
 let jpgCompression:CGFloat = 0.8
