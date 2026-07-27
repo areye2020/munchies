@@ -35,6 +35,28 @@ class EditRecipieViewController: UIViewController, UIImagePickerControllerDelega
         super.viewDidLoad()
         populateUI()
         setupImageTap()
+        styleUIElements()
+    }
+    
+    func styleUIElements() {
+        // 1. Create a border color (using system gray so it looks natural in light/dark mode)
+        let borderColor = UIColor.systemGray4.cgColor
+        let borderWidth: CGFloat = 1.0
+        let cornerRadius: CGFloat = 8.0
+        
+        // 2. Apply styling to Ingredients Text View
+        ingredientsTextView.layer.borderColor = borderColor
+        ingredientsTextView.layer.borderWidth = borderWidth
+        ingredientsTextView.layer.cornerRadius = cornerRadius
+        
+        // 3. Apply styling to Instructions Text View
+        instructionsTextView.layer.borderColor = borderColor
+        instructionsTextView.layer.borderWidth = borderWidth
+        instructionsTextView.layer.cornerRadius = cornerRadius
+        
+        // Slight inset so the text doesn't touch the border walls
+        ingredientsTextView.textContainerInset = UIEdgeInsets(top: 8, left: 25, bottom: 8, right: 5)
+        instructionsTextView.textContainerInset = UIEdgeInsets(top: 8, left: 25, bottom: 8, right: 5)
     }
     
     // 1. Make the image view tappable
