@@ -45,15 +45,34 @@ class RecipeCardCell: UITableViewCell {
                     cookTimeLabel.text = "\(time.minutes) mins"
                 }
                 
+
                 let imageString = recipe.image ?? ""
-                
-                if let imageData = Data(base64Encoded: imageString), let decodedImage = UIImage(data: imageData) {
-                    recipeImageView.image = decodedImage
-                } else if let assetImage = UIImage(named: imageString) {
-                    recipeImageView.image = assetImage
-                } else {
-                    recipeImageView.image = UIImage(systemName: "photo.fill")
-                    recipeImageView.tintColor = UIColor(named: "ThemeColor")
+
+                // 1. Try Base64 Encoded String
+                if let imageData = Data(base64Encoded: imageString, options: .ignoreUnknownCharacters),
+                let decodedImage = UIImage(data: imageData) {
+                self.recipeImageView.image = decodedImage
+                }
+                // 2. Try Firebase Storage URL
+                else if imageString.hasPrefix("http") || imageString.hasPrefix("https") || imageString.hasPrefix("gs://"),
+                let url = URL(string: imageString) {
+            
+                    URLSession.shared.dataTask(with: url) { data, response, error in
+                if let data = data, let downloadedImage = UIImage(data: data), error == nil {
+                    DispatchQueue.main.async {
+                        self.recipeImageView.image = downloadedImage
+                    }
+                }
+                    }.resume()
+                }
+                // 3. Try Local Asset Name
+                else if let assetImage = UIImage(named: imageString) {
+                    self.recipeImageView.image = assetImage
+                }
+                // 4. Fallback Placeholder
+                else {
+                    self.recipeImageView.image = UIImage(systemName: "photo.fill")
+                    self.recipeImageView.tintColor = UIColor(named: "ThemeColor")
                 }
         
             editButton?.isHidden = !isEditable

@@ -102,12 +102,30 @@ class FavoritesViewController: UIViewController, UITableViewDataSource, UITableV
             return cell
         }
     
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        // 1. Get the specific recipe the user tapped
+        let selectedRecipe = currentRecipes[indexPath.row]
+        
+        // 2. Deselect the row so it doesn't stay highlighted gray
+        tableView.deselectRow(at: indexPath, animated: true)
+        
+        // 3. Trigger the segue and pass the recipe as the sender
+        performSegue(withIdentifier: "showDetail", sender: selectedRecipe)
+    }
+    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "toEditRecipe",
            let destinationVC = segue.destination as? EditRecipieViewController,
            let selectedRecipe = sender as? Recipe {
             
             // Pass the recipe object to the edit screen
+            destinationVC.recipe = selectedRecipe
+        }
+        else if segue.identifier == "showDetail",
+                let destinationVC = segue.destination as? RecipeDetailViewController,
+                let selectedRecipe = sender as? Recipe {
+            
+            // Pass the recipe object to the detail screen
             destinationVC.recipe = selectedRecipe
         }
     }
