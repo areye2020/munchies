@@ -203,20 +203,20 @@ class AddRecipieViewController: UIViewController, UITableViewDelegate, UITableVi
 
         // Save to Firestore
         var data: [String: Any] = [
-            "name": name,
-            "author": authorName as Any,
-            "servings": servings,
-            "prepTime": prepTime,
-            "cookTime": cookTime,
-            "ingredients": ingredients,
-            "instructions": instructions,
-            "authorID": authorID as Any,
-            "createdAt": FieldValue.serverTimestamp()
+            recipeNameFieldID: name,
+            recipeAuthorFieldID: authorName as Any,
+            recipeServingsFieldID: servings,
+            recipePrepTimeFieldID: prepTime,
+            recipeCookTimeFieldID: cookTime,
+            recipeIngredientsFieldID: ingredients,
+            recipeInstructionsFieldID: instructions,
+            recipeAuthorIDFieldID: authorID as Any,
+            recipeCreatedAtFieldID: FieldValue.serverTimestamp()
         ]
-        if let calories = calories { data["calories"] = calories }
+        if let calories = calories { data[recipeCaloriesFieldID] = calories }
         // If you later add an image URL string, include it as data["image"]
 
-        db.collection("recipes").addDocument(data: data) { [weak self] error in
+        db.collection(recipeCollectionID).addDocument(data: data) { [weak self] error in
             guard let self = self else { return }
             if let error = error {
                 self.createAlert(title: "Save Failed", "Could not save recipe: \(error.localizedDescription)")

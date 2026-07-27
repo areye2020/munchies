@@ -38,7 +38,7 @@ class FeedViewController: UIViewController, UICollectionViewDataSource, UICollec
     }
     
     func fetchRecipes() {
-        db.collection("recipes").getDocuments { snapshot, error in
+        db.collection(recipeCollectionID).getDocuments { snapshot, error in
             
             if let error = error {
                 print("Error getting recipes: \(error)")

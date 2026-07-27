@@ -14,12 +14,26 @@ let restrictionCollectionID:String = "restrictions"
 let restrictionIngredientFieldID:String = "ingredient"
 let restrictionNameField:String = "name"
 let restrictionIngredientsField:String = "ingredients"
+
 let userCollectionID:String = "users"
 let userUsernameFieldID:String = "username"
 let userRestrictionsFieldID:String = "restrictions"
 let userCustomRestrictionsID:String = "custom restrictions"
 let userBioFieldID:String = "bio"
 let userImageFieldID:String = "profileImageURL"
+
+let recipeCollectionID:String = "recipes"
+let recipeAuthorFieldID:String = "author"
+let recipeAuthorIDFieldID:String = "authorID"
+let recipeCaloriesFieldID:String = "calories"
+let recipeCookTimeFieldID:String = "cookTime"
+let recipeCreatedAtFieldID:String = "createdAt"
+let recipeImageFieldID:String = "image"
+let recipeIngredientsFieldID:String = "ingredients"
+let recipeInstructionsFieldID:String = "instructions"
+let recipeNameFieldID:String = "name"
+let recipePrepTimeFieldID:String = "prepTime"
+let recipeServingsFieldID:String = "servings"
 
 // user profile image constants
 let jpgCompression:CGFloat = 0.8
