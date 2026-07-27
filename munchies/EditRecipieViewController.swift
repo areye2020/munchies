@@ -189,4 +189,41 @@ class EditRecipieViewController: UIViewController, UIImagePickerControllerDelega
         currentServings += 1
         servingsLabel.text = "\(currentServings)"
     }
+    
+    @IBAction func deleteRecipieTapped(_ sender: UIButton) {
+        guard let recipeID = recipe?.id else { return } // Ensure we have an ID to delete
+            
+            // 1. Create a confirmation popup
+            let alert = UIAlertController(title: "Delete Recipe",
+                                          message: "Are you sure you want to delete this recipe? This cannot be undone.",
+                                          preferredStyle: .alert)
+            
+            // 2. The Cancel action
+            alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+            
+            // 3. The Destructive Delete action
+            let confirmDelete = UIAlertAction(title: "Delete", style: .destructive) { [weak self] _ in
+                
+                let db = Firestore.firestore()
+                // Replace "recipes" with your actual collection ID variable if it differs
+                db.collection("recipes").document(recipeID).delete() { error in
+                    if let error = error {
+                        print("Error deleting document: \(error)")
+                    } else {
+                        print("Document successfully deleted!")
+                        // Send the user back to the previous screen
+                        DispatchQueue.main.async {
+                            self?.navigationController?.popViewController(animated: true)
+                        }
+                    }
+                }
+            }
+            
+            alert.addAction(confirmDelete)
+            
+            // 4. Show the popup
+            present(alert, animated: true, completion: nil)
+    }
+    
+    
 }
