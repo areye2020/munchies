@@ -34,6 +34,9 @@ class AddRecipieViewController: UIViewController, UITableViewDelegate, UITableVi
     var ingredients:[String] = []
     
     let db = Firestore.firestore()
+    // for later use in stroing
+    var authorID = Auth.auth().currentUser?.uid
+    var authorName: String = "Unknown"
     
     @IBOutlet weak var recipeImage: UIImageView!
     private let accessMessage:String = "Access to your photo library is required to add a recipe image"
@@ -53,6 +56,7 @@ class AddRecipieViewController: UIViewController, UITableViewDelegate, UITableVi
             .foregroundColor: UIColor(named: "ThemeColor") ?? UIColor.orange,
             .font: UIFont.systemFont(ofSize: 20)
         ]
+        recipeImage.image = UIImage(named: "munchiesLogoColor")
         
         IngredientsTableView.delegate = self
         IngredientsTableView.dataSource = self
@@ -65,6 +69,17 @@ class AddRecipieViewController: UIViewController, UITableViewDelegate, UITableVi
         let tap = UITapGestureRecognizer(target: self, action: #selector(onEditImage))
         recipeImage.isUserInteractionEnabled = true
         recipeImage.addGestureRecognizer(tap)
+        
+        fetchUsername()
+    }
+    
+    func fetchUsername(){
+        guard let authorID = authorID else { return }
+        db.collection("users").document(authorID).getDocument { [weak self] snapshot, error in
+            if let data = snapshot?.data(), let username = data["username"] as? String {
+                self?.authorName = username
+            }
+        }
     }
     
     func numberOfSections(in tableView: UITableView) -> Int { return 2 }
@@ -158,11 +173,9 @@ class AddRecipieViewController: UIViewController, UITableViewDelegate, UITableVi
         let cookMins = Int(cookMinField.text ?? "") ?? 0
         let prepTime = max(0, prepHours) * 60 + max(0, prepMins)
         let cookTime = max(0, cookHours) * 60 + max(0, cookMins)
-        // Optional: calories if needed later
         let calories = Int(calorieField.text ?? "")
-        // Current user info
-        let authorID = Auth.auth().currentUser?.uid
-        let authorName = Auth.auth().currentUser?.displayName
+        let favoritedBy:[String] = []
+        // currruent user info is already done
         // Create the Firestore doc reference up front so we have an ID to use
         // for both the storage path and the document itself.
         let recipeRef = db.collection("recipes").document()
@@ -176,13 +189,14 @@ class AddRecipieViewController: UIViewController, UITableViewDelegate, UITableVi
         let saveRecipe: (String) -> Void = { imageURL in
             var data: [String: Any] = [
                 "name": name,
-                "author": authorName as Any,
+                "author": self.authorName,
                 "servings": servings,
                 "prepTime": prepTime,
                 "cookTime": cookTime,
                 "ingredients": self.ingredients,
                 "instructions": instructions,
-                "authorID": authorID as Any,
+                "authorID": self.authorID as Any,
+                "favoritedBy": favoritedBy,
                 "createdAt": FieldValue.serverTimestamp()
             ]
             if let calories = calories { data["calories"] = calories }
