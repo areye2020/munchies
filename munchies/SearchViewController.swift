@@ -15,7 +15,9 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
     @IBOutlet weak var searchBar: UISearchBar!
     @IBOutlet weak var tableView: UITableView!
     
+    let detailScreenSegueIdentifier = "showDetail"
     let db = Firestore.firestore()
+    var selectedRecipe:Recipe!
     
     // currently logged in user
     var currentUser:User!
@@ -40,6 +42,15 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
     
     override func viewWillAppear(_ animated: Bool) {
         fetchEverythingFromFirestore()
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == detailScreenSegueIdentifier {
+            if let detailVC = segue.destination as? RecipeDetailViewController
+            {
+                detailVC.recipe = selectedRecipe
+            }
+        }
     }
     
     // MARK: - Firestore Fetch
@@ -142,9 +153,13 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-            tableView.deselectRow(at: indexPath, animated: true)
-            // let selectedRecipe = filteredRecipes[indexPath.row]
-            // performSegue(withIdentifier: "goToDetail", sender: selectedRecipe)
-        }
+        tableView.deselectRow(at: indexPath, animated: true)
+        selectedRecipe = filteredRecipes[indexPath.row]
+        performSegue(withIdentifier: detailScreenSegueIdentifier, sender: self)
+    }
+    
+    override func shouldPerformSegue(withIdentifier identifier: String, sender: Any?) -> Bool {
+        return false
+    }
 
 }

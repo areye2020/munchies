@@ -11,7 +11,7 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--Search-->
+        <!--Search View Controller-->
         <scene sceneID="AIO-Ip-oLy">
             <objects>
                 <viewController id="rh1-DN-qFn" customClass="SearchViewController" customModule="munchies" customModuleProvider="target" sceneMemberID="viewController">
@@ -20,14 +20,14 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <searchBar contentMode="redraw" translatesAutoresizingMaskIntoConstraints="NO" id="auR-XP-VS9">
-                                <rect key="frame" x="0.0" y="124" width="440" height="64"/>
+                                <rect key="frame" x="0.0" y="178" width="440" height="64"/>
                                 <textInputTraits key="textInputTraits"/>
                                 <connections>
                                     <outlet property="delegate" destination="rh1-DN-qFn" id="mUy-ux-7gX"/>
                                 </connections>
                             </searchBar>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="ojS-C9-8UQ">
-                                <rect key="frame" x="0.0" y="188" width="440" height="651"/>
+                                <rect key="frame" x="0.0" y="242" width="440" height="597"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="RecipeCardCell" rowHeight="250" id="K2y-Uq-vbQ" customClass="RecipeCardCell" customModule="munchies" customModuleProvider="target">
@@ -122,6 +122,7 @@
                                             <outlet property="cookTimeLabel" destination="9zF-2Z-ISP" id="d56-dz-wVG"/>
                                             <outlet property="recipeImageView" destination="a7p-q2-xSx" id="0AJ-zn-TVd"/>
                                             <outlet property="titleLabel" destination="C8u-Uc-JIh" id="A5W-7k-xop"/>
+                                            <segue destination="al3-3R-OFp" kind="show" identifier="showDetail" id="mIs-TU-GZD"/>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>
@@ -139,7 +140,7 @@
                             <constraint firstItem="EK7-7w-4W2" firstAttribute="trailing" secondItem="ojS-C9-8UQ" secondAttribute="trailing" id="uwO-xf-dAF"/>
                         </constraints>
                     </view>
-                    <tabBarItem key="tabBarItem" title="Search" image="magnifyingglass" catalog="system" id="whe-d2-RHv"/>
+                    <navigationItem key="navigationItem" id="TLJ-H5-TYx"/>
                     <connections>
                         <outlet property="searchBar" destination="auR-XP-VS9" id="NV7-ga-omA"/>
                         <outlet property="tableView" destination="ojS-C9-8UQ" id="Wbi-ly-e0E"/>
@@ -147,7 +148,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="IZd-qx-iro" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-2610" y="938"/>
+            <point key="canvasLocation" x="-4185" y="913"/>
         </scene>
         <!--Add Recipe-->
         <scene sceneID="C3j-hi-asQ">
@@ -794,7 +795,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="OPA-fx-rh0" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2184.5454545454545" y="397.90794979079499"/>
+            <point key="canvasLocation" x="3075" y="397.90794979079499"/>
         </scene>
         <!--Add Ingredient View Controller-->
         <scene sceneID="JJ2-3E-Pa2">
@@ -843,78 +844,78 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Aly-iO-hUo" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3001" y="398"/>
+            <point key="canvasLocation" x="3891.818181818182" y="397.90794979079499"/>
         </scene>
         <!--Recipe Detail View Controller-->
         <scene sceneID="ihb-pt-XaD">
             <objects>
                 <viewController id="al3-3R-OFp" customClass="RecipeDetailViewController" customModule="munchies" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="9VS-lT-bCq">
-                        <rect key="frame" x="0.0" y="0.0" width="440" height="778"/>
+                        <rect key="frame" x="0.0" y="0.0" width="440" height="956"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Q7g-mR-zzL">
-                                <rect key="frame" x="30" y="0.0" width="380" height="190"/>
+                                <rect key="frame" x="30" y="178" width="380" height="190"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="190" id="9cd-n1-47m"/>
                                 </constraints>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Recipe" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pXS-2u-hQq">
-                                <rect key="frame" x="30" y="190" width="380" height="24"/>
+                                <rect key="frame" x="30" y="368" width="380" height="24"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="20"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Servings" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8tY-PT-vSY">
-                                <rect key="frame" x="246" y="214" width="67" height="21"/>
+                                <rect key="frame" x="246" y="392" width="67" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Calories" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Uh7-9C-gJ2">
-                                <rect key="frame" x="348" y="214" width="62" height="21"/>
+                                <rect key="frame" x="348" y="392" width="62" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Cook Time" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0OQ-C2-3bg">
-                                <rect key="frame" x="120" y="214" width="82" height="21"/>
+                                <rect key="frame" x="120" y="392" width="82" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uIq-ig-SMm">
-                                <rect key="frame" x="48" y="243" width="42" height="21"/>
+                                <rect key="frame" x="48" y="421" width="42" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="d9t-HQ-Mu1">
-                                <rect key="frame" x="140" y="243" width="42" height="21"/>
+                                <rect key="frame" x="140" y="421" width="42" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0uU-v8-EgR">
-                                <rect key="frame" x="258.66666666666669" y="243" width="42" height="21"/>
+                                <rect key="frame" x="258.66666666666669" y="421" width="42" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="754-CG-ATc">
-                                <rect key="frame" x="358" y="243" width="42" height="21"/>
+                                <rect key="frame" x="358" y="421" width="42" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Ingredients" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="i7K-fB-FN4">
-                                <rect key="frame" x="30" y="302" width="86" height="21"/>
+                                <rect key="frame" x="30" y="480" width="86" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="SVn-be-wun">
-                                <rect key="frame" x="30" y="331" width="380" height="163"/>
+                                <rect key="frame" x="30" y="509" width="380" height="163"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="163" id="pq4-Ey-eed"/>
@@ -940,24 +941,24 @@
                                 </prototypes>
                             </tableView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Instructions" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="W9r-KY-qk4">
-                                <rect key="frame" x="30" y="506" width="90" height="21"/>
+                                <rect key="frame" x="30" y="684" width="90" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="line" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Jkq-vc-sPl">
-                                <rect key="frame" x="30" y="529" width="380" height="132"/>
+                                <rect key="frame" x="30" y="707" width="380" height="132"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Author" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dqm-lp-npq">
-                                <rect key="frame" x="30" y="273" width="52" height="21"/>
+                                <rect key="frame" x="30" y="451" width="52" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Prep Time" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AXb-Fp-Np8">
-                                <rect key="frame" x="30" y="214" width="78" height="21"/>
+                                <rect key="frame" x="30" y="392" width="78" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
@@ -1177,11 +1178,11 @@
             <objects>
                 <viewController id="QUB-ej-eq2" customClass="FavoritesViewController" customModule="munchies" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="SQn-re-NSw">
-                        <rect key="frame" x="0.0" y="0.0" width="440" height="956"/>
+                        <rect key="frame" x="0.0" y="0.0" width="440" height="778"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="xmD-nh-ufM">
-                                <rect key="frame" x="30" y="194" width="380" height="32"/>
+                                <rect key="frame" x="30" y="16" width="380" height="32"/>
                                 <segments>
                                     <segment title="Uploaded"/>
                                     <segment title="Saved Recipes"/>
@@ -1191,7 +1192,7 @@
                                 </connections>
                             </segmentedControl>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="250" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="K6G-EQ-cCs">
-                                <rect key="frame" x="0.0" y="241" width="440" height="598"/>
+                                <rect key="frame" x="0.0" y="63" width="440" height="598"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <color key="sectionIndexBackgroundColor" systemColor="systemGray6Color"/>
                                 <prototypes>
@@ -1336,7 +1337,7 @@
             <objects>
                 <viewController id="cSC-PQ-Rzv" customClass="EditRecipieViewController" customModule="munchies" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="pDt-Vg-Duk">
-                        <rect key="frame" x="0.0" y="0.0" width="440" height="956"/>
+                        <rect key="frame" x="0.0" y="0.0" width="440" height="778"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="cYf-Mq-T2n">
@@ -1649,7 +1650,7 @@
                     </tabBar>
                     <connections>
                         <segue destination="JN1-ju-DlR" kind="relationship" relationship="viewControllers" id="jiG-pp-PbC"/>
-                        <segue destination="rh1-DN-qFn" kind="relationship" relationship="viewControllers" id="N2d-vr-etk"/>
+                        <segue destination="ljc-Kq-W5L" kind="relationship" relationship="viewControllers" id="N2d-vr-etk"/>
                         <segue destination="xQv-8G-rXY" kind="relationship" relationship="viewControllers" id="PNa-nv-dlQ"/>
                         <segue destination="3Rq-GA-yRo" kind="relationship" relationship="viewControllers" id="SyU-aF-K6B"/>
                         <segue destination="DyA-ow-2GD" kind="relationship" relationship="viewControllers" id="EJx-Rf-aJt"/>
@@ -1717,7 +1718,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Lpo-hF-oTA" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1292.7272727272727" y="397.90794979079499"/>
+            <point key="canvasLocation" x="2184.5454545454545" y="397.90794979079499"/>
         </scene>
         <!--Settings View Controller-->
         <scene sceneID="CRC-wo-gfV">
@@ -1778,7 +1779,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="WUY-vi-PWi" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2164" y="1300"/>
+            <point key="canvasLocation" x="3054.545454545455" y="1299.7907949790795"/>
         </scene>
         <!--Profile-->
         <scene sceneID="v80-4V-iqx">
@@ -1798,7 +1799,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="LVR-M8-Crm" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-802" y="1181"/>
+            <point key="canvasLocation" x="88.63636363636364" y="1180.5439330543934"/>
         </scene>
         <!--Profile Edit View Controller-->
         <scene sceneID="WaP-p8-1Lq">
@@ -1933,7 +1934,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dK4-eD-bwl" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="856" y="1181"/>
+            <point key="canvasLocation" x="1746.818181818182" y="1180.5439330543934"/>
         </scene>
         <!--Restrictions View Controller-->
         <scene sceneID="O5g-kA-apo">
@@ -1994,7 +1995,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Xlv-cG-oGu" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2959" y="1305"/>
+            <point key="canvasLocation" x="3849.545454545455" y="1304.8117154811716"/>
         </scene>
         <!--Custom Restrictions View Controller-->
         <scene sceneID="Cdm-KP-Hp1">
@@ -2041,7 +2042,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Ceg-cf-HZD" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3968" y="1305"/>
+            <point key="canvasLocation" x="4858.636363636364" y="1304.8117154811716"/>
         </scene>
         <!--Profile View Controller-->
         <scene sceneID="bdH-yG-Jc5">
@@ -2121,7 +2122,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="F5K-7G-nWQ" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-44" y="1164"/>
+            <point key="canvasLocation" x="846.81818181818187" y="1163.5983263598328"/>
         </scene>
         <!--Add-->
         <scene sceneID="3BY-6S-uOF">
@@ -2161,10 +2162,30 @@
             </objects>
             <point key="canvasLocation" x="2957.727272727273" y="-557.3221757322176"/>
         </scene>
+        <!--Search-->
+        <scene sceneID="LpQ-h0-3zX">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="ljc-Kq-W5L" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="Search" image="magnifyingglass" catalog="system" id="whe-d2-RHv"/>
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="2IX-Nf-GJl">
+                        <rect key="frame" x="0.0" y="124" width="440" height="54"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="rh1-DN-qFn" kind="relationship" relationship="rootViewController" id="tOp-5J-5t5"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="CzE-Zn-Dpj" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-3097" y="913"/>
+        </scene>
     </scenes>
     <inferredMetricsTieBreakers>
         <segue reference="4tW-D2-tRj"/>
-        <segue reference="GBj-kG-nEj"/>
+        <segue reference="HAF-cC-uHm"/>
+        <segue reference="mIs-TU-GZD"/>
     </inferredMetricsTieBreakers>
     <resources>
         <image name="bookmark.square.fill" catalog="system" width="128" height="114"/>
