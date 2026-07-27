@@ -42,7 +42,7 @@ class FeedViewController: UIViewController, UICollectionViewDataSource, UICollec
         _ collectionView: UICollectionView,
         numberOfItemsInSection section: Int
     ) -> Int {
-        recipes.count
+        return recipes.count
     }
     
 
@@ -146,6 +146,7 @@ class FeedViewController: UIViewController, UICollectionViewDataSource, UICollec
         )
     }
     
+    // Selection for detail page
     func collectionView(
         _ collectionView: UICollectionView,
         didSelectItemAt indexPath: IndexPath
