@@ -45,9 +45,12 @@ class RecipeCardCell: UITableViewCell {
                     cookTimeLabel.text = "\(time.minutes) mins"
                 }
                 
-                // Images work exactly the same!
-            if let image = UIImage(named: recipe.image!) {
-                    recipeImageView.image = image
+                let imageString = recipe.image ?? ""
+                
+                if let imageData = Data(base64Encoded: imageString), let decodedImage = UIImage(data: imageData) {
+                    recipeImageView.image = decodedImage
+                } else if let assetImage = UIImage(named: imageString) {
+                    recipeImageView.image = assetImage
                 } else {
                     recipeImageView.image = UIImage(systemName: "photo.fill")
                     recipeImageView.tintColor = UIColor(named: "ThemeColor")

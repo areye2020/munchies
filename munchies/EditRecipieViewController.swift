@@ -8,7 +8,7 @@
 import UIKit
 import FirebaseFirestore
 
-class EditRecipieViewController: UIViewController {
+class EditRecipieViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
 
     @IBOutlet weak var recipieImageView: UIImageView!
     @IBOutlet weak var nameTextField: UITextField!
@@ -34,7 +34,34 @@ class EditRecipieViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         populateUI()
+        setupImageTap()
     }
+    
+    // 1. Make the image view tappable
+        func setupImageTap() {
+            recipieImageView.isUserInteractionEnabled = true
+            let tapGesture = UITapGestureRecognizer(target: self, action: #selector(imageTapped))
+            recipieImageView.addGestureRecognizer(tapGesture)
+        }
+        
+        // 2. Open the Photo Library when tapped
+        @objc func imageTapped() {
+            let imagePicker = UIImagePickerController()
+            imagePicker.delegate = self
+            imagePicker.sourceType = .photoLibrary
+            imagePicker.allowsEditing = true // Lets the user crop the photo into a square
+            present(imagePicker, animated: true, completion: nil)
+        }
+        
+        // 3. Catch the selected image and put it in the ImageView
+        func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+            if let editedImage = info[.editedImage] as? UIImage {
+                recipieImageView.image = editedImage
+            } else if let originalImage = info[.originalImage] as? UIImage {
+                recipieImageView.image = originalImage
+            }
+            dismiss(animated: true, completion: nil)
+        }
     
     func populateUI() {
         // Ensure we actually have a recipe passed in
@@ -44,7 +71,15 @@ class EditRecipieViewController: UIViewController {
         nameTextField.text = recipe.name
         instructionsTextView.text = recipe.instructions
         
-        recipieImageView.image = UIImage(named: recipe.image!) ?? UIImage(systemName: "photo")
+        // NEW IMAGE LOADING LOGIC:
+        let imageString = recipe.image ?? ""
+        if let imageData = Data(base64Encoded: imageString), let decodedImage = UIImage(data: imageData) {
+            // It's a user-uploaded base64 image
+            recipieImageView.image = decodedImage
+        } else {
+            // It's an Xcode asset name or empty
+            recipieImageView.image = UIImage(named: imageString) ?? UIImage(systemName: "photo")
+        }
         
         // 2. Set up the Servings Stepper
         currentServings = recipe.servings ?? 1
@@ -88,6 +123,13 @@ class EditRecipieViewController: UIViewController {
         let cookMins = Int(cookMinsTextField.text ?? "0") ?? 0
         let totalCookTime = (cookHours * 60) + cookMins
         
+        // NEW: Convert the current image to a Base64 String
+        var finalImageString = recipe?.image ?? ""
+        if let currentImage = recipieImageView.image,
+            let imageData = currentImage.jpegData(compressionQuality: 0.1) {
+                    finalImageString = imageData.base64EncodedString()
+        }
+        
         // 4. Package the data for Firestore
         let updatedData: [String: Any] = [
             "name": nameTextField.text ?? "",
@@ -95,7 +137,8 @@ class EditRecipieViewController: UIViewController {
             "prepTime": totalPrepTime,
             "cookTime": totalCookTime,
             "ingredients": ingredientsArray,
-            "instructions": instructionsTextView.text ?? ""
+            "instructions": instructionsTextView.text ?? "",
+            "image": finalImageString
         ]
         
         // 5. Send the Update to Firestore
