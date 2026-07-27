@@ -31,6 +31,7 @@ class RecipeDetailViewController: UIViewController, UITableViewDelegate, UITable
     
     let db = Firestore.firestore()
     var recipe: Recipe?
+    var isFavorited:Bool!
     
     
     override func viewDidLoad() {
@@ -39,6 +40,10 @@ class RecipeDetailViewController: UIViewController, UITableViewDelegate, UITable
         ingredientTable.delegate = self
         ingredientTable.dataSource = self
         addFields()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        updateFavoriteButtonState()
     }
     
     func addFields(){
@@ -86,28 +91,46 @@ class RecipeDetailViewController: UIViewController, UITableViewDelegate, UITable
             return
         }
         
+        let databaseFunc = isFavorited ? FieldValue.arrayRemove : FieldValue.arrayUnion
+        
+        
         db.collection("recipes").document(recipeID).updateData([
-            "favoritedBy": FieldValue.arrayUnion([uid])
+            "favoritedBy": databaseFunc([uid])
         ]) { [weak self] error in
             guard let self = self else { return }
             if let error = error {
-                self.createAlert(title: "Error", "Could not favorite recipe: \(error.localizedDescription)")
+                self.createAlert(title: "Error", "Could not update favorite: \(error.localizedDescription)")
             } else {
                 DispatchQueue.main.async {
-                    self.recipe?.favoritedBy?.append(uid) // keep local copy in sync
-                    sender.image = UIImage(systemName: "heart.fill") // optional: flip icon state
+                    if !self.isFavorited
+                    {
+                        self.recipe?.favoritedBy?.append(uid) // keep local copy in sync
+                        sender.image = UIImage(systemName: "heart.fill") // optional: flip icon state
+                    } else
+                    {
+                        let uidIndex = self.recipe?.favoritedBy?.firstIndex(of: uid)
+                        self.recipe?.favoritedBy?.remove(at: uidIndex!)
+                        sender.image = UIImage(systemName: "heart") 
+                    }
+                    self.isFavorited = !self.isFavorited
                 }
             }
         }
     }
     // Sets the button's icon based on whether the current user already favorited this recipe
     func updateFavoriteButtonState() {
-        guard let uid = Auth.auth().currentUser?.uid,
-              let favoritedBy = recipe?.favoritedBy,
-              favoritedBy.contains(uid),
-              let button = navigationItem.rightBarButtonItem else { return }
-        
-        button.image = UIImage(systemName: "heart.fill")
+        if let uid = Auth.auth().currentUser?.uid,
+            let favoritedBy = recipe?.favoritedBy,
+            favoritedBy.contains(uid),
+            let button = navigationItem.rightBarButtonItem
+        {
+            
+            button.image = UIImage(systemName: "heart.fill")
+            isFavorited = true
+        } else {
+            navigationItem.rightBarButtonItem?.image = UIImage(systemName: "heart")
+            isFavorited = false
+        }
     }
     
     private func createAlert(title: String, _ message: String) {   // ← was missing
