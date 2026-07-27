@@ -9,12 +9,14 @@
 
 import UIKit
 import FirebaseFirestore
+import FirebaseAuth
 
 class FeedViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
     
     let db = Firestore.firestore()
     let detailSegueID = "DetailSegue"
     
+    var currentUser:User!
     var recipes: [Recipe] = []
     var selectedRecipe: Recipe?
     
@@ -25,9 +27,15 @@ class FeedViewController: UIViewController, UICollectionViewDataSource, UICollec
         super.viewDidLoad()
         recipeCollectionView.dataSource = self
         recipeCollectionView.delegate = self
-        fetchRecipes()
         emptyStatusLabel.isHidden = true
         // Do any additional setup after loading the view.
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        if let uid = Auth.auth().currentUser?.uid
+        {
+            currentUser = User(UID:uid, onCompletion: fetchRecipes)
+        }
     }
     
     func collectionView(
@@ -37,7 +45,7 @@ class FeedViewController: UIViewController, UICollectionViewDataSource, UICollec
         recipes.count
     }
     
-    func fetchRecipes() {
+    func fetchRecipes(user:User?) {
         db.collection("recipes").getDocuments { snapshot, error in
             
             if let error = error {
@@ -49,13 +57,55 @@ class FeedViewController: UIViewController, UICollectionViewDataSource, UICollec
                 return
             }
             
-            self.recipes = documents.compactMap { document in
+            let allRecipes = documents.compactMap { document in
                 try? document.data(as: Recipe.self)
+            }
+            
+            if let user {
+                self.addNonRestrictedRecipes(user: user, allRecipes: allRecipes)
+            } else
+            {
+                self.recipes = allRecipes
             }
             
             DispatchQueue.main.async {
                 self.emptyStatusLabel.isHidden = !self.recipes.isEmpty
                 self.recipeCollectionView.reloadData()
+            }
+        }
+    }
+    
+    func addNonRestrictedRecipes(user: User, allRecipes: [Recipe]) {
+        user.fetchRestrictions() { userRestrictions, error in
+            if let error {
+                print(error.localizedDescription)
+            } else {
+                for recipe in allRecipes {
+                    var violatesRestriction = false
+                    var i = 0
+                    while !violatesRestriction && i < recipe.ingredients.count
+                    {
+                        let currentIngredient = recipe.ingredients[i]
+                        var j = 0
+                        while !violatesRestriction && j < userRestrictions!.count {
+                            let restrictionIngredients = userRestrictions![j].ingredients
+                            if restrictionIngredients.firstIndex(of: currentIngredient) != nil
+                            {
+                                violatesRestriction = true
+                            }
+                            j += 1
+                        }
+                        if !violatesRestriction && user.customRestrictions.firstIndex(of: currentIngredient) != nil
+                        {
+                            violatesRestriction = true
+                        }
+                        i += 1
+                    }
+                    if !violatesRestriction
+                    {
+                        self.recipes.append(recipe)
+                    }
+                }
             }
         }
     }

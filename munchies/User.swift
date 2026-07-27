@@ -44,15 +44,18 @@ class User
     
     enum UserError: Error, LocalizedError
     {
+        case usernameTaken
+        case restrictionFetchFail
         public var errorDescription:String?
         {
             switch self
             {
                 case .usernameTaken:
                     return NSLocalizedString("this username is already taken", comment: "produced when a user attempts to update their username to one that is already taken")
+                case .restrictionFetchFail:
+                    return NSLocalizedString("database restrictions could not be retrieved", comment: "produced when a user object cannot acquire the restrictions from Firestore")
             }
         }
-        case usernameTaken
     }
     
     init(UID:String, username:String)
@@ -146,6 +149,34 @@ class User
                     self.syncToDatabase()
                     onCompletetion(nil)
                 }
+            }
+        }
+    }
+    
+    func fetchRestrictions(onCompletion:@escaping ([Restriction]?, (any Error)?) -> Void)
+    {
+        database.collection(restrictionCollectionID).getDocuments()
+        {(querySnapshot, error) in
+            if let error
+            {
+                onCompletion(nil, error)
+            } else if let docs:[QueryDocumentSnapshot] = querySnapshot?.documents
+            {
+                var userRestrictions:[Restriction] = []
+                for doc in docs
+                {
+                    let docDictionary:[String:Any] = doc.data()
+                    let currentRestriction:String = docDictionary[restrictionNameFieldID] as! String
+                    if self.restrictions.firstIndex(of: currentRestriction) != nil
+                    {
+                        let currentIngredients:[String] = docDictionary[restrictionIngredientsFieldID] as! [String]
+                        userRestrictions.append(Restriction(name: currentRestriction, ingredients: currentIngredients))
+                    }
+                }
+                onCompletion(userRestrictions, nil)
+            } else
+            {
+                onCompletion(nil, UserError.restrictionFetchFail)
             }
         }
     }

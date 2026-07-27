@@ -11,9 +11,8 @@ import UIKit
 
 // databse IDs
 let restrictionCollectionID:String = "restrictions"
-let restrictionIngredientFieldID:String = "ingredient"
-let restrictionNameField:String = "name"
-let restrictionIngredientsField:String = "ingredients"
+let restrictionNameFieldID:String = "name"
+let restrictionIngredientsFieldID:String = "ingredients"
 let userCollectionID:String = "users"
 let userUsernameFieldID:String = "username"
 let userRestrictionsFieldID:String = "restrictions"
