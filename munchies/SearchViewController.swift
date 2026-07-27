@@ -36,7 +36,9 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
                 
         // make the table view look a bit cleaner without empty rows
         tableView.separatorStyle = .none
-                
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
         fetchEverythingFromFirestore()
     }
     
@@ -54,27 +56,48 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
             self?.allRecipes = documents.compactMap { doc in
                 try? doc.data(as: Recipe.self)
             }
-                
-            // Initially, the search bar is empty, so show everything
-            self?.filteredRecipes = self?.allRecipes ?? []
             
-            if let uid = Auth.auth().currentUser?.uid
-            {
+            // Filter out recipes that violate the current user's restriction settings
+            if let uid = Auth.auth().currentUser?.uid {
                 self?.currentUser = User(UID: uid) { user in
                     if let user {
-//                        self?.filteredRecipes = user.
+                        user.withoutRestrictedRecipes(recipes: self?.allRecipes ?? []) { allowedRecipes, error in
+                            if let error {
+                                print(error.localizedDescription)
+                            } else
+                            {
+                                self?.allRecipes = allowedRecipes!
+                                // Initially, the search bar is empty, so show everything
+                                self?.filteredRecipes = self?.allRecipes ?? []
+                                DispatchQueue.main.async {
+                                    if let sBar = self?.searchBar {
+                                        self?.filterWithSearchBar(sBar, textDidChange: self?.searchBar.text ?? "")
+                                    } else
+                                    {
+                                        self?.tableView.reloadData()
+                                    }
+                                }
+                            }
+                        }
                     }
                 }
-            }
-                
-            DispatchQueue.main.async {
-                self?.tableView.reloadData()
+            } else {
+                // Initially, the search bar is empty, so show everything
+                self?.filteredRecipes = self?.allRecipes ?? []
+                DispatchQueue.main.async {
+                    self?.tableView.reloadData()
+                }
             }
         }
     }
         
     // Search Bar Logic
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        filterWithSearchBar(searchBar, textDidChange: searchText)
+    }
+    
+    func filterWithSearchBar(_ searchBar: UISearchBar, textDidChange searchText: String)
+    {
         if searchText.isEmpty {
             // If the user clears the search bar, show all recipes
             filteredRecipes = allRecipes
