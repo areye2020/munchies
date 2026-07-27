@@ -18,9 +18,10 @@ class SettingsViewController: UIViewController, UITableViewDelegate, UITableView
     let segueCellIdentifier:String = "segueCell"
     let restrictionSegueIdentifier = "restriction"
 
+    // TODO need to do something about this pronto
     let defaultSettings:[Setting] = [Setting("Dark mode", false), Setting("Privacy"),
         Setting("Restrictions")]
-    var settings:[Setting] = []
+    var settings:[Setting] = [Setting("Restrictions")]
     
     override func viewDidLoad()
     {
@@ -29,24 +30,25 @@ class SettingsViewController: UIViewController, UITableViewDelegate, UITableView
         self.navigationItem.backButtonTitle = backButtonTitle
         tableView.dataSource = self
         tableView.delegate = self
-        if let data:Data = defaults.object(forKey: settingsKey) as? Data,
-           let storedSettings:[Setting] = try? JSONDecoder().decode([Setting].self, from: data)
-        {
-            for setting in storedSettings
-            {
-                settings.append(setting)
-            }
-        } else
-        {
-            for setting in defaultSettings
-            {
-                settings.append(setting)
-            }
-            if let encodedSettings = try? JSONEncoder().encode(settings)
-            {
-                defaults.set(encodedSettings, forKey: settingsKey)
-            }
-        }
+        // TODO figure out what to do about dark mode and privacy
+//        if let data:Data = defaults.object(forKey: settingsKey) as? Data,
+//           let storedSettings:[Setting] = try? JSONDecoder().decode([Setting].self, from: data)
+//        {
+//            for setting in storedSettings
+//            {
+//                settings.append(setting)
+//            }
+//        } else
+//        {
+//            for setting in defaultSettings
+//            {
+//                settings.append(setting)
+//            }
+//            if let encodedSettings = try? JSONEncoder().encode(settings)
+//            {
+//                defaults.set(encodedSettings, forKey: settingsKey)
+//            }
+//        }
         self.tabBarController?.setTabBarHidden(true, animated: false)
     }
     
