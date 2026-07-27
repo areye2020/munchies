@@ -94,8 +94,8 @@ class RecipeDetailViewController: UIViewController, UITableViewDelegate, UITable
         let databaseFunc = isFavorited ? FieldValue.arrayRemove : FieldValue.arrayUnion
         
         
-        db.collection("recipes").document(recipeID).updateData([
-            "favoritedBy": databaseFunc([uid])
+        db.collection(recipeCollectionID).document(recipeID).updateData([
+            recipeFavoritedByFieldID: databaseFunc([uid])
         ]) { [weak self] error in
             guard let self = self else { return }
             if let error = error {
@@ -156,7 +156,7 @@ class RecipeDetailViewController: UIViewController, UITableViewDelegate, UITable
         
         let storageRef = Storage.storage().reference(forURL: nameOrURL)
         
-        storageRef.getData(maxSize: 5 * 1024 * 1024) { data, error in
+        storageRef.getData(maxSize: maxImageSize) { data, error in
             if let error = error {
                 print("Failed to fetch image: \(error.localizedDescription)")
                 DispatchQueue.main.async { completion(nil) }

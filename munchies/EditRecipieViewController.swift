@@ -154,18 +154,17 @@ class EditRecipieViewController: UIViewController, UIImagePickerControllerDelega
         
         // 4. Package the data for Firestore
         let updatedData: [String: Any] = [
-            "name": nameTextField.text ?? "",
-            "servings": currentServings, // Grabbed straight from our stepper variable
-            "prepTime": totalPrepTime,
-            "cookTime": totalCookTime,
-            "ingredients": ingredientsArray,
-            "instructions": instructionsTextView.text ?? "",
-            "image": finalImageString
+            recipeNameFieldID: nameTextField.text ?? "",
+            recipeServingsFieldID: currentServings, // Grabbed straight from our stepper variable
+            recipePrepTimeFieldID: totalPrepTime,
+            recipeCookTimeFieldID: totalCookTime,
+            recipeIngredientsFieldID: ingredientsArray,
+            recipeInstructionsFieldID: instructionsTextView.text ?? ""
         ]
         
         // 5. Send the Update to Firestore
         let db = Firestore.firestore()
-        db.collection("recipes").document(recipeID).updateData(updatedData) { [weak self] error in
+        db.collection(recipeCollectionID).document(recipeID).updateData(updatedData) { [weak self] error in
             if let error = error {
                 print("Error updating document: \(error)")
             } else {

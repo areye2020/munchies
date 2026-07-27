@@ -20,13 +20,28 @@ let userCustomRestrictionsID:String = "custom restrictions"
 let userBioFieldID:String = "bio"
 let userImageFieldID:String = "profileImageURL"
 
+let recipeCollectionID:String = "recipes"
+let recipeAuthorFieldID:String = "author"
+let recipeAuthorIDFieldID:String = "authorID"
+let recipeCaloriesFieldID:String = "calories"
+let recipeCookTimeFieldID:String = "cookTime"
+let recipeFavoritedByFieldID:String = "favoritedBy"
+let recipeCreatedAtFieldID:String = "createdAt"
+let recipeImageFieldID:String = "image"
+let recipeIngredientsFieldID:String = "ingredients"
+let recipeInstructionsFieldID:String = "instructions"
+let recipeNameFieldID:String = "name"
+let recipePrepTimeFieldID:String = "prepTime"
+let recipeServingsFieldID:String = "servings"
+let recipeImagesPath:String = "recipeImages/"
+
 // user profile image constants
 let jpgCompression:CGFloat = 0.8
 let profileImagesPath:String = "profileImages/"
 let megabyte:Int64 = 1024 * 1024
-let maxImageSize:Int64 = 5 * megabyte
+let maxImageSize:Int64 = 10 * megabyte
 
-// username constants
+// user info constants
 let maxUsernameLength:Int = 16
 let maxBioLength:Int = 160
 

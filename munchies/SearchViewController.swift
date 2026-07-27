@@ -55,7 +55,7 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
     
     // MARK: - Firestore Fetch
     func fetchEverythingFromFirestore() {
-        db.collection("recipes").getDocuments { [weak self] snapshot, error in
+        db.collection(recipeCollectionID).getDocuments { [weak self] snapshot, error in
             if let error = error {
                 print("Error getting documents: \(error)")
                 return

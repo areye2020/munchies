@@ -77,7 +77,7 @@ class AddRecipieViewController: UIViewController, UITableViewDelegate, UITableVi
     
     func fetchUsername(){
         guard let authorID = authorID else { return }
-        db.collection("users").document(authorID).getDocument { [weak self] snapshot, error in
+        db.collection(userCollectionID).document(authorID).getDocument { [weak self] snapshot, error in
             if let data = snapshot?.data(), let username = data["username"] as? String {
                 self?.authorName = username
             }
@@ -196,7 +196,7 @@ class AddRecipieViewController: UIViewController, UITableViewDelegate, UITableVi
         // currruent user info is already done
         // Create the Firestore doc reference up front so we have an ID to use
         // for both the storage path and the document itself.
-        let recipeRef = db.collection("recipes").document()
+        let recipeRef = db.collection(recipeCollectionID).document()
         let recipeID = recipeRef.documentID
         
         // Minimal validation
@@ -206,19 +206,19 @@ class AddRecipieViewController: UIViewController, UITableViewDelegate, UITableVi
         }
         let saveRecipe: (String) -> Void = { imageURL in
             var data: [String: Any] = [
-                "name": name,
-                "author": self.authorName,
-                "servings": servings,
-                "prepTime": prepTime,
-                "cookTime": cookTime,
-                "ingredients": self.ingredients,
-                "instructions": instructions,
-                "authorID": self.authorID as Any,
-                "favoritedBy": favoritedBy,
-                "createdAt": FieldValue.serverTimestamp()
+                recipeNameFieldID: name,
+                recipeAuthorFieldID: self.authorName,
+                recipeServingsFieldID: servings,
+                recipePrepTimeFieldID: prepTime,
+                recipeCookTimeFieldID: cookTime,
+                recipeIngredientsFieldID: self.ingredients,
+                recipeInstructionsFieldID: instructions,
+                recipeAuthorIDFieldID: self.authorID as Any,
+                recipeFavoritedByFieldID: favoritedBy,
+                recipeCreatedAtFieldID: FieldValue.serverTimestamp()
             ]
-            if let calories = calories { data["calories"] = calories }
-            if !imageURL.isEmpty { data["image"] = imageURL }
+            if let calories = calories { data[recipeCaloriesFieldID] = calories }
+            if !imageURL.isEmpty { data[recipeImageFieldID] = imageURL }
             
             recipeRef.setData(data) { [weak self] error in
                 guard let self = self else { return }
@@ -249,7 +249,7 @@ class AddRecipieViewController: UIViewController, UITableViewDelegate, UITableVi
         }
         let storageRef = Storage.storage()
             .reference()
-            .child("recipeImages/\(recipeID).jpg")
+            .child("\(recipeImagesPath)\(recipeID).jpg")
         storageRef.putData(imageData, metadata: nil) { metadata, error in
             if let error = error {
                 print("Upload failed: \(error.localizedDescription)")
