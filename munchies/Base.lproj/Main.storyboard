@@ -343,7 +343,7 @@
                             <constraint firstItem="Y41-0H-GBo" firstAttribute="centerY" secondItem="sso-rr-xgB" secondAttribute="centerY" id="yAb-Bc-q7W"/>
                         </constraints>
                     </view>
-                    <tabBarItem key="tabBarItem" title="Item" id="voE-47-KOt"/>
+                    <tabBarItem key="tabBarItem" title="Add" image="plus.square.fill" catalog="system" id="voE-47-KOt"/>
                     <navigationItem key="navigationItem" title="Add Recipe" id="OA5-4S-v01">
                         <barButtonItem key="rightBarButtonItem" title="Add" id="5L3-DP-r3q">
                             <connections>
@@ -1421,7 +1421,7 @@
         <scene sceneID="xHK-Bh-ofU">
             <objects>
                 <tabBarController storyboardIdentifier="MainTabBarController" id="Btk-6q-Iq1" customClass="MainTabBarController" customModule="munchies" customModuleProvider="target" sceneMemberID="viewController">
-                    <tabBar key="tabBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="GU8-2M-qK2">
+                    <tabBar key="tabBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" backgroundImage="plus.square.fill" catalog="system" id="GU8-2M-qK2">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="49"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -1940,6 +1940,7 @@
         <image name="person.fill" catalog="system" width="128" height="120"/>
         <image name="plus" catalog="system" width="128" height="113"/>
         <image name="plus.app.fill" catalog="system" width="128" height="114"/>
+        <image name="plus.square.fill" catalog="system" width="128" height="114"/>
         <namedColor name="BurntOrange">
             <color red="0.80000001192092896" green="0.46700000762939453" blue="0.13300000131130219" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
