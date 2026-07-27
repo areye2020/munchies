@@ -181,6 +181,50 @@ class User
         }
     }
     
+    func withoutRestrictedRecipes(recipes:[Recipe],
+        onCompletion:@escaping ([Recipe]?, (any Error)?) -> Void)
+    {
+        var allowedRecipes:[Recipe] = []
+        fetchRestrictions()
+        {(userRestrictions, error) in
+            if let error
+            {
+                onCompletion(nil, error)
+            } else
+            {
+                for recipe:Recipe in recipes
+                {
+                    var violatesRestriction:Bool = false
+                    var i:Int = 0
+                    while !violatesRestriction && i < recipe.ingredients.count
+                    {
+                        let currentIngredient:String = recipe.ingredients[i]
+                        var j:Int = 0
+                        while !violatesRestriction && j < userRestrictions!.count
+                        {
+                            let restrictionIngredients:[String] = userRestrictions![j].ingredients
+                            if restrictionIngredients.firstIndex(of: currentIngredient) != nil
+                            {
+                                violatesRestriction = true
+                            }
+                            j += 1
+                        }
+                        if !violatesRestriction && self.customRestrictions.firstIndex(of: currentIngredient) != nil
+                        {
+                            violatesRestriction = true
+                        }
+                        i += 1
+                    }
+                    if !violatesRestriction
+                    {
+                        allowedRecipes.append(recipe)
+                    }
+                }
+                onCompletion(allowedRecipes, nil)
+            }
+        }
+    }
+    
     func syncToDatabase()
     {
             database.collection(userCollectionID).document(self.uid!).setData(self.asDictionary()!)

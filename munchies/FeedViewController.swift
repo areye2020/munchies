@@ -62,51 +62,27 @@ class FeedViewController: UIViewController, UICollectionViewDataSource, UICollec
             }
             
             if let user {
-                self.addNonRestrictedRecipes(user: user, allRecipes: allRecipes)
+                user.withoutRestrictedRecipes(recipes: allRecipes) { allowedRecipes, error in
+                    if let error {
+                        print(error.localizedDescription)
+                    } else
+                    {
+                        self.recipes = allowedRecipes!
+                        DispatchQueue.main.async {
+                            self.emptyStatusLabel.isHidden = !self.recipes.isEmpty
+                            self.recipeCollectionView.reloadData()
+                        }
+                    }
+                }
             } else
             {
                 self.recipes = allRecipes
-            }
-            
-            DispatchQueue.main.async {
-                self.emptyStatusLabel.isHidden = !self.recipes.isEmpty
-                self.recipeCollectionView.reloadData()
-            }
-        }
-    }
-    
-    func addNonRestrictedRecipes(user: User, allRecipes: [Recipe]) {
-        user.fetchRestrictions() { userRestrictions, error in
-            if let error {
-                print(error.localizedDescription)
-            } else {
-                for recipe in allRecipes {
-                    var violatesRestriction = false
-                    var i = 0
-                    while !violatesRestriction && i < recipe.ingredients.count
-                    {
-                        let currentIngredient = recipe.ingredients[i]
-                        var j = 0
-                        while !violatesRestriction && j < userRestrictions!.count {
-                            let restrictionIngredients = userRestrictions![j].ingredients
-                            if restrictionIngredients.firstIndex(of: currentIngredient) != nil
-                            {
-                                violatesRestriction = true
-                            }
-                            j += 1
-                        }
-                        if !violatesRestriction && user.customRestrictions.firstIndex(of: currentIngredient) != nil
-                        {
-                            violatesRestriction = true
-                        }
-                        i += 1
-                    }
-                    if !violatesRestriction
-                    {
-                        self.recipes.append(recipe)
-                    }
+                DispatchQueue.main.async {
+                    self.emptyStatusLabel.isHidden = !self.recipes.isEmpty
+                    self.recipeCollectionView.reloadData()
                 }
             }
+            
         }
     }
     

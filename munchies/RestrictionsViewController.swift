@@ -68,7 +68,7 @@ class RestrictionsViewController: UIViewController, UITableViewDelegate, UITable
                             for document in documents
                             {
                                 let docFields:[String:Any] = document.data()
-                                let name:String = docFields[restrictionNameField] as! String
+                                let name:String = docFields[restrictionNameFieldID] as! String
                                 var switchState:Bool = false
                                 if let newUser
                                 {
