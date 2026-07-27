@@ -70,7 +70,7 @@ class User
     
     // attempts to generate a new User by retrieving the user with the same UID from firebase
     // passes the new User or nil to onComplettion
-    init(UID:String, onCompletion:@escaping (User?) -> Void)
+    init(UID:String, onCompletion:((User?) -> Void)?)
     {
         bio = ""
         imageURL = ""
@@ -125,7 +125,10 @@ class User
             {
                 print("error: could not retrieve user data")
             }
-            onCompletion(self.uid != nil && self.username != nil ? self : nil)
+            if let onCompletion
+            {
+                onCompletion(self.uid != nil && self.username != nil ? self : nil)
+            }
         }
     }
     

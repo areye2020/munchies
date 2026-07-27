@@ -37,8 +37,7 @@ class AddRecipieViewController: UIViewController, UITableViewDelegate, UITableVi
     
     let db = Firestore.firestore()
     // for later use in stroing
-    var authorID = Auth.auth().currentUser?.uid
-    var authorName: String = "Unknown"
+    var currentUser:User!
     
     @IBOutlet weak var recipeImage: UIImageView!
     private let accessMessage:String = "Access to your photo library is required to add a recipe image"
@@ -71,16 +70,9 @@ class AddRecipieViewController: UIViewController, UITableViewDelegate, UITableVi
         let tap = UITapGestureRecognizer(target: self, action: #selector(onEditImage))
         recipeImage.isUserInteractionEnabled = true
         recipeImage.addGestureRecognizer(tap)
-        
-        fetchUsername()
-    }
-    
-    func fetchUsername(){
-        guard let authorID = authorID else { return }
-        db.collection(userCollectionID).document(authorID).getDocument { [weak self] snapshot, error in
-            if let data = snapshot?.data(), let username = data["username"] as? String {
-                self?.authorName = username
-            }
+        if let uid  = Auth.auth().currentUser?.uid
+        {
+            currentUser = User(UID: uid, onCompletion: nil)
         }
     }
     
@@ -207,13 +199,13 @@ class AddRecipieViewController: UIViewController, UITableViewDelegate, UITableVi
         let saveRecipe: (String) -> Void = { imageURL in
             var data: [String: Any] = [
                 recipeNameFieldID: name,
-                recipeAuthorFieldID: self.authorName,
+                recipeAuthorFieldID: self.currentUser.username!,
                 recipeServingsFieldID: servings,
                 recipePrepTimeFieldID: prepTime,
                 recipeCookTimeFieldID: cookTime,
                 recipeIngredientsFieldID: self.ingredients,
                 recipeInstructionsFieldID: instructions,
-                recipeAuthorIDFieldID: self.authorID as Any,
+                recipeAuthorIDFieldID: self.currentUser.uid! as Any,
                 recipeFavoritedByFieldID: favoritedBy,
                 recipeCreatedAtFieldID: FieldValue.serverTimestamp()
             ]
