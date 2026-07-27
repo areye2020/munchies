@@ -11,9 +11,8 @@ import UIKit
 
 // databse IDs
 let restrictionCollectionID:String = "restrictions"
-let restrictionIngredientFieldID:String = "ingredient"
-let restrictionNameField:String = "name"
-let restrictionIngredientsField:String = "ingredients"
+let restrictionNameFieldID:String = "name"
+let restrictionIngredientsFieldID:String = "ingredients"
 let userCollectionID:String = "users"
 let userUsernameFieldID:String = "username"
 let userRestrictionsFieldID:String = "restrictions"
@@ -38,9 +37,9 @@ let recipeServingsFieldID:String = "servings"
 let jpgCompression:CGFloat = 0.8
 let profileImagesPath:String = "profileImages/"
 let megabyte:Int64 = 1024 * 1024
-let maxImageSize:Int64 = 5 * megabyte
+let maxImageSize:Int64 = 10 * megabyte
 
-// username constants
+// user info constants
 let maxUsernameLength:Int = 16
 let maxBioLength:Int = 160
 
