@@ -8,6 +8,7 @@
 
 import UIKit
 import FirebaseFirestore
+import FirebaseAuth
 
 class SearchViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate {
 
@@ -15,6 +16,9 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
     @IBOutlet weak var tableView: UITableView!
     
     let db = Firestore.firestore()
+    
+    // currently logged in user
+    var currentUser:User!
         
     // allRecipes holds everything from the database
     var allRecipes: [Recipe] = []
@@ -53,6 +57,15 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
                 
             // Initially, the search bar is empty, so show everything
             self?.filteredRecipes = self?.allRecipes ?? []
+            
+            if let uid = Auth.auth().currentUser?.uid
+            {
+                self?.currentUser = User(UID: uid) { user in
+                    if let user {
+//                        self?.filteredRecipes = user.
+                    }
+                }
+            }
                 
             DispatchQueue.main.async {
                 self?.tableView.reloadData()
