@@ -343,7 +343,6 @@
                             <constraint firstItem="Y41-0H-GBo" firstAttribute="centerY" secondItem="sso-rr-xgB" secondAttribute="centerY" id="yAb-Bc-q7W"/>
                         </constraints>
                     </view>
-                    <tabBarItem key="tabBarItem" title="Add" image="plus.square.fill" catalog="system" id="voE-47-KOt"/>
                     <navigationItem key="navigationItem" title="Add Recipe" id="OA5-4S-v01">
                         <barButtonItem key="rightBarButtonItem" title="Add" id="5L3-DP-r3q">
                             <connections>
