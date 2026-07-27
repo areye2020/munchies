@@ -18,7 +18,7 @@ class Restriction: Equatable
         self.ingredients = []
         for i in 0..<ingredients.count
         {
-            self.ingredients[i] = ingredients[i]
+            self.ingredients.append(ingredients[i])
         }
     }
     
@@ -28,7 +28,7 @@ class Restriction: Equatable
     {
         self.name = name
         self.ingredients = []
-        Firestore.firestore().collection(restrictionCollectionID).whereField(restrictionNameField, isEqualTo: name).getDocuments()
+        Firestore.firestore().collection(restrictionCollectionID).whereField(restrictionNameFieldID, isEqualTo: name).getDocuments()
         {(querySnapshot, error) in
             if let error
             {
@@ -37,7 +37,7 @@ class Restriction: Equatable
             {
                 let documentSnapshot:QueryDocumentSnapshot = docs[0]
                 if let docIngredients:[String]
-                    = documentSnapshot.data()[restrictionIngredientFieldID] as? [String]
+                    = documentSnapshot.data()[restrictionIngredientsFieldID] as? [String]
                 {
                     for ingredient:String in docIngredients
                     {
