@@ -1552,7 +1552,7 @@
                                                 </subviews>
                                             </stackView>
                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="VOh-gt-cea">
-                                                <rect key="frame" x="0.0" y="370.33333333333337" width="375" height="100"/>
+                                                <rect key="frame" x="0.0" y="370.33333333333337" width="375" height="76.333333333333314"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Ingredients" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gPv-Fn-nmE">
                                                         <rect key="frame" x="0.0" y="0.0" width="375" height="20.333333333333332"/>
@@ -1560,21 +1560,28 @@
                                                         <nil key="textColor"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
-                                                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="5Sz-O5-KVv">
-                                                        <rect key="frame" x="0.0" y="25.333333333333258" width="375" height="74.666666666666671"/>
-                                                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                                                        <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
-                                                        <color key="textColor" systemColor="labelColor"/>
-                                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                        <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
-                                                    </textView>
+                                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="Qlj-UT-PcR">
+                                                        <rect key="frame" x="0.0" y="25.333333333333258" width="375" height="11.666666666666664"/>
+                                                    </stackView>
+                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="d2O-DP-yyI">
+                                                        <rect key="frame" x="0.0" y="42" width="375" height="34.333333333333343"/>
+                                                        <color key="backgroundColor" name="BackgroundColor"/>
+                                                        <color key="tintColor" name="ThemeColor"/>
+                                                        <state key="normal" title="Button"/>
+                                                        <buttonConfiguration key="configuration" style="plain" image="plus.circle.fill" catalog="system" title="Ingredient"/>
+                                                        <connections>
+                                                            <action selector="addIngredientTapped:" destination="cSC-PQ-Rzv" eventType="touchUpInside" id="gFv-0s-On5"/>
+                                                        </connections>
+                                                    </button>
                                                 </subviews>
                                                 <constraints>
-                                                    <constraint firstAttribute="height" constant="100" id="qgv-hE-SAu"/>
+                                                    <constraint firstItem="Qlj-UT-PcR" firstAttribute="top" secondItem="gPv-Fn-nmE" secondAttribute="bottom" id="AZ6-PH-DCX"/>
+                                                    <constraint firstItem="Qlj-UT-PcR" firstAttribute="leading" secondItem="VOh-gt-cea" secondAttribute="leading" constant="16" id="TeY-dk-cJx"/>
+                                                    <constraint firstAttribute="trailing" secondItem="Qlj-UT-PcR" secondAttribute="trailing" constant="16" id="g2d-ys-bco"/>
                                                 </constraints>
                                             </stackView>
                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="fVe-wg-Ila">
-                                                <rect key="frame" x="0.0" y="485.33333333333337" width="375" height="150"/>
+                                                <rect key="frame" x="0.0" y="461.66666666666663" width="375" height="150"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Instructions" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="E2c-F7-bk3">
                                                         <rect key="frame" x="0.0" y="0.0" width="375" height="20.333333333333332"/>
@@ -1583,7 +1590,7 @@
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="5Ud-Vr-THh">
-                                                        <rect key="frame" x="0.0" y="25.333333333333265" width="375" height="124.66666666666669"/>
+                                                        <rect key="frame" x="0.0" y="25.333333333333378" width="375" height="124.66666666666669"/>
                                                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                                         <constraints>
                                                             <constraint firstAttribute="width" constant="375" id="0u6-in-xoa"/>
@@ -1599,10 +1606,10 @@
                                                 </constraints>
                                             </stackView>
                                             <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="tvT-ne-SMl">
-                                                <rect key="frame" x="0.0" y="650.33333333333337" width="375" height="10.666666666666629"/>
+                                                <rect key="frame" x="0.0" y="626.66666666666663" width="375" height="34.333333333333371"/>
                                                 <subviews>
                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="imx-BI-G9Q">
-                                                        <rect key="frame" x="0.0" y="0.0" width="375" height="10.666666666666666"/>
+                                                        <rect key="frame" x="0.0" y="0.0" width="375" height="34.333333333333336"/>
                                                         <color key="tintColor" systemColor="systemRedColor"/>
                                                         <state key="normal" title="Button"/>
                                                         <buttonConfiguration key="configuration" style="plain" image="trash.fill" catalog="system" title="Delete Recipie"/>
@@ -1644,7 +1651,7 @@
                     <connections>
                         <outlet property="cookHoursTextField" destination="2iU-fo-6aX" id="tgN-yh-1yr"/>
                         <outlet property="cookMinsTextField" destination="dKM-s4-DD8" id="UDk-UQ-W6S"/>
-                        <outlet property="ingredientsTextView" destination="5Sz-O5-KVv" id="eLX-Xv-GJ7"/>
+                        <outlet property="ingredientsStackView" destination="Qlj-UT-PcR" id="q0O-qk-7an"/>
                         <outlet property="instructionsTextView" destination="5Ud-Vr-THh" id="ZzM-Yp-Hma"/>
                         <outlet property="nameTextField" destination="PQX-vE-2pE" id="DhN-5S-yE6"/>
                         <outlet property="prepHoursTextField" destination="fMm-jQ-tzI" id="Xal-ZJ-QHf"/>
@@ -2224,6 +2231,7 @@
         <image name="person.fill" catalog="system" width="128" height="120"/>
         <image name="plus" catalog="system" width="128" height="113"/>
         <image name="plus.app.fill" catalog="system" width="128" height="114"/>
+        <image name="plus.circle.fill" catalog="system" width="128" height="123"/>
         <image name="plus.square.fill" catalog="system" width="128" height="114"/>
         <image name="trash.fill" catalog="system" width="117" height="128"/>
         <namedColor name="BackgroundColor">
