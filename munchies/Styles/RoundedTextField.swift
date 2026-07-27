@@ -20,8 +20,6 @@ class RoundedTextField: UITextField {
     private func setupStyle() {
         borderStyle = .none
 
-        backgroundColor = UIColor(named: "TextField")
-
         // Moves text from edge
         let paddingView = UIView()
         paddingView.frame = CGRect(x: 0, y: 0, width: 16, height: 0)
