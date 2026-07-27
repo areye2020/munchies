@@ -27,6 +27,8 @@ class CustomRestrictionsViewController: UIViewController, UITableViewDelegate,
         tableView.delegate = self
         tableView.dataSource = self
         self.tabBarController?.setTabBarHidden(true, animated: false)
+        self.view.backgroundColor = UIColor(named: "ThemeColor")
+        tableView.backgroundColor = UIColor(named: "ThemeColor")
     }
     
     override func viewWillAppear(_ animated:Bool)
@@ -55,6 +57,7 @@ class CustomRestrictionsViewController: UIViewController, UITableViewDelegate,
         var content:UIListContentConfiguration = cell.defaultContentConfiguration()
         content.text = currentUser.customRestrictions[indexPath.row]
         cell.contentConfiguration = content
+        cell.backgroundColor = UIColor(named: "ThemeColor")
         return cell
     }
     

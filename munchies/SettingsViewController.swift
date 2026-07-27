@@ -30,6 +30,8 @@ class SettingsViewController: UIViewController, UITableViewDelegate, UITableView
         self.navigationItem.backButtonTitle = backButtonTitle
         tableView.dataSource = self
         tableView.delegate = self
+        self.view.backgroundColor = UIColor(named: "ThemeColor")
+        tableView.backgroundColor = UIColor(named: "ThemeColor")
         // TODO figure out what to do about dark mode and privacy
 //        if let data:Data = defaults.object(forKey: settingsKey) as? Data,
 //           let storedSettings:[Setting] = try? JSONDecoder().decode([Setting].self, from: data)
@@ -84,6 +86,7 @@ class SettingsViewController: UIViewController, UITableViewDelegate, UITableView
         var content:UIListContentConfiguration = cell.defaultContentConfiguration()
         content.text = setting.title
         cell.contentConfiguration = content
+        cell.backgroundColor = UIColor(named: "ThemeColor")
         
         return cell
     }
