@@ -38,6 +38,7 @@ class AddRecipieViewController: UIViewController, UITableViewDelegate, UITableVi
    
     let db = Firestore.firestore()
     
+    @IBOutlet weak var recipeImageBackgroundView: UIView!
     @IBOutlet weak var recipeImage: UIImageView!
     private let accessMessage:String = "Access to your photo library is required to add a recipe image"
     private var pickerConfig: PHPickerConfiguration = PHPickerConfiguration()
@@ -288,7 +289,10 @@ class AddRecipieViewController: UIViewController, UITableViewDelegate, UITableVi
         guard let provider = results.first?.itemProvider, provider.canLoadObject(ofClass: UIImage.self) else { return }
         provider.loadObject(ofClass: UIImage.self) { [weak self] image, _ in
             guard let self = self, let uiImage = image as? UIImage else { return }
-            DispatchQueue.main.async { self.recipeImage.image = uiImage }
+            DispatchQueue.main.async {
+                self.recipeImage.image = uiImage
+                self.recipeImageBackgroundView.backgroundColor = self.view.backgroundColor
+            }
         }
     }
     

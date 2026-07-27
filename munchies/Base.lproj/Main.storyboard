@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="24765" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="Btk-6q-Iq1">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="24506" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="Btk-6q-Iq1">
     <device id="retina6_9" orientation="portrait" appearance="light"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="24743"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="24504"/>
         <capability name="Image references" minToolsVersion="12.0"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
@@ -276,12 +276,23 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="pc9-TN-woZ">
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9rv-Fz-l9x">
                                 <rect key="frame" x="40" y="124" width="360" height="175"/>
+                                <subviews>
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="photo.fill" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="pc9-TN-woZ">
+                                        <rect key="frame" x="0.0" y="1.6666666666666572" width="360" height="162"/>
+                                        <color key="tintColor" systemColor="systemGray2Color"/>
+                                    </imageView>
+                                </subviews>
+                                <color key="backgroundColor" systemColor="systemGray4Color"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="175" id="FyS-NI-tuW"/>
+                                    <constraint firstItem="pc9-TN-woZ" firstAttribute="top" secondItem="9rv-Fz-l9x" secondAttribute="top" id="I2o-Ch-UTy"/>
+                                    <constraint firstAttribute="bottom" secondItem="pc9-TN-woZ" secondAttribute="bottom" constant="10" id="JOh-8p-d7S"/>
+                                    <constraint firstItem="pc9-TN-woZ" firstAttribute="leading" secondItem="9rv-Fz-l9x" secondAttribute="leading" id="Sur-Qm-0bX"/>
+                                    <constraint firstAttribute="trailing" secondItem="pc9-TN-woZ" secondAttribute="trailing" id="qfR-bA-QzH"/>
+                                    <constraint firstAttribute="height" constant="175" id="z22-H8-gpm"/>
                                 </constraints>
-                            </imageView>
+                            </view>
                             <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Name a Recipe..." textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="b6K-4y-pip">
                                 <rect key="frame" x="40" y="298" width="360" height="34"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
@@ -305,7 +316,7 @@
                         <constraints>
                             <constraint firstItem="KKu-P8-fi2" firstAttribute="centerY" secondItem="LdO-ka-aBj" secondAttribute="centerY" id="0z9-gh-vUN"/>
                             <constraint firstItem="Nxn-Wg-vbM" firstAttribute="leading" secondItem="BjP-iw-9Q2" secondAttribute="trailing" constant="28" id="1Oe-oY-8VM"/>
-                            <constraint firstItem="IHr-Cu-1z7" firstAttribute="trailing" secondItem="pc9-TN-woZ" secondAttribute="trailing" constant="40" id="Aqm-hW-aIu"/>
+                            <constraint firstItem="9rv-Fz-l9x" firstAttribute="top" secondItem="IHr-Cu-1z7" secondAttribute="top" id="6tQ-te-Dgp"/>
                             <constraint firstItem="kEv-bZ-cSW" firstAttribute="leading" secondItem="pwl-AM-ZZE" secondAttribute="trailing" constant="24" id="BOx-L4-vw6"/>
                             <constraint firstItem="b6K-4y-pip" firstAttribute="leading" secondItem="IHr-Cu-1z7" secondAttribute="leading" constant="40" id="Bt5-hL-kOh"/>
                             <constraint firstItem="7co-wg-VQE" firstAttribute="top" secondItem="8sZ-mF-7Du" secondAttribute="bottom" constant="8" id="CaN-5Y-vqn"/>
@@ -313,15 +324,16 @@
                             <constraint firstItem="BjP-iw-9Q2" firstAttribute="top" secondItem="QMw-xS-McW" secondAttribute="bottom" constant="12" id="D3T-zt-rik"/>
                             <constraint firstItem="BjP-iw-9Q2" firstAttribute="centerY" secondItem="Nxn-Wg-vbM" secondAttribute="centerY" id="ErN-Wc-Nie"/>
                             <constraint firstItem="IHr-Cu-1z7" firstAttribute="trailing" secondItem="4fx-gB-JQI" secondAttribute="trailing" constant="40" id="Fcx-f6-bgF"/>
+                            <constraint firstItem="IHr-Cu-1z7" firstAttribute="trailing" secondItem="9rv-Fz-l9x" secondAttribute="trailing" constant="40" id="GFb-io-i3Q"/>
                             <constraint firstItem="LdO-ka-aBj" firstAttribute="leading" secondItem="KKu-P8-fi2" secondAttribute="trailing" constant="30" id="GWs-9t-9ws"/>
                             <constraint firstItem="QMw-xS-McW" firstAttribute="top" secondItem="b6K-4y-pip" secondAttribute="bottom" constant="8" id="MeE-PC-ocY"/>
                             <constraint firstItem="Nxn-Wg-vbM" firstAttribute="centerY" secondItem="cZj-F2-khr" secondAttribute="centerY" id="NaH-iQ-a0V"/>
                             <constraint firstItem="kEv-bZ-cSW" firstAttribute="centerY" secondItem="4fx-gB-JQI" secondAttribute="centerY" id="QMN-bl-c5O"/>
                             <constraint firstItem="IHr-Cu-1z7" firstAttribute="trailing" secondItem="cZj-F2-khr" secondAttribute="trailing" constant="40" id="Sgu-6F-6s0"/>
-                            <constraint firstItem="pc9-TN-woZ" firstAttribute="top" secondItem="IHr-Cu-1z7" secondAttribute="top" id="TB0-Bv-UeT"/>
                             <constraint firstItem="pwl-AM-ZZE" firstAttribute="top" secondItem="BjP-iw-9Q2" secondAttribute="bottom" constant="11" id="U0t-mz-Spb"/>
                             <constraint firstItem="8sZ-mF-7Du" firstAttribute="top" secondItem="pwl-AM-ZZE" secondAttribute="bottom" constant="2" id="UzQ-e2-e1O"/>
                             <constraint firstItem="7co-wg-VQE" firstAttribute="leading" secondItem="IHr-Cu-1z7" secondAttribute="leading" constant="30" id="X7q-fq-e3r"/>
+                            <constraint firstItem="9rv-Fz-l9x" firstAttribute="leading" secondItem="IHr-Cu-1z7" secondAttribute="leading" constant="40" id="bQA-EN-Q9L"/>
                             <constraint firstItem="8sZ-mF-7Du" firstAttribute="leading" secondItem="IHr-Cu-1z7" secondAttribute="leading" constant="12" id="bXq-Bw-2f6"/>
                             <constraint firstItem="b6K-4y-pip" firstAttribute="top" secondItem="IHr-Cu-1z7" secondAttribute="top" constant="174" id="cH6-xY-8dq"/>
                             <constraint firstItem="IHr-Cu-1z7" firstAttribute="trailing" secondItem="b6K-4y-pip" secondAttribute="trailing" constant="40" id="dQC-Xi-0iO"/>
@@ -334,7 +346,6 @@
                             <constraint firstItem="pwl-AM-ZZE" firstAttribute="leading" secondItem="IHr-Cu-1z7" secondAttribute="leading" constant="40" id="jOn-lk-ac3"/>
                             <constraint firstItem="IHr-Cu-1z7" firstAttribute="trailing" secondItem="Y41-0H-GBo" secondAttribute="trailing" constant="40" id="kjG-5b-vDu"/>
                             <constraint firstItem="4hh-kh-HQD" firstAttribute="top" secondItem="3Ke-wd-bCT" secondAttribute="bottom" constant="8" id="oSZ-VX-NQW"/>
-                            <constraint firstItem="pc9-TN-woZ" firstAttribute="leading" secondItem="IHr-Cu-1z7" secondAttribute="leading" constant="40" id="qWW-m3-KbB"/>
                             <constraint firstItem="LdO-ka-aBj" firstAttribute="centerY" secondItem="sso-rr-xgB" secondAttribute="centerY" id="qhb-4c-48g"/>
                             <constraint firstItem="3Ke-wd-bCT" firstAttribute="leading" secondItem="IHr-Cu-1z7" secondAttribute="leading" constant="12" id="sS6-DX-j0H"/>
                             <constraint firstItem="pwl-AM-ZZE" firstAttribute="centerY" secondItem="kEv-bZ-cSW" secondAttribute="centerY" id="uSA-mS-idg"/>
@@ -361,6 +372,7 @@
                         <outlet property="prepHourField" destination="Nxn-Wg-vbM" id="Q9w-cd-oPR"/>
                         <outlet property="prepMinField" destination="cZj-F2-khr" id="FGi-TR-BBy"/>
                         <outlet property="recipeImage" destination="pc9-TN-woZ" id="YtR-1h-jyl"/>
+                        <outlet property="recipeImageBackgroundView" destination="9rv-Fz-l9x" id="aKI-8D-OHB"/>
                         <outlet property="servingField" destination="LdO-ka-aBj" id="5mi-qk-MoP"/>
                     </connections>
                 </viewController>
@@ -1993,6 +2005,7 @@
         <image name="person.2.fill" catalog="system" width="128" height="86"/>
         <image name="person.crop.circle.fill" catalog="system" width="128" height="123"/>
         <image name="person.fill" catalog="system" width="128" height="120"/>
+        <image name="photo.fill" catalog="system" width="128" height="93"/>
         <image name="plus" catalog="system" width="128" height="113"/>
         <image name="plus.app.fill" catalog="system" width="128" height="114"/>
         <image name="plus.square.fill" catalog="system" width="128" height="114"/>
@@ -2014,6 +2027,12 @@
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
+        <systemColor name="systemGray2Color">
+            <color red="0.68235294120000001" green="0.68235294120000001" blue="0.69803921570000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
+        <systemColor name="systemGray4Color">
+            <color red="0.81960784310000001" green="0.81960784310000001" blue="0.83921568629999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
         <systemColor name="systemGray6Color">
             <color red="0.94901960780000005" green="0.94901960780000005" blue="0.96862745100000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
@@ -2021,7 +2040,7 @@
             <color red="0.20392156859999999" green="0.78039215689999997" blue="0.34901960780000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="systemRedColor">
-            <color red="1" green="0.21960784310000001" blue="0.23529411759999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="1" green="0.23137254900000001" blue="0.18823529410000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
     </resources>
 </document>
