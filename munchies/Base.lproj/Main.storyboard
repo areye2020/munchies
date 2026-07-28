@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="24765" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="KII-NU-bY6">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="24506" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="KII-NU-bY6">
     <device id="retina6_9" orientation="portrait" appearance="light"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="24743"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="24504"/>
         <capability name="Image references" minToolsVersion="12.0"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
@@ -493,7 +493,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="7CI-Gd-aRg" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3849.545454545455" y="-557.3221757322176"/>
+            <point key="canvasLocation" x="4741.3636363636369" y="-557.3221757322176"/>
         </scene>
         <!--Create Profile View Controller-->
         <scene sceneID="C7a-HK-V4c">
@@ -1222,23 +1222,23 @@
             <objects>
                 <viewController id="FXG-Hn-u6H" customClass="FeedViewController" customModule="munchies" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="r6f-ZG-6XK">
-                        <rect key="frame" x="0.0" y="0.0" width="440" height="778"/>
+                        <rect key="frame" x="0.0" y="0.0" width="440" height="956"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="HUNGRY?" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3kR-LA-MRk">
-                                <rect key="frame" x="30" y="0.0" width="143" height="36"/>
+                                <rect key="frame" x="30" y="178" width="143" height="36"/>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="30"/>
                                 <color key="textColor" name="BurntOrange"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Explore these recipes" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qcH-mQ-0sP">
-                                <rect key="frame" x="30" y="44" width="203" height="27"/>
+                                <rect key="frame" x="30" y="222" width="203" height="27"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="22"/>
                                 <color key="textColor" name="TextFieldAccent"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="KMm-Hm-LTK">
-                                <rect key="frame" x="0.0" y="111" width="440" height="550"/>
+                                <rect key="frame" x="0.0" y="289" width="440" height="550"/>
                                 <color key="backgroundColor" name="BackgroundColor"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="EFi-9b-Q3C">
                                     <size key="itemSize" width="350" height="450"/>
@@ -1316,7 +1316,7 @@
                                 </cells>
                             </collectionView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No recipes yet!" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="84E-gc-uUg">
-                                <rect key="frame" x="160.66666666666666" y="91" width="118.99999999999997" height="21"/>
+                                <rect key="frame" x="160.66666666666666" y="269" width="118.99999999999997" height="21"/>
                                 <fontDescription key="fontDescription" name="Georgia" family="Georgia" pointSize="18"/>
                                 <color key="textColor" name="TextFieldAccent"/>
                                 <nil key="highlightedColor"/>
@@ -1353,7 +1353,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="OCR-NF-Y3u" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-2989" y="-277"/>
+            <point key="canvasLocation" x="-2097.2727272727275" y="-277.40585774058576"/>
         </scene>
         <!--Favorites View Controller-->
         <scene sceneID="z9m-TX-EC7">
@@ -1517,7 +1517,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Krd-D8-4E1" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-2150" y="-277"/>
+            <point key="canvasLocation" x="-1258.6363636363637" y="-277.40585774058576"/>
         </scene>
         <!--Edit Recipie View Controller-->
         <scene sceneID="Zqy-Wm-SQ7">
@@ -1842,7 +1842,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="iQb-nb-RuP" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1332.2727272727275" y="-3.1380753138075317"/>
+            <point key="canvasLocation" x="-440.4545454545455" y="-3.1380753138075317"/>
         </scene>
         <!--Main Tab Bar Controller-->
         <scene sceneID="xHK-Bh-ofU">
@@ -1855,7 +1855,7 @@
                         <color key="selectedImageTintColor" red="1" green="1" blue="1" alpha="0.84999999999999998" colorSpace="custom" customColorSpace="sRGB"/>
                     </tabBar>
                     <connections>
-                        <segue destination="JN1-ju-DlR" kind="relationship" relationship="viewControllers" id="jiG-pp-PbC"/>
+                        <segue destination="yNE-gl-D6v" kind="relationship" relationship="viewControllers" id="njQ-mK-7Md"/>
                         <segue destination="ljc-Kq-W5L" kind="relationship" relationship="viewControllers" id="N2d-vr-etk"/>
                         <segue destination="xQv-8G-rXY" kind="relationship" relationship="viewControllers" id="PNa-nv-dlQ"/>
                         <segue destination="3Rq-GA-yRo" kind="relationship" relationship="viewControllers" id="SyU-aF-K6B"/>
@@ -1864,7 +1864,7 @@
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="b2J-mL-FeC" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1574" y="-658"/>
+            <point key="canvasLocation" x="2465.4545454545455" y="-658.36820083682017"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="ot1-9M-1B2">
@@ -1883,26 +1883,6 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="7wi-el-lst" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-770.4545454545455" y="-1350"/>
-        </scene>
-        <!--Feed-->
-        <scene sceneID="w8e-K4-O9B">
-            <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="JN1-ju-DlR" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Feed" image="fork.knife" catalog="system" id="8LX-aY-NHg"/>
-                    <toolbarItems/>
-                    <navigationBar key="navigationBar" opaque="NO" contentMode="scaleToFill" translucent="NO" id="gMe-ii-VZ0">
-                        <rect key="frame" x="0.0" y="124" width="440" height="54"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                        <color key="backgroundColor" name="BackgroundColor"/>
-                    </navigationBar>
-                    <nil name="viewControllers"/>
-                    <connections>
-                        <segue destination="FXG-Hn-u6H" kind="relationship" relationship="rootViewController" id="oz5-6F-FDP"/>
-                    </connections>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="gWf-0d-qUa" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="-2989" y="-1083"/>
         </scene>
         <!--List-->
         <scene sceneID="eeO-iF-0qL">
@@ -1937,7 +1917,7 @@
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="6h5-1t-bHb">
                                 <rect key="frame" x="0.0" y="178" width="440" height="661"/>
-                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <color key="backgroundColor" name="BackgroundColor"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="switchCell" id="hvX-6C-5rn">
                                         <rect key="frame" x="0.0" y="50" width="440" height="51"/>
@@ -1955,6 +1935,7 @@
                                                 <constraint firstAttribute="trailing" secondItem="m5c-Gq-pT6" secondAttribute="trailing" constant="20" symbolic="YES" id="wjl-dm-VWV"/>
                                             </constraints>
                                         </tableViewCellContentView>
+                                        <color key="backgroundColor" name="BackgroundColor"/>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="segueCell" id="j4Z-5z-JP2">
                                         <rect key="frame" x="0.0" y="101" width="440" height="51"/>
@@ -1963,6 +1944,7 @@
                                             <rect key="frame" x="0.0" y="0.0" width="409.66666666666669" height="51"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                         </tableViewCellContentView>
+                                        <color key="backgroundColor" name="BackgroundColor"/>
                                         <connections>
                                             <segue destination="FHL-9z-quI" kind="show" identifier="restriction" id="IF5-V1-9eN"/>
                                         </connections>
@@ -1971,7 +1953,7 @@
                             </tableView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="O2R-gj-fSu"/>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <color key="backgroundColor" name="BackgroundColor"/>
                         <constraints>
                             <constraint firstItem="6h5-1t-bHb" firstAttribute="leading" secondItem="O2R-gj-fSu" secondAttribute="leading" id="3JL-at-qdp"/>
                             <constraint firstItem="6h5-1t-bHb" firstAttribute="top" secondItem="O2R-gj-fSu" secondAttribute="top" id="Okv-c9-LzT"/>
@@ -2056,7 +2038,7 @@
                             </button>
                             <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="Username" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="vEL-nS-t5b" customClass="RoundedTextField" customModule="munchies" customModuleProvider="target">
                                 <rect key="frame" x="70" y="483" width="300" height="28"/>
-                                <color key="backgroundColor" name="TextField"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="300" id="ZwO-DQ-1dK"/>
                                 </constraints>
@@ -2100,7 +2082,7 @@
                             </button>
                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="hzb-5T-Skp">
                                 <rect key="frame" x="70" y="526" width="300" height="120"/>
-                                <color key="backgroundColor" name="TextField"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="120" id="6Ux-qd-XTh"/>
                                 </constraints>
@@ -2110,7 +2092,7 @@
                             </textView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="tWi-Uy-A3g"/>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <color key="backgroundColor" name="BackgroundColor"/>
                         <constraints>
                             <constraint firstItem="xZO-e1-Lg5" firstAttribute="centerX" secondItem="tzz-1o-sGq" secondAttribute="centerX" id="3MA-yd-gZu"/>
                             <constraint firstItem="kpH-fb-WLw" firstAttribute="top" secondItem="tWi-Uy-A3g" secondAttribute="top" constant="15" id="4io-6q-XOK"/>
@@ -2154,7 +2136,7 @@
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="R4b-pa-XUR">
                                 <rect key="frame" x="0.0" y="178" width="440" height="661"/>
-                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <color key="backgroundColor" name="BackgroundColor"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="switchCell" id="9A2-ya-Xs5">
                                         <rect key="frame" x="0.0" y="50" width="440" height="51"/>
@@ -2172,6 +2154,7 @@
                                                 <constraint firstItem="9uy-iJ-X4g" firstAttribute="centerY" secondItem="fTn-Qa-SL4" secondAttribute="centerY" id="wbs-uN-CyM"/>
                                             </constraints>
                                         </tableViewCellContentView>
+                                        <color key="backgroundColor" name="BackgroundColor"/>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="segueCell" id="MLM-am-Mvy">
                                         <rect key="frame" x="0.0" y="101" width="440" height="51"/>
@@ -2180,6 +2163,7 @@
                                             <rect key="frame" x="0.0" y="0.0" width="409.66666666666669" height="51"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                         </tableViewCellContentView>
+                                        <color key="backgroundColor" name="BackgroundColor"/>
                                         <connections>
                                             <segue destination="bkh-hu-rSA" kind="show" id="pL4-yl-rM2"/>
                                         </connections>
@@ -2188,7 +2172,7 @@
                             </tableView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="fCh-y7-M4o"/>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <color key="backgroundColor" name="BackgroundColor"/>
                         <constraints>
                             <constraint firstItem="R4b-pa-XUR" firstAttribute="leading" secondItem="fCh-y7-M4o" secondAttribute="leading" id="3vH-rD-eZS"/>
                             <constraint firstItem="fCh-y7-M4o" firstAttribute="bottom" secondItem="R4b-pa-XUR" secondAttribute="bottom" id="5lp-wG-GlI"/>
@@ -2215,7 +2199,7 @@
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="5fo-A5-X9r">
                                 <rect key="frame" x="0.0" y="178" width="440" height="661"/>
-                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <color key="backgroundColor" name="BackgroundColor"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="customRestriction" id="Us1-HJ-9Rb">
                                         <rect key="frame" x="0.0" y="50" width="440" height="51"/>
@@ -2224,12 +2208,13 @@
                                             <rect key="frame" x="0.0" y="0.0" width="440" height="51"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                         </tableViewCellContentView>
+                                        <color key="backgroundColor" name="BackgroundColor"/>
                                     </tableViewCell>
                                 </prototypes>
                             </tableView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="Lvg-Tv-wiC"/>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <color key="backgroundColor" name="BackgroundColor"/>
                         <constraints>
                             <constraint firstItem="5fo-A5-X9r" firstAttribute="top" secondItem="Lvg-Tv-wiC" secondAttribute="top" id="kLc-8x-UO3"/>
                             <constraint firstItem="Lvg-Tv-wiC" firstAttribute="trailing" secondItem="5fo-A5-X9r" secondAttribute="trailing" id="lqV-31-58p"/>
@@ -2421,7 +2406,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="tCZ-GU-fn1" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-457" y="-328"/>
+            <point key="canvasLocation" x="433.63636363636368" y="-328.24267782426779"/>
         </scene>
         <!--Item-->
         <scene sceneID="L7u-sb-zzY">
@@ -2440,7 +2425,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="UOP-rp-5Ge" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2957.727272727273" y="-557.3221757322176"/>
+            <point key="canvasLocation" x="3849.545454545455" y="-557.3221757322176"/>
         </scene>
         <!--Search-->
         <scene sceneID="LpQ-h0-3zX">
@@ -2461,11 +2446,30 @@
             </objects>
             <point key="canvasLocation" x="-3097" y="913"/>
         </scene>
+        <!--Feed-->
+        <scene sceneID="I9J-cR-4Re">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="yNE-gl-D6v" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="Feed" image="fork.knife" catalog="system" id="0CU-IJ-AOi"/>
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="f3t-Pa-LTb">
+                        <rect key="frame" x="0.0" y="124" width="440" height="54"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="FXG-Hn-u6H" kind="relationship" relationship="rootViewController" id="vnk-mD-ycI"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="UoM-AR-NeW" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-2097" y="-995"/>
+        </scene>
     </scenes>
     <inferredMetricsTieBreakers>
         <segue reference="4tW-D2-tRj"/>
-        <segue reference="GBj-kG-nEj"/>
-        <segue reference="nA0-ma-fTO"/>
+        <segue reference="HAF-cC-uHm"/>
+        <segue reference="7s1-Zn-bwY"/>
     </inferredMetricsTieBreakers>
     <resources>
         <image name="bookmark.square.fill" catalog="system" width="128" height="114"/>
@@ -2514,7 +2518,7 @@
             <color red="0.20392156859999999" green="0.78039215689999997" blue="0.34901960780000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="systemRedColor">
-            <color red="1" green="0.21960784310000001" blue="0.23529411759999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="1" green="0.23137254900000001" blue="0.18823529410000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
     </resources>
 </document>
