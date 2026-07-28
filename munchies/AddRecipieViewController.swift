@@ -70,6 +70,12 @@ class AddRecipieViewController: UIViewController, UITableViewDelegate, UITableVi
         let tap = UITapGestureRecognizer(target: self, action: #selector(onEditImage))
         recipeImage.isUserInteractionEnabled = true
         recipeImage.addGestureRecognizer(tap)
+        
+        calorieField.delegate = self
+        prepHourField.delegate = self
+        prepMinField.delegate = self
+        cookHourField.delegate = self
+        cookMinField.delegate = self
         if let uid  = Auth.auth().currentUser?.uid
         {
             currentUser = User(UID: uid, onCompletion: nil)
@@ -79,12 +85,25 @@ class AddRecipieViewController: UIViewController, UITableViewDelegate, UITableVi
     }
     
     // Called when the user clicks on the view outside of the UITextField
-    override func touchesBegan(_ touches:Set<UITouch>, with event:UIEvent?)
-    {
+    override func touchesBegan(_ touches:Set<UITouch>, with event:UIEvent?) {
         self.view.endEditing(true)
     }
     
-    func updateUI(){
+    func textField(_ textField:UITextField, shouldChangeCharactersInRanges ranges:[NSValue],
+        replacementString string:String) -> Bool {
+        if textField.keyboardType == .numberPad
+        {
+            // only allow digits to be typed into the timeField
+            let numbers:CharacterSet = CharacterSet.decimalDigits
+            let inputCharacterSet:CharacterSet = CharacterSet(charactersIn: string)
+            return numbers.isSuperset(of: inputCharacterSet)
+        } else
+        {
+            return true
+        }
+    }
+    
+    func updateUI() {
         // borders
         // UITextView
 
@@ -106,7 +125,6 @@ class AddRecipieViewController: UIViewController, UITableViewDelegate, UITableVi
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        print(ingredients)
         if indexPath.row < ingredients.count {
             let ingredient = ingredients[indexPath.row]
             let cell = tableView.dequeueReusableCell(withIdentifier: ingredientCellIdentifier, for: indexPath)
