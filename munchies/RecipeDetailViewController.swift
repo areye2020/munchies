@@ -24,10 +24,14 @@ class RecipeDetailViewController: UIViewController, UITableViewDelegate, UITable
     @IBOutlet weak var servings: UILabel!
     @IBOutlet weak var calories: UILabel!
     
+    
+    @IBOutlet weak var ingredients: UILabel!
     @IBOutlet weak var ingredientTable: UITableView!
     let ingredientTableCellIdentitfier = "ingredientCell"
     
-    @IBOutlet weak var instructions: UITextField!
+    @IBOutlet weak var instructionsLabel: UILabel!
+    @IBOutlet weak var instructions: UITextView!
+    
     
     let db = Firestore.firestore()
     var recipe: Recipe?
@@ -39,34 +43,58 @@ class RecipeDetailViewController: UIViewController, UITableViewDelegate, UITable
         
         ingredientTable.delegate = self
         ingredientTable.dataSource = self
+        instructions.isEditable = false
+        instructions.isSelectable = false
+        instructions.isScrollEnabled = true
+        addUI()
         addFields()
+        
     }
+    
     
     override func viewWillAppear(_ animated: Bool) {
         updateFavoriteButtonState()
     }
     
+    // this is for adding in nice looking uis to the screen
+    func addUI() {
+        // borders
+        // UIImage
+        recipeImage.contentMode = .scaleAspectFill
+        recipeImage.clipsToBounds = true
+        // label
+        styleLabel(recipeName)
+        styleLabel(authorName)
+        styleLabel(ingredients)
+        styleLabel(instructionsLabel)
+    }
+    
+    // for styling the labels
+    func styleLabel(_ label: UILabel) {
+        label.backgroundColor = UIColor.black.withAlphaComponent(0.5)
+        label.textColor = .white
+        label.layer.cornerRadius = 8
+        label.layer.masksToBounds = true
+        
+        // Labels have no built-in padding, so give the background room to breathe
+        label.numberOfLines = 1
+    }
+    
     func addFields(){
         guard let recipe = recipe else { return }
-        
-        recipeName.text = recipe.name
-        authorName.text = "by \(recipe.author ?? "Unknown")"
-        
-        servings.text = "\(String(describing: recipe.servings))"
+        recipeName.text = " \(recipe.name) "
+        authorName.text = " by \(recipe.author ?? " Unknown ") "
+        servings.text = "\(String(recipe.servings ?? 0))"
         calories.text = recipe.calories != nil ? "\(recipe.calories!) cal" : "N/A"
-        
         let prep = recipe.getTime(for: .prep)
         prepTime.text = formatTime(hours: prep.hours, minutes: prep.minutes)
-        
         let cook = recipe.getTime(for: .cook)
         cookTime.text = formatTime(hours: cook.hours, minutes: cook.minutes)
-        
         loadImage(named: recipe.image ?? "munchiesLogoColor") { [weak self] image in
             self?.recipeImage.image = image ?? UIImage(named: "munchiesLogoColor")
         }
         
         instructions.text = recipe.instructions
-        
         ingredientTable.reloadData()
     }
     
@@ -85,14 +113,11 @@ class RecipeDetailViewController: UIViewController, UITableViewDelegate, UITable
             print("No recipe ID available")
             return
         }
-        
         guard let uid = Auth.auth().currentUser?.uid else {
             createAlert(title: "Not Logged In", "Please log in to favorite recipes.")
             return
         }
-        
         let databaseFunc = isFavorited ? FieldValue.arrayRemove : FieldValue.arrayUnion
-        
         
         db.collection(recipeCollectionID).document(recipeID).updateData([
             recipeFavoritedByFieldID: databaseFunc([uid])
@@ -110,7 +135,7 @@ class RecipeDetailViewController: UIViewController, UITableViewDelegate, UITable
                     {
                         let uidIndex = self.recipe?.favoritedBy?.firstIndex(of: uid)
                         self.recipe?.favoritedBy?.remove(at: uidIndex!)
-                        sender.image = UIImage(systemName: "heart") 
+                        sender.image = UIImage(systemName: "heart")
                     }
                     self.isFavorited = !self.isFavorited
                 }
@@ -120,9 +145,9 @@ class RecipeDetailViewController: UIViewController, UITableViewDelegate, UITable
     // Sets the button's icon based on whether the current user already favorited this recipe
     func updateFavoriteButtonState() {
         if let uid = Auth.auth().currentUser?.uid,
-            let favoritedBy = recipe?.favoritedBy,
-            favoritedBy.contains(uid),
-            let button = navigationItem.rightBarButtonItem
+           let favoritedBy = recipe?.favoritedBy,
+           favoritedBy.contains(uid),
+           let button = navigationItem.rightBarButtonItem
         {
             
             button.image = UIImage(systemName: "heart.fill")
@@ -162,20 +187,15 @@ class RecipeDetailViewController: UIViewController, UITableViewDelegate, UITable
                 DispatchQueue.main.async { completion(nil) }
                 return
             }
-            
             guard let data = data, let image = UIImage(data: data) else {
                 DispatchQueue.main.async { completion(nil) }
                 return
             }
-            
             DispatchQueue.main.async {
                 completion(image)
             }
         }
     }
-    
-    
-    
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return recipe?.ingredients.count ?? 0
@@ -186,6 +206,4 @@ class RecipeDetailViewController: UIViewController, UITableViewDelegate, UITable
         cell.textLabel?.text = "\(recipe?.ingredients[indexPath.row] ?? "")"
         return cell
     }
-    
-    
 }
