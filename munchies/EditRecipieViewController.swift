@@ -36,7 +36,6 @@ class EditRecipieViewController: UIViewController, UIImagePickerControllerDelega
         populateUI()
         setupImageTap()
         styleUIElements()
-        set
     }
     
     func styleUIElements() {
