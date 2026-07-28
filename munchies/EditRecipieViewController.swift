@@ -22,8 +22,10 @@ class EditRecipieViewController: UIViewController, UIImagePickerControllerDelega
     
     @IBOutlet weak var cookMinsTextField: UITextField!
     
-    @IBOutlet weak var ingredientsTextView: UITextView!
     @IBOutlet weak var instructionsTextView: UITextView!
+    
+    @IBOutlet weak var ingredientsStackView: UIStackView!
+    
     
     // This catches the data passed from the previous screen
     var recipe: Recipe?
@@ -45,9 +47,9 @@ class EditRecipieViewController: UIViewController, UIImagePickerControllerDelega
         let cornerRadius: CGFloat = 8.0
         
         // 2. Apply styling to Ingredients Text View
-        ingredientsTextView.layer.borderColor = borderColor
-        ingredientsTextView.layer.borderWidth = borderWidth
-        ingredientsTextView.layer.cornerRadius = cornerRadius
+        // ingredientsTextView.layer.borderColor = borderColor
+        // ingredientsTextView.layer.borderWidth = borderWidth
+        // ingredientsTextView.layer.cornerRadius = cornerRadius
         
         // 3. Apply styling to Instructions Text View
         instructionsTextView.layer.borderColor = borderColor
@@ -55,7 +57,7 @@ class EditRecipieViewController: UIViewController, UIImagePickerControllerDelega
         instructionsTextView.layer.cornerRadius = cornerRadius
         
         // Slight inset so the text doesn't touch the border walls
-        ingredientsTextView.textContainerInset = UIEdgeInsets(top: 8, left: 25, bottom: 8, right: 5)
+        //ingredientsTextView.textContainerInset = UIEdgeInsets(top: 8, left: 25, bottom: 8, right: 5)
         instructionsTextView.textContainerInset = UIEdgeInsets(top: 8, left: 25, bottom: 8, right: 5)
     }
     
@@ -106,19 +108,74 @@ class EditRecipieViewController: UIViewController, UIImagePickerControllerDelega
         // 2. Set up the Servings Stepper
         currentServings = recipe.servings ?? 1
         servingsLabel.text = "\(currentServings)"
-                
+        
         // 3. Split Prep Time into Hours and Minutes
         let prepTime = recipe.getTime(for: .prep)
         prepHoursTextField.text = "\(prepTime.hours)"
         prepMinsTextField.text = "\(prepTime.minutes)"
-                
+        
         // 4. Split Cook Time into Hours and Minutes
         let cookTime = recipe.getTime(for: .cook)
         cookHoursTextField.text = "\(cookTime.hours)"
         cookMinsTextField.text = "\(cookTime.minutes)"
-                        
-        // 5. Convert [String] array into a single string for the text view
-        ingredientsTextView.text = recipe.ingredients.joined(separator: "\n")}
+        
+        // Clear out any placeholder rows in the stack view first
+        ingredientsStackView.arrangedSubviews.forEach { $0.removeFromSuperview() }
+
+        // Loop through the existing ingredients array and create a row for each
+        if !recipe.ingredients.isEmpty {
+            // FIX: Change 'existingIngredients' to 'recipe.ingredients'
+            for ingredient in recipe.ingredients {
+                addIngredientRow(with: ingredient)
+            }
+        } else {
+            // If there are no ingredients, just add one empty row so the user can start typing
+            addIngredientRow()
+        }
+    }
+    
+    // Creates a new dynamic row for an ingredient
+    func addIngredientRow(with text: String = "") {
+        // 1. Create a Horizontal Stack View to hold the text field and button
+        let rowStack = UIStackView()
+        rowStack.axis = .horizontal
+        rowStack.spacing = 8
+        rowStack.alignment = .fill
+        rowStack.distribution = .fill
+        
+        // 2. Create and style the Text Field
+        let textField = UITextField()
+        textField.text = text
+        textField.placeholder = "e.g. 2 cups of flour"
+        textField.borderStyle = .roundedRect
+        textField.backgroundColor = UIColor(named: "TextField") ?? .systemGray6
+        // Allow it to stretch to fill most of the row
+        textField.setContentHuggingPriority(.defaultLow, for: .horizontal)
+        
+        // 3. Create the Trash Can Button
+        // We use a modern UIAction so we don't need Objective-C selectors
+        let deleteAction = UIAction { _ in
+            // Animate the deletion for a smooth UI experience
+            UIView.animate(withDuration: 0.2, animations: {
+                rowStack.isHidden = true
+            }) { _ in
+                rowStack.removeFromSuperview() // Actually remove it from the screen
+            }
+        }
+        
+        let deleteButton = UIButton(type: .system, primaryAction: deleteAction)
+        deleteButton.setImage(UIImage(systemName: "trash"), for: .normal)
+        deleteButton.tintColor = .systemRed
+        // Prevent the button from stretching so it stays an icon shape
+        deleteButton.setContentHuggingPriority(.required, for: .horizontal)
+        
+        // 4. Add the field and button to the row
+        rowStack.addArrangedSubview(textField)
+        rowStack.addArrangedSubview(deleteButton)
+        
+        // 5. Add the completed row to our main vertical stack view
+        ingredientsStackView.addArrangedSubview(rowStack)
+    }
     
     
     @IBAction func saveTapped(_ sender: Any) {
@@ -129,11 +186,18 @@ class EditRecipieViewController: UIViewController, UIImagePickerControllerDelega
             return
         }
         
-        // 1. Recreate the Ingredients Array
-        // Split by new line and remove any empty blank lines
-        let ingredientsArray = ingredientsTextView.text
-            .components(separatedBy: "\n")
-            .filter { !$0.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty }
+        // Extract text from our dynamic stack view rows
+        var updatedIngredientsArray: [String] = []
+
+        for view in ingredientsStackView.arrangedSubviews {
+            if let rowStack = view as? UIStackView,
+               let textField = rowStack.arrangedSubviews.first(where: { $0 is UITextField }) as? UITextField,
+               let text = textField.text, !text.trimmingCharacters(in: .whitespaces).isEmpty {
+                
+                // Add the text to our array if it's not blank
+                updatedIngredientsArray.append(text)
+            }
+        }
         
         // 2. Calculate Total Prep Time (Hours to Mins + Mins)
         let prepHours = Int(prepHoursTextField.text ?? "0") ?? 0
@@ -158,7 +222,7 @@ class EditRecipieViewController: UIViewController, UIImagePickerControllerDelega
             recipeServingsFieldID: currentServings, // Grabbed straight from our stepper variable
             recipePrepTimeFieldID: totalPrepTime,
             recipeCookTimeFieldID: totalCookTime,
-            recipeIngredientsFieldID: ingredientsArray,
+            recipeIngredientsFieldID: updatedIngredientsArray,
             recipeInstructionsFieldID: instructionsTextView.text ?? ""
         ]
         
@@ -189,4 +253,47 @@ class EditRecipieViewController: UIViewController, UIImagePickerControllerDelega
         currentServings += 1
         servingsLabel.text = "\(currentServings)"
     }
+    
+    @IBAction func addIngredientTapped(_ sender: Any) {
+        //  add a new blank row to the bottom of the list
+        addIngredientRow()
+    }
+    
+    
+    @IBAction func deleteRecipieTapped(_ sender: UIButton) {
+        guard let recipeID = recipe?.id else { return } // Ensure we have an ID to delete
+            
+            // 1. Create a confirmation popup
+            let alert = UIAlertController(title: "Delete Recipe",
+                                          message: "Are you sure you want to delete this recipe? This cannot be undone.",
+                                          preferredStyle: .alert)
+            
+            // 2. The Cancel action
+            alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+            
+            // 3. The Destructive Delete action
+            let confirmDelete = UIAlertAction(title: "Delete", style: .destructive) { [weak self] _ in
+                
+                let db = Firestore.firestore()
+                // Replace "recipes" with your actual collection ID variable if it differs
+                db.collection("recipes").document(recipeID).delete() { error in
+                    if let error = error {
+                        print("Error deleting document: \(error)")
+                    } else {
+                        print("Document successfully deleted!")
+                        // Send the user back to the previous screen
+                        DispatchQueue.main.async {
+                            self?.navigationController?.popViewController(animated: true)
+                        }
+                    }
+                }
+            }
+            
+            alert.addAction(confirmDelete)
+            
+            // 4. Show the popup
+            present(alert, animated: true, completion: nil)
+    }
+    
+    
 }
