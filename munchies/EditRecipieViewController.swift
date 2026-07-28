@@ -36,6 +36,7 @@ class EditRecipieViewController: UIViewController, UIImagePickerControllerDelega
         populateUI()
         setupImageTap()
         styleUIElements()
+        set
     }
     
     func styleUIElements() {
@@ -85,6 +86,8 @@ class EditRecipieViewController: UIViewController, UIImagePickerControllerDelega
             dismiss(animated: true, completion: nil)
         }
     
+    
+    
     func populateUI() {
         // Ensure we actually have a recipe passed in
         guard let recipe = recipe else { return }
@@ -106,19 +109,72 @@ class EditRecipieViewController: UIViewController, UIImagePickerControllerDelega
         // 2. Set up the Servings Stepper
         currentServings = recipe.servings ?? 1
         servingsLabel.text = "\(currentServings)"
-                
+        
         // 3. Split Prep Time into Hours and Minutes
         let prepTime = recipe.getTime(for: .prep)
         prepHoursTextField.text = "\(prepTime.hours)"
         prepMinsTextField.text = "\(prepTime.minutes)"
-                
+        
         // 4. Split Cook Time into Hours and Minutes
         let cookTime = recipe.getTime(for: .cook)
         cookHoursTextField.text = "\(cookTime.hours)"
         cookMinsTextField.text = "\(cookTime.minutes)"
-                        
+        
         // 5. Convert [String] array into a single string for the text view
-        ingredientsTextView.text = recipe.ingredients.joined(separator: "\n")}
+        ingredientsTextView.text = recipe.ingredients.joined(separator: "\n")
+        
+    }
+    private func confirmDeleteRecipe() {
+        // 1. Create the confirmation alert dialog wrapper
+        let alert = UIAlertController(
+            title: "Delete Recipe",
+            message: "Are you sure you want to permanently delete this recipe? This action cannot be undone.",
+            preferredStyle: .alert
+        )
+        
+        // 2. Build the destructive action option
+        let deleteAction = UIAlertAction(title: "Delete", style: .destructive) { [weak self] _ in
+            self?.executeFirestoreDeletion()
+        }
+        
+        // 3. Build a cancel action option to safeguard against accidental touches
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+        
+        // 4. Attach actions and present the interactive popover onto the viewport
+        alert.addAction(deleteAction)
+        alert.addAction(cancelAction)
+        present(alert, animated: true, completion: nil)
+        
+    }
+        
+    private func executeFirestoreDeletion() {
+        // Safely extract your recipe's identifier or document reference key
+        guard let recipeId = self.recipe?.id else {
+            print("Error: Could not locate a valid document reference identifier for this recipe object.")
+            return
+        }
+        
+        let db = Firestore.firestore()
+        
+        // Reference the exact target document inside the "recipes" collection path
+        db.collection("recipes").document(recipeId).delete { [weak self] error in
+            if let error = error {
+                // Gracefully log database communication errors
+                print("Error removing recipe document from Firestore: \(error.localizedDescription)")
+                let errorAlert = UIAlertController(title: "Error", message: "Failed to delete the recipe. Please try again.", preferredStyle: .alert)
+                errorAlert.addAction(UIAlertAction(title: "OK", style: .default))
+                self?.present(errorAlert, animated: true)
+            } else {
+                print("Recipe document successfully deleted from Firestore.")
+                
+                // Pop the view controller off the navigation stack instantly to slide back smoothly to the feed screen
+                DispatchQueue.main.async {
+                    self?.navigationController?.popViewController(animated: true)
+                }
+            }
+        }
+        
+    }
     
     
     @IBAction func saveTapped(_ sender: Any) {
@@ -189,4 +245,11 @@ class EditRecipieViewController: UIViewController, UIImagePickerControllerDelega
         currentServings += 1
         servingsLabel.text = "\(currentServings)"
     }
+    
+    @IBAction func deleteButtonTapped(_ sender: UIButton) {
+        // This will trigger our safety alert popup and Firestore deletion
+        confirmDeleteRecipe()
+    }
+    
+    
 }
