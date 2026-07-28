@@ -20,7 +20,29 @@ class RecipeCardCell: UITableViewCell {
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        // Initialization code
+        
+        // 1. Make the cell's outer background clear so the table view background shows through the gaps
+        self.backgroundColor = .clear
+        
+        // 2. Set the "Card" background to a very light off-white orange
+        contentView.backgroundColor = UIColor(named: "ThemeColor")?.withAlphaComponent(0.1)
+        
+        // 3. Add rounded corners to make it look friendly and modern
+        contentView.layer.cornerRadius = 12
+        contentView.layer.masksToBounds = true
+        
+        // 4. Add the ThemeColor border around the card
+        contentView.layer.borderWidth = 1.5
+        contentView.layer.borderColor = UIColor(named: "ThemeColor")?.cgColor
+    }
+    
+    // 5. Create margins so the cards don't touch each other
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        
+        // This shrinks the card by 8 points on top/bottom, and 16 points on the sides
+        contentView.frame = contentView.frame.inset(by: UIEdgeInsets(top: 8, left: 16, bottom: 8, right: 16))
+        
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {
