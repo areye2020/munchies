@@ -78,6 +78,12 @@ class AddRecipieViewController: UIViewController, UITableViewDelegate, UITableVi
         updateUI()
     }
     
+    // Called when the user clicks on the view outside of the UITextField
+    override func touchesBegan(_ touches:Set<UITouch>, with event:UIEvent?)
+    {
+        self.view.endEditing(true)
+    }
+    
     func updateUI(){
         // borders
         // UITextView
@@ -93,22 +99,18 @@ class AddRecipieViewController: UIViewController, UITableViewDelegate, UITableVi
         label.textColor = .white
         label.layer.cornerRadius = 8
         label.layer.masksToBounds = true
-        
-        // Labels have no built-in padding, so give the background room to breathe
-        label.numberOfLines = 1
     }
-    
-    func numberOfSections(in tableView: UITableView) -> Int { return 2 }
-    // Remove section header titles and spacing
-    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat { return CGFloat.leastNormalMagnitude }
-    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? { return nil }
-    
+
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if section == 0 { return ingredients.count } else { return 1 }
+        return ingredients.count + 1
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        if indexPath.section == 0 {
+        print("huh??")
+        print(ingredients)
+        if indexPath.row < ingredients.count {
+            print(ingredients.count)
+            print(indexPath.row)
             let ingredient = ingredients[indexPath.row]
             let cell = tableView.dequeueReusableCell(withIdentifier: ingredientCellIdentifier, for: indexPath)
             cell.textLabel?.text = ingredient
@@ -124,11 +126,11 @@ class AddRecipieViewController: UIViewController, UITableViewDelegate, UITableVi
             tf.placeholder = "Add ingredient..."
             tf.returnKeyType = .done
             tf.clearButtonMode = .whileEditing
-            tf.autocapitalizationType = .sentences
+            tf.autocapitalizationType = .none
             tf.delegate = self
             cell.contentView.addSubview(tf)
             NSLayoutConstraint.activate([
-                tf.leadingAnchor.constraint(equalTo: cell.contentView.leadingAnchor, constant: 16),
+                tf.leadingAnchor.constraint(equalTo: cell.contentView.leadingAnchor, constant: 20),
                 tf.trailingAnchor.constraint(equalTo: cell.contentView.trailingAnchor, constant: -16),
                 tf.topAnchor.constraint(equalTo: cell.contentView.topAnchor, constant: 8),
                 tf.bottomAnchor.constraint(equalTo: cell.contentView.bottomAnchor, constant: -8)
@@ -153,8 +155,9 @@ class AddRecipieViewController: UIViewController, UITableViewDelegate, UITableVi
             return true
         }
         ingredients.append(final)
-        IngredientsTableView.reloadSections(IndexSet(integer: 0), with: .automatic)
+        IngredientsTableView.reloadData()
         textField.text = ""
+        textField.resignFirstResponder()
         return true
     }
     
@@ -167,9 +170,8 @@ class AddRecipieViewController: UIViewController, UITableViewDelegate, UITableVi
         return newString
     }
     
-    func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool { return indexPath.section == 0 }
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-        if editingStyle == .delete && indexPath.section == 0 {
+        if editingStyle == .delete && indexPath.row < ingredients.count - 1 {
             ingredients.remove(at: indexPath.row)
             tableView.deleteRows(at: [indexPath], with: .automatic)
         }
