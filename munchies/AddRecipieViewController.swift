@@ -106,11 +106,8 @@ class AddRecipieViewController: UIViewController, UITableViewDelegate, UITableVi
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        print("huh??")
         print(ingredients)
         if indexPath.row < ingredients.count {
-            print(ingredients.count)
-            print(indexPath.row)
             let ingredient = ingredients[indexPath.row]
             let cell = tableView.dequeueReusableCell(withIdentifier: ingredientCellIdentifier, for: indexPath)
             cell.textLabel?.text = ingredient
