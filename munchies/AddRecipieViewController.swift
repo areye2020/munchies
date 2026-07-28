@@ -74,6 +74,28 @@ class AddRecipieViewController: UIViewController, UITableViewDelegate, UITableVi
         {
             currentUser = User(UID: uid, onCompletion: nil)
         }
+        
+        updateUI()
+    }
+    
+    func updateUI(){
+        // borders
+        // UITextView
+
+        // UIImage
+        recipeImage.contentMode = .scaleAspectFill
+        recipeImage.clipsToBounds = true
+    }
+    
+    //  for styling labels
+    func styleLabel(_ label: UILabel) {
+        label.backgroundColor = UIColor.black.withAlphaComponent(0.5)
+        label.textColor = .white
+        label.layer.cornerRadius = 8
+        label.layer.masksToBounds = true
+        
+        // Labels have no built-in padding, so give the background room to breathe
+        label.numberOfLines = 1
     }
     
     func numberOfSections(in tableView: UITableView) -> Int { return 2 }
@@ -218,6 +240,18 @@ class AddRecipieViewController: UIViewController, UITableViewDelegate, UITableVi
                     self.createAlert(title: "Save Failed", "Could not save recipe: \(error.localizedDescription)")
                 } else {
                     DispatchQueue.main.async {
+                        // empthy all firelds before segue
+                        self.nameField.text = ""
+                        self.servingField.text = ""
+                        self.calorieField.text = ""
+                        self.prepHourField.text = ""
+                        self.prepMinField.text = ""
+                        self.cookHourField.text = ""
+                        self.cookMinField.text = ""
+                        self.ingredients = []
+                        self.IngredientsTableView.reloadData()
+                        self.recipeImage.image = UIImage(named: "munchiesLogoColor")
+                        self.instructionField.text = ""
                         self.performSegue(withIdentifier: "favoriteSegue", sender: self)
                     }
                 }
