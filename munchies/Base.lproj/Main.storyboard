@@ -42,7 +42,7 @@
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="di8-Vy-N6d">
                                                     <rect key="frame" x="25" y="8" width="395" height="226"/>
                                                     <subviews>
-                                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="a7p-q2-xSx">
+                                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="munchiesLogoColor" translatesAutoresizingMaskIntoConstraints="NO" id="a7p-q2-xSx">
                                                             <rect key="frame" x="0.0" y="0.0" width="395" height="161"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="height" constant="180" id="COI-EZ-4LF"/>
@@ -1388,7 +1388,7 @@
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="SAV-Ba-2wF">
                                                     <rect key="frame" x="25" y="8" width="395" height="226"/>
                                                     <subviews>
-                                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Qnl-jO-C5q">
+                                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="munchiesLogoColor" translatesAutoresizingMaskIntoConstraints="NO" id="Qnl-jO-C5q">
                                                             <rect key="frame" x="0.0" y="0.0" width="395" height="161"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="180" id="PQH-et-Uyf"/>
@@ -1536,7 +1536,7 @@
                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="5cM-Xq-X9X">
                                                 <rect key="frame" x="0.0" y="0.0" width="375" height="200"/>
                                                 <subviews>
-                                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="xWi-kn-NRv">
+                                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="munchiesLogoColor" translatesAutoresizingMaskIntoConstraints="NO" id="xWi-kn-NRv">
                                                         <rect key="frame" x="0.0" y="0.0" width="375" height="200"/>
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="200" id="ssx-k4-Whh"/>
@@ -2465,7 +2465,7 @@
     <inferredMetricsTieBreakers>
         <segue reference="4tW-D2-tRj"/>
         <segue reference="GBj-kG-nEj"/>
-        <segue reference="nA0-ma-fTO"/>
+        <segue reference="mIs-TU-GZD"/>
     </inferredMetricsTieBreakers>
     <resources>
         <image name="bookmark.square.fill" catalog="system" width="128" height="114"/>
