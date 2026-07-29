@@ -53,6 +53,12 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
         }
     }
     
+    // dismisses keyboard when user touches outside the searchbar
+    override func touchesBegan(_ touches:Set<UITouch>, with event:UIEvent?)
+    {
+        self.view.endEditing(true)
+    }
+    
     // MARK: - Firestore Fetch
     func fetchEverythingFromFirestore() {
         db.collection(recipeCollectionID).getDocuments { [weak self] snapshot, error in
