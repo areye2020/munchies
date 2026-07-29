@@ -11,7 +11,8 @@ import UIKit
 import FirebaseFirestore
 import FirebaseAuth
 
-class FeedViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
+class FeedViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate,
+    UICollectionViewDelegateFlowLayout {
     
     let db = Firestore.firestore()
     let detailSegueID = "DetailSegue"
@@ -82,7 +83,6 @@ class FeedViewController: UIViewController, UICollectionViewDataSource, UICollec
                     self.recipeCollectionView.reloadData()
                 }
             }
-            
         }
     }
     

@@ -30,12 +30,10 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
         // Connect the UI to the code
         tableView.dataSource = self
         tableView.delegate = self
         searchBar.delegate = self
-                
         // make the table view look a bit cleaner without empty rows
         tableView.separatorStyle = .none
     }
@@ -46,8 +44,7 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == detailScreenSegueIdentifier {
-            if let detailVC = segue.destination as? RecipeDetailViewController
-            {
+            if let detailVC = segue.destination as? RecipeDetailViewController {
                 detailVC.recipe = selectedRecipe
             }
         }
@@ -72,7 +69,8 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
             if let uid = Auth.auth().currentUser?.uid {
                 self?.currentUser = User(UID: uid) { user in
                     if let user {
-                        user.withoutRestrictedRecipes(recipes: self?.allRecipes ?? []) { allowedRecipes, error in
+                        user.withoutRestrictedRecipes(recipes: self?.allRecipes ?? []) {
+                            allowedRecipes, error in
                             if let error {
                                 print(error.localizedDescription)
                             } else
@@ -84,7 +82,8 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
                                         // Filtering the results immediately ensures the user's
                                         // search will still apply if they leave the screen and
                                         // return
-                                        self?.filterWithSearchBar(sBar, textDidChange: self?.searchBar.text ?? "")
+                                        self?.filterWithSearchBar(sBar,
+                                            textDidChange: self?.searchBar.text ?? "")
                                     } else {
                                         self?.tableView.reloadData()
                                     }
@@ -108,8 +107,7 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
         filterWithSearchBar(searchBar, textDidChange: searchText)
     }
     
-    func filterWithSearchBar(_ searchBar: UISearchBar, textDidChange searchText: String)
-    {
+    func filterWithSearchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         if searchText.isEmpty {
             // If the user clears the search bar, show all recipes
             filteredRecipes = allRecipes
@@ -120,7 +118,6 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
                 return recipe.name.lowercased().contains(searchText.lowercased())
             }
         }
-            
         // Refresh the table with the new filtered results
         tableView.reloadData()
     }
@@ -134,8 +131,10 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
         return filteredRecipes.count
     }
     
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: "RecipeCardCell", for: indexPath) as? RecipeCardCell else {
+    func tableView(_ tableView: UITableView,
+        cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: "RecipeCardCell",
+        for: indexPath) as? RecipeCardCell else {
                     return UITableViewCell()
         }
                 
@@ -158,8 +157,8 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
         performSegue(withIdentifier: detailScreenSegueIdentifier, sender: self)
     }
     
+    // prevent the user from initiating the segue directly
     override func shouldPerformSegue(withIdentifier identifier: String, sender: Any?) -> Bool {
         return false
     }
-
 }

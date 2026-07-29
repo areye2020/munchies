@@ -8,58 +8,49 @@ import FirebaseFirestore
 import FirebaseAuth
 
 // representation of a user as stored in firebase
-class User
-{
+class User {
     let database:Firestore = Firestore.firestore()
     var uid:String?
     var username:String?
-    var bio:String
-    {
-        didSet
-        {
+    var bio:String {
+        didSet {
             self.syncToDatabase()
         }
     }
-    var imageURL:String
-    {
-        didSet
-        {
+    var imageURL:String {
+        didSet {
             self.syncToDatabase()
         }
     }
-    var restrictions:[String]
-    {
-        didSet
-        {
+    var restrictions:[String] {
+        didSet {
             self.syncToDatabase()
         }
     }
-    var customRestrictions:[String]
-    {
-        didSet
-        {
+    var customRestrictions:[String] {
+        didSet {
             self.syncToDatabase()
         }
     }
     
-    enum UserError: Error, LocalizedError
-    {
+    enum UserError: Error, LocalizedError {
         case usernameTaken
         case restrictionFetchFail
-        public var errorDescription:String?
-        {
-            switch self
-            {
+        public var errorDescription:String? {
+            switch self {
                 case .usernameTaken:
-                    return NSLocalizedString("this username is already taken", comment: "produced when a user attempts to update their username to one that is already taken")
+                    return NSLocalizedString("this username is already taken",
+                        comment: "produced when a user attempts to update their username to one "
+                        + "that is already taken")
                 case .restrictionFetchFail:
-                    return NSLocalizedString("database restrictions could not be retrieved", comment: "produced when a user object cannot acquire the restrictions from Firestore")
+                    return NSLocalizedString("database restrictions could not be retrieved",
+                        comment: "produced when a user object cannot acquire the restrictions "
+                        + "from Firestore")
             }
         }
     }
     
-    init(UID:String, username:String)
-    {
+    init(UID:String, username:String) {
         uid = UID
         self.username = username
         bio = ""
@@ -70,82 +61,67 @@ class User
     
     // attempts to generate a new User by retrieving the user with the same UID from firebase
     // passes the new User or nil to onComplettion
-    init(UID:String, onCompletion:((User?) -> Void)?)
-    {
+    init(UID:String, onCompletion:((User?) -> Void)?) {
         bio = ""
         imageURL = ""
         restrictions = []
         customRestrictions = []
         
-        database.collection(userCollectionID).document(UID).getDocument()
-        {(documentSnapshot, error) in
-            if let error
-            {
+        database.collection(userCollectionID).document(UID)
+            .getDocument() { (documentSnapshot, error) in
+            if let error {
                 print(error.localizedDescription)
-            } else if let documentSnapshot
-            {
+            } else if let documentSnapshot {
                 // try to get the user's username; user their email as a default
                 self.uid = UID
-                if let username:String = documentSnapshot[userUsernameFieldID] as? String
-                {
+                if let username:String = documentSnapshot[userUsernameFieldID] as? String {
                     self.username = username
-                } else if let currentUser:FirebaseAuth.User = Auth.auth().currentUser
-                {
+                } else if let currentUser:FirebaseAuth.User = Auth.auth().currentUser {
                     self.username = currentUser.email!
                 }
                 
                 // get user's bio and profile image
-                if let bio:String = documentSnapshot[userBioFieldID] as? String
-                {
+                if let bio:String = documentSnapshot[userBioFieldID] as? String {
                     self.bio = bio
                 }
-                if let imageURL:String = documentSnapshot[userImageFieldID] as? String
-                {
+                if let imageURL:String = documentSnapshot[userImageFieldID] as? String {
                     self.imageURL = imageURL
                 }
                 
                 // get user's restrictions and custom restrictions
                 if let restrictionNames:[String]
-                    = documentSnapshot[userRestrictionsFieldID] as? [String]
-                {
-                    for i in 0 ..< restrictionNames.count
-                    {
+                    = documentSnapshot[userRestrictionsFieldID] as? [String] {
+                    for i in 0 ..< restrictionNames.count {
                         self.restrictions.append(restrictionNames[i])
                     }
                 }
                 if let customDocRestrictions:[String]
-                    = documentSnapshot[userCustomRestrictionsID] as? [String]
-                {
-                    for i in 0 ..< customDocRestrictions.count
-                    {
+                    = documentSnapshot[userCustomRestrictionsID] as? [String] {
+                    for i in 0 ..< customDocRestrictions.count {
                         self.customRestrictions.append(customDocRestrictions[i])
                     }
                 }
-            } else
-            {
+            } else {
                 print("error: could not retrieve user data")
             }
-            if let onCompletion
-            {
+            if let onCompletion {
                 onCompletion(self.uid != nil && self.username != nil ? self : nil)
             }
         }
     }
     
-    func updateUsernameAndBio(newName:String, newBio:String, onCompletetion:@escaping ((any Error)?) -> Void)
-    {
-        database.collection(userCollectionID).whereField(userUsernameFieldID, isEqualTo: newName).getDocuments()
-        {(querySnapshot, error) in
-            if let error
-            {
+    // attempt to upadte the user's username and bio
+    // does not check for uniqueness, so that must be done before
+    func updateUsernameAndBio(newName:String, newBio:String,
+        onCompletetion:@escaping ((any Error)?) -> Void) {
+        database.collection(userCollectionID).whereField(userUsernameFieldID, isEqualTo: newName)
+            .getDocuments() { (querySnapshot, error) in
+            if let error {
                 onCompletetion(error)
-            } else
-            {
-                if querySnapshot!.documents.count > 0
-                {
+            } else {
+                if querySnapshot!.documents.count > 0 {
                     onCompletetion(UserError.usernameTaken)
-                } else
-                {
+                } else {
                     self.username = newName
                     self.bio = newBio
                     print(newName)
@@ -156,70 +132,67 @@ class User
         }
     }
     
-    func fetchRestrictions(onCompletion:@escaping ([Restriction]?, (any Error)?) -> Void)
-    {
-        database.collection(restrictionCollectionID).getDocuments()
-        {(querySnapshot, error) in
-            if let error
-            {
+    // attempt to retrieve this user's restrictions as a [Restriction] and pass that array to
+    // onCompletion if successful
+    func fetchRestrictions(onCompletion:@escaping ([Restriction]?, (any Error)?) -> Void) {
+        database.collection(restrictionCollectionID).getDocuments() { (querySnapshot, error) in
+            if let error {
                 onCompletion(nil, error)
-            } else if let docs:[QueryDocumentSnapshot] = querySnapshot?.documents
-            {
+            } else if let docs:[QueryDocumentSnapshot] = querySnapshot?.documents {
                 var userRestrictions:[Restriction] = []
-                for doc in docs
-                {
+                for doc in docs {
                     let docDictionary:[String:Any] = doc.data()
-                    let currentRestriction:String = docDictionary[restrictionNameFieldID] as! String
-                    if self.restrictions.firstIndex(of: currentRestriction) != nil
-                    {
-                        let currentIngredients:[String] = docDictionary[restrictionIngredientsFieldID] as! [String]
-                        userRestrictions.append(Restriction(name: currentRestriction, ingredients: currentIngredients))
+                    let currentRestriction:String =
+                        docDictionary[restrictionNameFieldID] as! String
+                    if self.restrictions.firstIndex(of: currentRestriction) != nil {
+                        let currentIngredients:[String] =
+                            docDictionary[restrictionIngredientsFieldID] as! [String]
+                        userRestrictions.append(Restriction(name: currentRestriction,
+                            ingredients: currentIngredients))
                     }
                 }
                 onCompletion(userRestrictions, nil)
-            } else
-            {
+            } else {
                 onCompletion(nil, UserError.restrictionFetchFail)
             }
         }
     }
     
+    // attempt to filter the given array of Recipes to remove ones that violate this user's
+    // restrictions
+    // the resulting new array will be passed on to onCompletion if successful
     func withoutRestrictedRecipes(recipes:[Recipe],
-        onCompletion:@escaping ([Recipe]?, (any Error)?) -> Void)
-    {
+        onCompletion:@escaping ([Recipe]?, (any Error)?) -> Void) {
         var allowedRecipes:[Recipe] = []
-        fetchRestrictions()
-        {(userRestrictions, error) in
-            if let error
-            {
+        fetchRestrictions() { (userRestrictions, error) in
+            if let error {
                 onCompletion(nil, error)
-            } else
-            {
-                for recipe:Recipe in recipes
-                {
+            } else {
+                for recipe:Recipe in recipes {
                     var violatesRestriction:Bool = false
                     var i:Int = 0
-                    while !violatesRestriction && i < recipe.ingredients.count
-                    {
+                    // for each recipe, iterate through its ingredients to check them against the
+                    // user's restrictions and custom restrictions
+                    // stop immdediately if any violation is found to save time
+                    while !violatesRestriction && i < recipe.ingredients.count {
                         let currentIngredient:String = recipe.ingredients[i]
                         var j:Int = 0
-                        while !violatesRestriction && j < userRestrictions!.count
-                        {
+                        // check each ingredient in each restriction
+                        while !violatesRestriction && j < userRestrictions!.count {
                             let restrictionIngredients:[String] = userRestrictions![j].ingredients
-                            if restrictionIngredients.firstIndex(of: currentIngredient) != nil
-                            {
+                            if restrictionIngredients.firstIndex(of: currentIngredient) != nil {
                                 violatesRestriction = true
                             }
                             j += 1
                         }
-                        if !violatesRestriction && self.customRestrictions.firstIndex(of: currentIngredient) != nil
-                        {
+                        // check in custom restrictions
+                        if !violatesRestriction
+                            && self.customRestrictions.firstIndex(of: currentIngredient) != nil {
                             violatesRestriction = true
                         }
                         i += 1
                     }
-                    if !violatesRestriction
-                    {
+                    if !violatesRestriction {
                         allowedRecipes.append(recipe)
                     }
                 }
@@ -228,15 +201,15 @@ class User
         }
     }
     
-    func syncToDatabase()
-    {
-            database.collection(userCollectionID).document(self.uid!).setData(self.asDictionary()!)
+    // sync all of this user's data to firestore
+    func syncToDatabase() {
+        database.collection(userCollectionID).document(self.uid!).setData(self.asDictionary()!)
     }
 
-    func asDictionary() -> [String:Any]?
-    {
-        if uid == nil || username == nil
-        {
+    // attempt to return a representation of this user as a dictionary
+    // returns nil if the user lacks a uid or username
+    func asDictionary() -> [String:Any]? {
+        if uid == nil || username == nil {
             return nil
         }
         

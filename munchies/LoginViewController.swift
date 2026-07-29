@@ -13,7 +13,7 @@ import FirebaseAuth
 // remember to add keyboard
 // we want this to segue to a profile screen for setup
 class LoginViewController: UIViewController, UITextFieldDelegate {
-
+    
     @IBOutlet weak var pwField: RoundedTextField!
     @IBOutlet weak var userField: RoundedTextField!
     @IBOutlet weak var statusLabel: UILabel!
@@ -70,5 +70,4 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
             }
         }
     }
-
 }

@@ -7,8 +7,7 @@
 
 import UIKit
 
-class SettingsViewController: UIViewController, UITableViewDelegate, UITableViewDataSource
-{
+class SettingsViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     @IBOutlet weak var tableView:UITableView!
     let defaults:UserDefaults = UserDefaults.standard
     let screenTitle:String = "General Settings"
@@ -17,67 +16,40 @@ class SettingsViewController: UIViewController, UITableViewDelegate, UITableView
     let switchCellIdentifier:String = "switchCell"
     let segueCellIdentifier:String = "segueCell"
     let restrictionSegueIdentifier = "restriction"
-
-    // TODO need to do something about this pronto
-    let defaultSettings:[Setting] = [Setting("Dark mode", false), Setting("Privacy"),
-        Setting("Restrictions")]
     var settings:[Setting] = [Setting("Restrictions")]
     
-    override func viewDidLoad()
-    {
+    override func viewDidLoad() {
         super.viewDidLoad()
         self.title = screenTitle
         self.navigationItem.backButtonTitle = backButtonTitle
         tableView.dataSource = self
         tableView.delegate = self
-        // TODO figure out what to do about dark mode and privacy
-//        if let data:Data = defaults.object(forKey: settingsKey) as? Data,
-//           let storedSettings:[Setting] = try? JSONDecoder().decode([Setting].self, from: data)
-//        {
-//            for setting in storedSettings
-//            {
-//                settings.append(setting)
-//            }
-//        } else
-//        {
-//            for setting in defaultSettings
-//            {
-//                settings.append(setting)
-//            }
-//            if let encodedSettings = try? JSONEncoder().encode(settings)
-//            {
-//                defaults.set(encodedSettings, forKey: settingsKey)
-//            }
-//        }
         self.tabBarController?.setTabBarHidden(true, animated: false)
     }
     
-    override func viewWillAppear(_ animated:Bool)
-    {
+    override func viewWillAppear(_ animated:Bool) {
         self.tabBarController?.setTabBarHidden(true, animated: false)
     }
     
-    override func shouldPerformSegue(withIdentifier identifier:String, sender:Any?) -> Bool
-    {
+    override func shouldPerformSegue(withIdentifier identifier:String, sender:Any?) -> Bool {
         return false
     }
 
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int
-    {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return settings.count
     }
     
-    func tableView(_ tableView:UITableView, cellForRowAt indexPath:IndexPath) -> UITableViewCell
-    {
+    func tableView(_ tableView:UITableView, cellForRowAt indexPath:IndexPath) -> UITableViewCell {
         let setting:Setting = settings[indexPath.row]
-        let cellType:String = setting.switchState != nil ? switchCellIdentifier : segueCellIdentifier
+        let cellType:String = setting.switchState != nil ?
+            switchCellIdentifier : segueCellIdentifier
         let cell:UITableViewCell = tableView.dequeueReusableCell(withIdentifier: cellType,
             for: indexPath)
-        if cellType == switchCellIdentifier
-        {
+        if cellType == switchCellIdentifier {
             let uiSwitch:UISwitch = UISwitch(frame: CGRect.zero)
             uiSwitch.tag = indexPath.row
-            uiSwitch.addTarget(self, action: #selector(self.onSwitchChanged), for: UIControl.Event.valueChanged)
+            uiSwitch.addTarget(self, action: #selector(self.onSwitchChanged),
+                for: UIControl.Event.valueChanged)
             uiSwitch.isOn = setting.switchState!
             cell.accessoryView = uiSwitch
         }
@@ -88,20 +60,16 @@ class SettingsViewController: UIViewController, UITableViewDelegate, UITableView
         return cell
     }
     
-    func tableView(_ tableView:UITableView, didSelectRowAt indexPath:IndexPath)
-    {
+    func tableView(_ tableView:UITableView, didSelectRowAt indexPath:IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        if indexPath.row == settings.count - 1
-        {
+        if indexPath.row == settings.count - 1 {
             performSegue(withIdentifier: restrictionSegueIdentifier, sender: self)
         }
     }
     
-    @objc func onSwitchChanged(sender:UISwitch)
-    {
+    @objc func onSwitchChanged(sender:UISwitch) {
         settings[sender.tag].switchState = sender.isOn
-        if let encodedSettings = try? JSONEncoder().encode(settings)
-        {
+        if let encodedSettings = try? JSONEncoder().encode(settings) {
             defaults.set(encodedSettings, forKey: settingsKey)
         }
     }

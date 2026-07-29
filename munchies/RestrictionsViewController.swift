@@ -9,33 +9,17 @@ import UIKit
 import FirebaseAuth
 import FirebaseFirestore
 
-class RestrictionsViewController: UIViewController, UITableViewDelegate, UITableViewDataSource
-{
+class RestrictionsViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+    
     @IBOutlet weak var tableView: UITableView!
     let database:Firestore = Firestore.firestore()
     let screenTitle:String = "Restrictions"
     let switchCellIdentifier:String = "switchCell"
     let segueCellIdentifier:String = "segueCell"
     var currentUser:User!
-    var restrictions:[String: [String]] =
-       ["Gluten-free": ["gluten"],
-        "Halal": ["pork"/*TODO*/],
-        "Kosher": ["pork"/*TODO*/],
-        "Lactose-free": ["lactose"],
-        "Peanut-free": ["peanuts"],
-        "Vegan": ["meat", "dairy milk"/*TODO*/],
-        "Vegetarian": ["meat"]]
     var restrictionCells:[Setting] = []
-//       [Setting("Gluten-free", false),
-//        Setting("Halal", false),
-//        Setting("Kosher", false),
-//        Setting("Lactose-free", false),
-//        Setting("Peanut-free", false),
-//        Setting("Vegan", false),
-//        Setting("Vegetarian", false)]
     
-    override func viewDidLoad()
-    {
+    override func viewDidLoad() {
         super.viewDidLoad()
         self.title = screenTitle
         self.navigationItem.backButtonTitle = screenTitle
@@ -44,34 +28,26 @@ class RestrictionsViewController: UIViewController, UITableViewDelegate, UITable
         self.tabBarController?.setTabBarHidden(true, animated: false)
     }
     
-    override func viewWillAppear(_ animated:Bool)
-    {
+    override func viewWillAppear(_ animated:Bool) {
         updateCurrentUser()
     }
     
-    func updateCurrentUser()
-    {
-        if let user:FirebaseAuth.User = Auth.auth().currentUser
-        {
-            currentUser = User(UID: user.uid)
-            {(newUser) in
-                self.database.collection(restrictionCollectionID).getDocuments()
-                {(querySnapshot, error) in
-                    if let error
-                    {
+    // update the current user and refresh their restrictions appropriately
+    func updateCurrentUser() {
+        if let user:FirebaseAuth.User = Auth.auth().currentUser {
+            currentUser = User(UID: user.uid) { (newUser) in
+                self.database.collection(restrictionCollectionID)
+                    .getDocuments() { (querySnapshot, error) in
+                    if let error {
                         print(error.localizedDescription)
-                    } else
-                    {
-                        if let documents:[QueryDocumentSnapshot] = querySnapshot?.documents
-                        {
+                    } else {
+                        if let documents:[QueryDocumentSnapshot] = querySnapshot?.documents {
                             self.restrictionCells = []
-                            for document in documents
-                            {
+                            for document in documents {
                                 let docFields:[String:Any] = document.data()
                                 let name:String = docFields[restrictionNameFieldID] as! String
                                 var switchState:Bool = false
-                                if let newUser
-                                {
+                                if let newUser {
                                     switchState = newUser.restrictions.contains(name)
                                 }
                                 self.restrictionCells.append(Setting(name, switchState))
@@ -85,15 +61,13 @@ class RestrictionsViewController: UIViewController, UITableViewDelegate, UITable
         }
     }
     
-    func tableView(_ tableView:UITableView, numberOfRowsInSection section:Int) -> Int
-    {
+    func tableView(_ tableView:UITableView, numberOfRowsInSection section:Int) -> Int {
+        // there is an extra cell for the custom restrictions cell
         return restrictionCells.count + 1
     }
     
-    func tableView(_ tableView:UITableView, cellForRowAt indexPath:IndexPath) -> UITableViewCell
-    {
-        if indexPath.row == restrictionCells.count
-        {
+    func tableView(_ tableView:UITableView, cellForRowAt indexPath:IndexPath) -> UITableViewCell {
+        if indexPath.row == restrictionCells.count {
             let cell:UITableViewCell =
                 tableView.dequeueReusableCell(withIdentifier: segueCellIdentifier,
                 for: indexPath)
@@ -104,14 +78,15 @@ class RestrictionsViewController: UIViewController, UITableViewDelegate, UITable
         }
         
         let setting:Setting = restrictionCells[indexPath.row]
-        let cellType:String = setting.switchState != nil ? switchCellIdentifier : segueCellIdentifier
+        let cellType:String = setting.switchState != nil ?
+            switchCellIdentifier : segueCellIdentifier
         let cell:UITableViewCell = tableView.dequeueReusableCell(withIdentifier: cellType,
             for: indexPath)
-        if cellType == switchCellIdentifier
-        {
+        if cellType == switchCellIdentifier {
             let uiSwitch:UISwitch = UISwitch(frame: CGRect.zero)
             uiSwitch.tag = indexPath.row
-            uiSwitch.addTarget(self, action: #selector(self.handleSwitchChange), for: UIControl.Event.valueChanged)
+            uiSwitch.addTarget(self, action: #selector(self.handleSwitchChange),
+                for: UIControl.Event.valueChanged)
             uiSwitch.isOn = setting.switchState!
             cell.accessoryView = uiSwitch
         }
@@ -122,14 +97,11 @@ class RestrictionsViewController: UIViewController, UITableViewDelegate, UITable
         return cell
     }
     
-    @objc func handleSwitchChange(sender:UISwitch)
-    {
+    @objc func handleSwitchChange(sender:UISwitch) {
         let restriction:String = restrictionCells[sender.tag].title
-        if sender.isOn
-        {
+        if sender.isOn {
             currentUser.restrictions.append(restriction)
-        } else
-        {
+        } else {
             if let restrictionIndex:Int = currentUser.restrictions.firstIndex(of: restriction)
             {
                 currentUser.restrictions.remove(at: restrictionIndex)

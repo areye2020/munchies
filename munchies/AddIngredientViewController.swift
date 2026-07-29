@@ -56,7 +56,8 @@ class AddIngredientViewController: UIViewController {
     
     @IBAction func addButtonTapped(_ sender: Any) {
         // make sure its not just empty spaces
-        if let text = ingredientTextField.text, !text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+        if let text = ingredientTextField.text,
+           !text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
             
             // hand off text string
             onIngredientAdded?(text)

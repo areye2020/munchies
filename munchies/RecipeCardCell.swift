@@ -21,7 +21,8 @@ class RecipeCardCell: UITableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         
-        // 1. Make the cell's outer background clear so the table view background shows through the gaps
+        // 1. Make the cell's outer background clear so the table view background shows through the
+        // gaps
         self.backgroundColor = .clear
         
         // 2. Set the "Card" background to a very light off-white orange
@@ -41,7 +42,8 @@ class RecipeCardCell: UITableViewCell {
         super.layoutSubviews()
         
         // This shrinks the card by 8 points on top/bottom, and 16 points on the sides
-        contentView.frame = contentView.frame.inset(by: UIEdgeInsets(top: 8, left: 16, bottom: 8, right: 16))
+        contentView.frame = contentView.frame.inset(by: UIEdgeInsets(top: 8, left: 16, bottom: 8,
+            right: 16))
         
     }
 
@@ -58,46 +60,37 @@ class RecipeCardCell: UITableViewCell {
     
     // gonna call this function from FavoritesViewController to populate the cell
     func configure(with recipe: Recipe, isEditable: Bool) {
-            titleLabel.text = recipe.name
-            
-                let time = recipe.getTime(for: .cook)
-                if time.hours > 0 {
-                    cookTimeLabel.text = "\(time.hours) hr \(time.minutes) mins"
-                } else {
-                    cookTimeLabel.text = "\(time.minutes) mins"
-                }
-                
-
-                let imageString = recipe.image ?? ""
-
-                // 1. Try Base64 Encoded String
-                if let imageData = Data(base64Encoded: imageString, options: .ignoreUnknownCharacters),
-                let decodedImage = UIImage(data: imageData) {
-                self.recipeImageView.image = decodedImage
-                }
-                // 2. Try Firebase Storage URL
-                else if imageString.hasPrefix("http") || imageString.hasPrefix("https") || imageString.hasPrefix("gs://"),
-                let url = URL(string: imageString) {
-            
-                    URLSession.shared.dataTask(with: url) { data, response, error in
-                if let data = data, let downloadedImage = UIImage(data: data), error == nil {
-                    DispatchQueue.main.async {
-                        self.recipeImageView.image = downloadedImage
-                    }
-                }
-                    }.resume()
-                }
-                // 3. Try Local Asset Name
-                else if let assetImage = UIImage(named: imageString) {
-                    self.recipeImageView.image = assetImage
-                }
-                // 4. Fallback Placeholder
-                else {
-                    self.recipeImageView.image = UIImage(systemName: "photo.fill")
-                    self.recipeImageView.tintColor = UIColor(named: "ThemeColor")
-                }
+        titleLabel.text = recipe.name
         
-            editButton?.isHidden = !isEditable
+        let time = recipe.getTime(for: .cook)
+        if time.hours > 0 {
+            cookTimeLabel.text = "\(time.hours) hr \(time.minutes) mins"
+        } else {
+            cookTimeLabel.text = "\(time.minutes) mins"
         }
-
+        
+        let imageString = recipe.image ?? ""
+        // 1. Try Base64 Encoded String
+        if let imageData = Data(base64Encoded: imageString, options: .ignoreUnknownCharacters),
+            let decodedImage = UIImage(data: imageData) {
+            self.recipeImageView.image = decodedImage
+        } else if imageString.hasPrefix("http") || imageString.hasPrefix("https")
+            || imageString.hasPrefix("gs://"),
+            let url = URL(string: imageString) {
+            // 2. Try Firebase Storage URL
+            URLSession.shared.dataTask(with: url) { data, response, error in
+            if let data = data, let downloadedImage = UIImage(data: data), error == nil {
+                DispatchQueue.main.async {
+                    self.recipeImageView.image = downloadedImage
+                }
+            }
+            }.resume()
+        } else if let assetImage = UIImage(named: imageString) { // 3. Try Local Asset Name
+            self.recipeImageView.image = assetImage
+        } else { // 4. Fallback Placeholder
+            self.recipeImageView.image = UIImage(systemName: "photo.fill")
+            self.recipeImageView.tintColor = UIColor(named: "ThemeColor")
+        }
+        editButton?.isHidden = !isEditable
+    }
 }

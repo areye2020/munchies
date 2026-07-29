@@ -8,7 +8,8 @@
 import UIKit
 import FirebaseFirestore
 
-class EditRecipieViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+class EditRecipieViewController: UIViewController, UIImagePickerControllerDelegate,
+    UINavigationControllerDelegate {
 
     @IBOutlet weak var recipieImageView: UIImageView!
     @IBOutlet weak var nameTextField: UITextField!
@@ -55,8 +56,10 @@ class EditRecipieViewController: UIViewController, UIImagePickerControllerDelega
         instructionsTextView.layer.cornerRadius = cornerRadius
         
         // Slight inset so the text doesn't touch the border walls
-        ingredientsTextView.textContainerInset = UIEdgeInsets(top: 8, left: 25, bottom: 8, right: 5)
-        instructionsTextView.textContainerInset = UIEdgeInsets(top: 8, left: 25, bottom: 8, right: 5)
+        ingredientsTextView.textContainerInset = UIEdgeInsets(top: 8, left: 25, bottom: 8,
+            right: 5)
+        instructionsTextView.textContainerInset = UIEdgeInsets(top: 8, left: 25, bottom: 8,
+            right: 5)
     }
     
     // 1. Make the image view tappable
@@ -76,7 +79,8 @@ class EditRecipieViewController: UIViewController, UIImagePickerControllerDelega
         }
         
         // 3. Catch the selected image and put it in the ImageView
-        func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        func imagePickerController(_ picker: UIImagePickerController,
+            didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
             if let editedImage = info[.editedImage] as? UIImage {
                 recipieImageView.image = editedImage
             } else if let originalImage = info[.originalImage] as? UIImage {
@@ -97,7 +101,8 @@ class EditRecipieViewController: UIViewController, UIImagePickerControllerDelega
         
         // NEW IMAGE LOADING LOGIC:
         let imageString = recipe.image ?? ""
-        if let imageData = Data(base64Encoded: imageString), let decodedImage = UIImage(data: imageData) {
+        if let imageData = Data(base64Encoded: imageString),
+           let decodedImage = UIImage(data: imageData) {
             // It's a user-uploaded base64 image
             recipieImageView.image = decodedImage
         } else {
@@ -127,7 +132,8 @@ class EditRecipieViewController: UIViewController, UIImagePickerControllerDelega
         // 1. Create the confirmation alert dialog wrapper
         let alert = UIAlertController(
             title: "Delete Recipe",
-            message: "Are you sure you want to permanently delete this recipe? This action cannot be undone.",
+            message: "Are you sure you want to permanently delete this recipe? This action cannot "
+                + "be undone.",
             preferredStyle: .alert
         )
         
@@ -149,7 +155,8 @@ class EditRecipieViewController: UIViewController, UIImagePickerControllerDelega
     private func executeFirestoreDeletion() {
         // Safely extract your recipe's identifier or document reference key
         guard let recipeId = self.recipe?.id else {
-            print("Error: Could not locate a valid document reference identifier for this recipe object.")
+            print("Error: Could not locate a valid document reference identifier for this recipe "
+                + "object.")
             return
         }
         
@@ -159,14 +166,17 @@ class EditRecipieViewController: UIViewController, UIImagePickerControllerDelega
         db.collection("recipes").document(recipeId).delete { [weak self] error in
             if let error = error {
                 // Gracefully log database communication errors
-                print("Error removing recipe document from Firestore: \(error.localizedDescription)")
-                let errorAlert = UIAlertController(title: "Error", message: "Failed to delete the recipe. Please try again.", preferredStyle: .alert)
+                print("Error removing recipe document from Firestore: "
+                      + error.localizedDescription)
+                let errorAlert = UIAlertController(title: "Error", message: "Failed to delete the "
+                    + "recipe. Please try again.", preferredStyle: .alert)
                 errorAlert.addAction(UIAlertAction(title: "OK", style: .default))
                 self?.present(errorAlert, animated: true)
             } else {
                 print("Recipe document successfully deleted from Firestore.")
                 
-                // Pop the view controller off the navigation stack instantly to slide back smoothly to the feed screen
+                // Pop the view controller off the navigation stack instantly to slide back
+                // smoothly to the feed screen
                 DispatchQueue.main.async {
                     self?.navigationController?.popViewController(animated: true)
                 }
@@ -177,7 +187,6 @@ class EditRecipieViewController: UIViewController, UIImagePickerControllerDelega
     
     
     @IBAction func saveTapped(_ sender: Any) {
-        
         // Ensure we know which document in Firestore we are updating
         guard let recipeID = recipe?.id else {
             print("Error: No recipe ID found.")
@@ -219,7 +228,8 @@ class EditRecipieViewController: UIViewController, UIImagePickerControllerDelega
         
         // 5. Send the Update to Firestore
         let db = Firestore.firestore()
-        db.collection(recipeCollectionID).document(recipeID).updateData(updatedData) { [weak self] error in
+        db.collection(recipeCollectionID).document(recipeID)
+            .updateData(updatedData) { [weak self] error in
             if let error = error {
                 print("Error updating document: \(error)")
             } else {
@@ -249,6 +259,4 @@ class EditRecipieViewController: UIViewController, UIImagePickerControllerDelega
         // This will trigger our safety alert popup and Firestore deletion
         confirmDeleteRecipe()
     }
-    
-    
 }

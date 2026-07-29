@@ -67,7 +67,8 @@ class SignupViewController: UIViewController, UITextFieldDelegate {
             } else if let newUID = authResult?.user.uid {
                 let newUser = User(UID: newUID, username: user)
                 if let userData = newUser.asDictionary() {
-                    Firestore.firestore().collection(userCollectionID).document(newUID).setData(userData) { error in
+                    Firestore.firestore().collection(userCollectionID).document(newUID)
+                        .setData(userData) { error in
                         if let error = error as? NSError {
                             self.statusLabel.text = error.localizedDescription
                         } else
@@ -106,7 +107,6 @@ class SignupViewController: UIViewController, UITextFieldDelegate {
         }
         
         pwMatchImage.isHidden = false
-        
         if pass == confirm {
             pwMatchImage.image = UIImage(systemName: "checkmark.circle.fill")
             pwMatchImage.tintColor = .systemGreen

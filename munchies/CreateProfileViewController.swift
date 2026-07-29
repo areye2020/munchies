@@ -13,7 +13,8 @@ import FirebaseAuth
 import FirebaseStorage
 
 // Adds the user to a profile in firestore
-class CreateProfileViewController: UIViewController, UITextFieldDelegate, UITextViewDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+class CreateProfileViewController: UIViewController, UITextFieldDelegate, UITextViewDelegate,
+    UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
     @IBOutlet weak var profileImageView: UIImageView!
     @IBOutlet weak var usernameField: UITextField!
@@ -82,7 +83,8 @@ class CreateProfileViewController: UIViewController, UITextFieldDelegate, UIText
     
     // Gesture function for selecting profile picture, choose options through action sheet
     @objc func profileImageTapped() {
-        let alert = UIAlertController(title: "Profile Picture", message: "Choose a source", preferredStyle: .actionSheet)
+        let alert = UIAlertController(title: "Profile Picture", message: "Choose a source",
+            preferredStyle: .actionSheet)
         
         alert.addAction(UIAlertAction(title: "Camera", style: .default) {_ in
             self.openCamera()
@@ -99,7 +101,8 @@ class CreateProfileViewController: UIViewController, UITextFieldDelegate, UIText
         guard UIImagePickerController.isSourceTypeAvailable(.camera) else {
             let alert = UIAlertController(
                 title: "Camera Unavailable",
-                message: "The iOS Simulator doesn't have a camera. Please use a physical device to test this feature.",
+                message: "The iOS Simulator doesn't have a camera. Please use a physical device "
+                    + "to test this feature.",
                 preferredStyle: .alert
             )
             
@@ -121,7 +124,8 @@ class CreateProfileViewController: UIViewController, UITextFieldDelegate, UIText
         present(picker, animated: true)
     }
     // Receive image
-    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+    func imagePickerController(_ picker: UIImagePickerController,
+        didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         if let image = info[.originalImage] as? UIImage {
             profileImageView.image = image
             selectedPFP = true
@@ -224,14 +228,4 @@ class CreateProfileViewController: UIViewController, UITextFieldDelegate, UIText
         self.view.window?.rootViewController = tabBarController
         self.view.window?.makeKeyAndVisible()
     }
-    /*
-     // MARK: - Navigation
-     
-     // In a storyboard-based application, you will often want to do a little preparation before navigation
-     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-     // Get the new view controller using segue.destination.
-     // Pass the selected object to the new view controller.
-     }
-     */
-    
 }
