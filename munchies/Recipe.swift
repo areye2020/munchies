@@ -22,7 +22,9 @@ class Recipe: Codable, Sendable {
     var authorID: String?
     var favoritedBy: [String]?
     
-    init(name: String, author : String? = nil, image: String? = nil, servings: Int? = nil, calories: Int? = nil, prepTime: Int? = nil,cookTime: Int, ingredients: [String], instructions: String, authorID: String? = nil, favoritedBy: [String]? = nil) {
+    init(name: String, author : String? = nil, image: String? = nil, servings: Int? = nil,
+        calories: Int? = nil, prepTime: Int? = nil,cookTime: Int, ingredients: [String],
+        instructions: String, authorID: String? = nil, favoritedBy: [String]? = nil) {
         self.name = name
         self.author = author
         self.image = image
@@ -36,7 +38,6 @@ class Recipe: Codable, Sendable {
         self.favoritedBy = favoritedBy
     }
     
-    
     enum TimeType {
         case prep
         case cook
@@ -48,17 +49,14 @@ class Recipe: Codable, Sendable {
     func getTime(for time: TimeType) -> (hours: Int, minutes: Int){
         // If prepTime is nil, treat it as 0 minutes
         let safePrep = prepTime ?? 0
-        
         switch time {
         case .prep:
-            return (hours: (prepTime ?? 60)/60, minutes: (prepTime ?? 60)%60)
+            return (hours: (prepTime ?? 60) / 60, minutes: (prepTime ?? 60) % 60)
         case .cook:
-            return (hours: cookTime/60, minutes: cookTime%60)
+            return (hours: cookTime / 60, minutes: cookTime % 60)
         case .total:
             let totalTime = (prepTime ?? 60) + cookTime
-            return (hours: totalTime/60, minutes: totalTime%60)
-            
+            return (hours: totalTime / 60, minutes: totalTime % 60)
         }
-        
     }
 }

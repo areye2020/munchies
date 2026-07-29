@@ -12,9 +12,7 @@ import FirebaseFirestore
 import FirebaseAuth
 
 class RecipeDetailViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
-    
-    
-    
+
     @IBOutlet weak var recipeImage: UIImageView!
     @IBOutlet weak var recipeName: UILabel!
     
@@ -24,7 +22,6 @@ class RecipeDetailViewController: UIViewController, UITableViewDelegate, UITable
     @IBOutlet weak var servings: UILabel!
     @IBOutlet weak var calories: UILabel!
     
-    
     @IBOutlet weak var ingredients: UILabel!
     @IBOutlet weak var ingredientTable: UITableView!
     let ingredientTableCellIdentitfier = "ingredientCell"
@@ -32,15 +29,12 @@ class RecipeDetailViewController: UIViewController, UITableViewDelegate, UITable
     @IBOutlet weak var instructionsLabel: UILabel!
     @IBOutlet weak var instructions: UITextView!
     
-    
     let db = Firestore.firestore()
     var recipe: Recipe?
     var isFavorited:Bool!
     
-    
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         ingredientTable.delegate = self
         ingredientTable.dataSource = self
         instructions.isEditable = false
@@ -48,9 +42,7 @@ class RecipeDetailViewController: UIViewController, UITableViewDelegate, UITable
         instructions.isScrollEnabled = true
         addUI()
         addFields()
-        
     }
-    
     
     override func viewWillAppear(_ animated: Bool) {
         updateFavoriteButtonState()
@@ -58,11 +50,8 @@ class RecipeDetailViewController: UIViewController, UITableViewDelegate, UITable
     
     // this is for adding in nice looking uis to the screen
     func addUI() {
-        // borders
-        // UIImage
         recipeImage.contentMode = .scaleAspectFill
         recipeImage.clipsToBounds = true
-        // label
         styleLabel(recipeName)
         styleLabel(authorName)
         styleLabel(ingredients)
@@ -75,12 +64,11 @@ class RecipeDetailViewController: UIViewController, UITableViewDelegate, UITable
         label.textColor = .white
         label.layer.cornerRadius = 8
         label.layer.masksToBounds = true
-        
         // Labels have no built-in padding, so give the background room to breathe
         label.numberOfLines = 1
     }
     
-    func addFields(){
+    func addFields() {
         guard let recipe = recipe else { return }
         recipeName.text = " \(recipe.name) "
         authorName.text = " by \(recipe.author ?? " Unknown ") "
@@ -108,7 +96,6 @@ class RecipeDetailViewController: UIViewController, UITableViewDelegate, UITable
     }
     
     @IBAction func favoritePressed(_ sender: UIBarButtonItem) {
-        
         guard let recipeID = recipe?.id else {
             print("No recipe ID available")
             return
@@ -119,20 +106,20 @@ class RecipeDetailViewController: UIViewController, UITableViewDelegate, UITable
         }
         let databaseFunc = isFavorited ? FieldValue.arrayRemove : FieldValue.arrayUnion
         
-        db.collection(recipeCollectionID).document(recipeID).updateData([
-            recipeFavoritedByFieldID: databaseFunc([uid])
-        ]) { [weak self] error in
+        db.collection(recipeCollectionID).document(recipeID)
+            .updateData([recipeFavoritedByFieldID: databaseFunc([uid])]) { [weak self] error in
             guard let self = self else { return }
             if let error = error {
-                self.createAlert(title: "Error", "Could not update favorite: \(error.localizedDescription)")
+                self.createAlert(title: "Error", "Could not update favorite: "
+                    + error.localizedDescription)
             } else {
                 DispatchQueue.main.async {
-                    if !self.isFavorited
-                    {
-                        self.recipe?.favoritedBy?.append(uid) // keep local copy in sync
-                        sender.image = UIImage(systemName: "heart.fill") // optional: flip icon state
-                    } else
-                    {
+                    if !self.isFavorited {
+                        // keep local copy in sync
+                        self.recipe?.favoritedBy?.append(uid)
+                        // optional: flip icon state
+                        sender.image = UIImage(systemName: "heart.fill")
+                    } else {
                         let uidIndex = self.recipe?.favoritedBy?.firstIndex(of: uid)
                         self.recipe?.favoritedBy?.remove(at: uidIndex!)
                         sender.image = UIImage(systemName: "heart")
@@ -142,14 +129,13 @@ class RecipeDetailViewController: UIViewController, UITableViewDelegate, UITable
             }
         }
     }
+    
     // Sets the button's icon based on whether the current user already favorited this recipe
     func updateFavoriteButtonState() {
         if let uid = Auth.auth().currentUser?.uid,
            let favoritedBy = recipe?.favoritedBy,
            favoritedBy.contains(uid),
-           let button = navigationItem.rightBarButtonItem
-        {
-            
+           let button = navigationItem.rightBarButtonItem {
             button.image = UIImage(systemName: "heart.fill")
             isFavorited = true
         } else {
@@ -163,8 +149,6 @@ class RecipeDetailViewController: UIViewController, UITableViewDelegate, UITable
         alert.addAction(UIAlertAction(title: "okay", style: .default))
         present(alert, animated: true)
     }
-    
-    
     
     func loadImage(named nameOrURL: String, completion: @escaping (UIImage?) -> Void) {
         // Case 1: it's a local asset name (e.g. "placeholder", "default_recipe")
@@ -180,7 +164,6 @@ class RecipeDetailViewController: UIViewController, UITableViewDelegate, UITable
         }
         
         let storageRef = Storage.storage().reference(forURL: nameOrURL)
-        
         storageRef.getData(maxSize: maxImageSize) { data, error in
             if let error = error {
                 print("Failed to fetch image: \(error.localizedDescription)")

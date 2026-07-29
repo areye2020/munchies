@@ -13,7 +13,8 @@ import FirebaseFirestore
 import FirebaseStorage
 
 
-class AddRecipieViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate, PHPickerViewControllerDelegate {
+class AddRecipieViewController: UIViewController, UITableViewDelegate, UITableViewDataSource,
+    UITextFieldDelegate, PHPickerViewControllerDelegate {
     
     @IBOutlet weak var nameField: UITextField!
     @IBOutlet weak var servingField: UILabel!
@@ -40,7 +41,8 @@ class AddRecipieViewController: UIViewController, UITableViewDelegate, UITableVi
     var currentUser:User!
     
     @IBOutlet weak var recipeImage: UIImageView!
-    private let accessMessage:String = "Access to your photo library is required to add a recipe image"
+    private let accessMessage:String = "Access to your photo library is required to add a recipe "
+        + "image"
     private var pickerConfig: PHPickerConfiguration = PHPickerConfiguration()
     private lazy var picker: PHPickerViewController = {
         pickerConfig.filter = .images
@@ -62,9 +64,11 @@ class AddRecipieViewController: UIViewController, UITableViewDelegate, UITableVi
         IngredientsTableView.delegate = self
         IngredientsTableView.dataSource = self
         // Ensure a default cell is available for ingredient rows
-        IngredientsTableView.register(UITableViewCell.self, forCellReuseIdentifier: ingredientCellIdentifier)
+        IngredientsTableView.register(UITableViewCell.self,
+            forCellReuseIdentifier: ingredientCellIdentifier)
         // Register a basic cell for the input row as well
-        IngredientsTableView.register(UITableViewCell.self, forCellReuseIdentifier: addIngredientCellIdentifier)
+        IngredientsTableView.register(UITableViewCell.self,
+            forCellReuseIdentifier: addIngredientCellIdentifier)
         
         // Enable tapping the image view to edit/select a recipe image
         let tap = UITapGestureRecognizer(target: self, action: #selector(onEditImage))
@@ -124,18 +128,23 @@ class AddRecipieViewController: UIViewController, UITableViewDelegate, UITableVi
         return ingredients.count + 1
     }
     
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    func tableView(_ tableView: UITableView,
+        cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if indexPath.row < ingredients.count {
             let ingredient = ingredients[indexPath.row]
-            let cell = tableView.dequeueReusableCell(withIdentifier: ingredientCellIdentifier, for: indexPath)
+            let cell = tableView.dequeueReusableCell(withIdentifier: ingredientCellIdentifier,
+                for: indexPath)
             cell.textLabel?.text = ingredient
             cell.selectionStyle = .none
             return cell
         } else {
-            let cell = tableView.dequeueReusableCell(withIdentifier: addIngredientCellIdentifier, for: indexPath)
+            let cell = tableView.dequeueReusableCell(withIdentifier: addIngredientCellIdentifier,
+                for: indexPath)
             cell.selectionStyle = .none
             // Remove any existing text field (in case of reused cell)
-            for subview in cell.contentView.subviews { subview.removeFromSuperview() }
+            for subview in cell.contentView.subviews {
+                subview.removeFromSuperview()
+            }
             let tf = UITextField(frame: .zero)
             tf.translatesAutoresizingMaskIntoConstraints = false
             tf.placeholder = "Add ingredient..."
@@ -176,8 +185,7 @@ class AddRecipieViewController: UIViewController, UITableViewDelegate, UITableVi
         return true
     }
     
-    func removeExtraWhitespace(string:String) throws -> String
-    {
+    func removeExtraWhitespace(string:String) throws -> String {
         var newString:String = ""
         try newString = string.replacing(Regex("^\\s+"), with: "")
         try newString.replace(Regex("\\s+$"), with: "")
@@ -185,7 +193,8 @@ class AddRecipieViewController: UIViewController, UITableViewDelegate, UITableVi
         return newString
     }
     
-    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle,
+        forRowAt indexPath: IndexPath) {
         if editingStyle == .delete && indexPath.row < ingredients.count - 1 {
             ingredients.remove(at: indexPath.row)
             tableView.deleteRows(at: [indexPath], with: .automatic)
@@ -213,7 +222,8 @@ class AddRecipieViewController: UIViewController, UITableViewDelegate, UITableVi
     func createtRecipe() {
         // Gather and validate basic fields
         let name = (nameField.text ?? "").trimmingCharacters(in: .whitespacesAndNewlines)
-        let instructions = (instructionField.text ?? "").trimmingCharacters(in: .whitespacesAndNewlines)
+        let instructions = (instructionField.text ?? "")
+            .trimmingCharacters(in: .whitespacesAndNewlines)
         // Parse numeric fields with safe defaults
         let servings = Int(servingField.text ?? "") ?? 0
         let prepHours = Int(prepHourField.text ?? "") ?? 0
@@ -248,13 +258,18 @@ class AddRecipieViewController: UIViewController, UITableViewDelegate, UITableVi
                 recipeFavoritedByFieldID: favoritedBy,
                 recipeCreatedAtFieldID: FieldValue.serverTimestamp()
             ]
-            if let calories = calories { data[recipeCaloriesFieldID] = calories }
-            if !imageURL.isEmpty { data[recipeImageFieldID] = imageURL }
+            if let calories = calories {
+                data[recipeCaloriesFieldID] = calories
+            }
+            if !imageURL.isEmpty {
+                data[recipeImageFieldID] = imageURL
+            }
             
             recipeRef.setData(data) { [weak self] error in
                 guard let self = self else { return }
                 if let error = error {
-                    self.createAlert(title: "Save Failed", "Could not save recipe: \(error.localizedDescription)")
+                    self.createAlert(title: "Save Failed",
+                        "Could not save recipe: \(error.localizedDescription)")
                 } else {
                     DispatchQueue.main.async {
                         // empthy all firelds before segue
@@ -285,8 +300,9 @@ class AddRecipieViewController: UIViewController, UITableViewDelegate, UITableVi
     }
     
     
-    func uploadRecipeImage(recipeID: String, image: UIImage, completion: @escaping (String?) -> Void) {
-        guard let imageData = image.jpegData(compressionQuality: 0.8) else {
+    func uploadRecipeImage(recipeID: String, image: UIImage,
+        completion: @escaping (String?) -> Void) {
+        guard let imageData = image.jpegData(compressionQuality: jpgCompression) else {
             completion(nil)
             return
         }

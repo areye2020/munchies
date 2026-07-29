@@ -28,19 +28,20 @@ class ShoppingListViewController: UIViewController, UITableViewDataSource, UITab
         tableView.delegate = self
         
         // Theme Layout Configurations
-            view.backgroundColor = UIColor(named: "SoftCream") ?? .systemBackground
-            tableView.backgroundColor = .clear // Let the parent view background show through
-            
-            // Color the '+' bar button item and navigation header accent colors
-            navigationController?.navigationBar.tintColor = UIColor(named: "BurntOrange")
-            
-            let appearance = UINavigationBarAppearance()
-            appearance.configureWithOpaqueBackground()
-            appearance.backgroundColor = UIColor(named: "SoftCream") ?? .systemBackground
-            appearance.titleTextAttributes = [.foregroundColor: UIColor(named: "BurntOrange") ?? .black]
-            
-            navigationController?.navigationBar.standardAppearance = appearance
-            navigationController?.navigationBar.scrollEdgeAppearance = appearance
+        view.backgroundColor = UIColor(named: "SoftCream") ?? .systemBackground
+        tableView.backgroundColor = .clear // Let the parent view background show through
+        
+        // Color the '+' bar button item and navigation header accent colors
+        navigationController?.navigationBar.tintColor = UIColor(named: "BurntOrange")
+        
+        let appearance = UINavigationBarAppearance()
+        appearance.configureWithOpaqueBackground()
+        appearance.backgroundColor = UIColor(named: "SoftCream") ?? .systemBackground
+        appearance.titleTextAttributes =
+            [.foregroundColor: UIColor(named: "BurntOrange") ?? .black]
+        
+        navigationController?.navigationBar.standardAppearance = appearance
+        navigationController?.navigationBar.scrollEdgeAppearance = appearance
         
         // fetch the data from the phone's storage when the screen loads
         fetchIngredients()
@@ -83,7 +84,8 @@ class ShoppingListViewController: UIViewController, UITableViewDataSource, UITab
         return ingredients.count
     }
     
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    func tableView(_ tableView: UITableView,
+        cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         // dequeue prototype cell using "IngredientCell" indetifier
         let cell = tableView.dequeueReusableCell(withIdentifier: "IngredientCell", for: indexPath)
         let item = ingredients[indexPath.row]
@@ -95,19 +97,16 @@ class ShoppingListViewController: UIViewController, UITableViewDataSource, UITab
             // make the attributes for the crossed out text
             let attributes: [NSAttributedString.Key: Any] = [
                 .strikethroughStyle: NSUnderlineStyle.single.rawValue,
-                .foregroundColor: UIColor.secondaryLabel // Fades the text slightly out
-            ]
+                .foregroundColor: UIColor.secondaryLabel] // Fades the text slightly out
                 
             // name of ingredient
-            cell.textLabel?.attributedText = NSAttributedString(string: itemName, attributes: attributes)
+            cell.textLabel?.attributedText = NSAttributedString(string: itemName,
+                attributes: attributes)
             cell.accessoryType = .checkmark
-        } else {
-                // if not then its normal text
-            let attributes: [NSAttributedString.Key: Any] = [
-                    .foregroundColor: UIColor.label
-            ]
-                
-            cell.textLabel?.attributedText = NSAttributedString(string: itemName, attributes: attributes)
+        } else { // if not then its normal text
+            let attributes: [NSAttributedString.Key: Any] = [.foregroundColor: UIColor.label]
+            cell.textLabel?.attributedText = NSAttributedString(string: itemName,
+                attributes: attributes)
             cell.accessoryType = .none
         }
         
@@ -118,9 +117,9 @@ class ShoppingListViewController: UIViewController, UITableViewDataSource, UITab
         return cell
     }
     
-    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle,
+        forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
-            
             let itemToRemove = ingredients[indexPath.row]
             context.delete(itemToRemove)
             do {
@@ -128,7 +127,6 @@ class ShoppingListViewController: UIViewController, UITableViewDataSource, UITab
             } catch {
                 print("Error deleting item: \(error)")
             }
-            
             ingredients.remove(at: indexPath.row)
             tableView.deleteRows(at: [indexPath], with: .fade)
         }
@@ -136,7 +134,6 @@ class ShoppingListViewController: UIViewController, UITableViewDataSource, UITab
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        
         // toggle the checked stat and refresh the row
         ingredients[indexPath.row].isChecked.toggle()
         do {
@@ -144,8 +141,6 @@ class ShoppingListViewController: UIViewController, UITableViewDataSource, UITab
         } catch {
             print("Error saving checkmark toggle: \(error)")
         }
-        
         tableView.reloadRows(at: [indexPath], with: .automatic)
     }
-
 }

@@ -33,8 +33,10 @@ class FavoritesViewController: UIViewController, UITableViewDataSource, UITableV
 
             let themeColor = UIColor(named: "ThemeColor") ?? .orange
             segmentedControl.selectedSegmentTintColor = themeColor
-            segmentedControl.setTitleTextAttributes([.foregroundColor: UIColor.white], for: .selected)
-            segmentedControl.setTitleTextAttributes([.foregroundColor: themeColor], for: .normal)
+            segmentedControl.setTitleTextAttributes([.foregroundColor: UIColor.white],
+                for: .selected)
+            segmentedControl.setTitleTextAttributes([.foregroundColor: themeColor],
+                for: .normal)
             
             //fetchFavoritesAndUploads()
         }
@@ -82,14 +84,17 @@ class FavoritesViewController: UIViewController, UITableViewDataSource, UITableV
             return currentRecipes.count
         }
         
-        func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: "RecipeCardCell", for: indexPath) as? RecipeCardCell else {
+        func tableView(_ tableView: UITableView,
+            cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: "RecipeCardCell",
+                for: indexPath) as? RecipeCardCell else {
                 return UITableViewCell()
             }
                     
             let recipe = currentRecipes[indexPath.row]
             
-            // Determine editability: true if we are on the Uploaded segment (index 0), false otherwise
+            // Determine editability: true if we are on the Uploaded segment (index 0), false
+            // otherwise
             let isCurrentSegmentEditable = (segmentedControl.selectedSegmentIndex == 0)
             
             // Pass both the recipe and the editability status to the cell
@@ -130,14 +135,10 @@ class FavoritesViewController: UIViewController, UITableViewDataSource, UITableV
         }
     }
     
-    
     @IBAction func segmentChanged(_ sender: Any) {
         // Whenever the user taps a different segment, we need to refresh the table view
         // so it loads the data from the other array.
         tableView.reloadData()
     }
-    
-    
-
 }
 

@@ -17,11 +17,9 @@ class RecipeCollectionViewCell: UICollectionViewCell {
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        
         contentView.layer.cornerRadius = 12
         contentView.layer.masksToBounds = true
         contentView.backgroundColor = UIColor(named: "ThemeColor")
-        
         recipeImage.contentMode = .scaleAspectFill
         recipeImage.clipsToBounds = true
         
@@ -46,9 +44,8 @@ class RecipeCollectionViewCell: UICollectionViewCell {
             self.recipeImage.image = decodedImage
         }
         // 2. Try Firebase Storage URL
-        else if imageString.hasPrefix("http") || imageString.hasPrefix("https") || imageString.hasPrefix("gs://"),
-                let url = URL(string: imageString) {
-            
+        else if imageString.hasPrefix("http") || imageString.hasPrefix("https")
+            || imageString.hasPrefix("gs://"), let url = URL(string: imageString) {
             URLSession.shared.dataTask(with: url) { data, response, error in
                 if let data = data, let downloadedImage = UIImage(data: data), error == nil {
                     DispatchQueue.main.async {

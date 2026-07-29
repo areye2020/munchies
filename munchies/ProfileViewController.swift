@@ -11,8 +11,9 @@ import FirebaseAuth
 import FirebaseFirestore
 import FirebaseStorage
 
-class ProfileViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout
-{
+class ProfileViewController: UIViewController, UICollectionViewDataSource,
+    UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
+    
     var ownedRecipes: [Recipe] = []
     var selectedRecipe: Recipe?
     let db:Firestore = Firestore.firestore()
@@ -28,8 +29,7 @@ class ProfileViewController: UIViewController, UICollectionViewDataSource, UICol
     @IBOutlet weak var profileBackground: UIView!
     @IBOutlet weak var recipeCollectionView: UICollectionView!
     
-    override func viewDidLoad()
-    {
+    override func viewDidLoad() {
         super.viewDidLoad()
         
         recipeCollectionView.dataSource = self
@@ -51,31 +51,25 @@ class ProfileViewController: UIViewController, UICollectionViewDataSource, UICol
         profileBackground.clipsToBounds = true
     }
     
-    override func viewWillAppear(_ animated:Bool)
-    {
+    override func viewWillAppear(_ animated:Bool) {
         super.viewWillAppear(animated)
         updateCurrentUser()
     }
     
-    func updateCurrentUser()
-    {
-        if let user:FirebaseAuth.User = Auth.auth().currentUser
-        {
-            currentUser = User(UID: user.uid)
-            {(newUser) in
-                if newUser != nil
-                {
-                    if newUser!.imageURL != ""
-                    {
+    
+    // update the current user and populate their username, avatar, bio, and owened recipes with
+    // the relevant data
+    func updateCurrentUser() {
+        if let user:FirebaseAuth.User = Auth.auth().currentUser {
+            currentUser = User(UID: user.uid) { (newUser) in
+                if newUser != nil {
+                    if newUser!.imageURL != "" {
                         let storageRef:Storage = Storage.storage()
                         let profilePicRef:StorageReference = storageRef.reference(forURL: newUser!.imageURL)
-                        profilePicRef.getData(maxSize: maxImageSize)
-                        {(data, error) in
-                            if let error
-                            {
+                        profilePicRef.getData(maxSize: maxImageSize) { (data, error) in
+                            if let error {
                                 print(error.localizedDescription)
-                            } else
-                            {
+                            } else {
                                 self.profileImageView.image = UIImage(data: data!)
                             }
                         }
@@ -94,22 +88,18 @@ class ProfileViewController: UIViewController, UICollectionViewDataSource, UICol
     // added by Logan
     func fetchOwnedRecipes(user: User) {
         db.collection(recipeCollectionID)
-            .whereField("authorID", isEqualTo: user.uid)
+            .whereField(recipeAuthorIDFieldID, isEqualTo: user.uid)
             .getDocuments { snapshot, error in
-                
                 if let error = error {
                     print(error.localizedDescription)
                     return
                 }
-                
                 guard let documents = snapshot?.documents else {
                     return
                 }
-                
                 self.ownedRecipes = documents.compactMap { document in
                     try? document.data(as: Recipe.self)
                 }
-                
                 DispatchQueue.main.async {
                     self.emptyStatusLabel.isHidden = !self.ownedRecipes.isEmpty
                     self.recipeCollectionView.reloadData()
@@ -117,74 +107,50 @@ class ProfileViewController: UIViewController, UICollectionViewDataSource, UICol
             }
     }
     
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    func collectionView(_ collectionView: UICollectionView,
+        numberOfItemsInSection section: Int) -> Int {
         return ownedRecipes.count
     }
     
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(
-            withReuseIdentifier: "RecipeProfileCell",
-            for: indexPath
-        ) as! RecipeProfileCell
-        
+    func collectionView(_ collectionView: UICollectionView,
+        cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "RecipeProfileCell",
+            for: indexPath) as! RecipeProfileCell
         let recipe = ownedRecipes[indexPath.item]
         cell.configure(with: recipe)
-        
         return cell
     }
     
-    func collectionView(
-        _ collectionView: UICollectionView,
+    func collectionView(_ collectionView: UICollectionView,
         layout collectionViewLayout: UICollectionViewLayout,
-        sizeForItemAt indexPath: IndexPath
-    ) -> CGSize {
+        sizeForItemAt indexPath: IndexPath) -> CGSize {
         let columns: CGFloat = 3
         let spacing: CGFloat = 12
-        
         let totalSpacing = spacing * (columns + 1)
-        
         let width = (collectionView.frame.width - totalSpacing) / columns
-
-        return CGSize(
-            width: width,
-            height: width
-        )
+        return CGSize(width: width, height: width)
     }
     
-    func collectionView(
-        _ collectionView: UICollectionView,
+    func collectionView(_ collectionView: UICollectionView,
         layout collectionViewLayout: UICollectionViewLayout,
-        minimumInteritemSpacingForSectionAt section: Int
-    ) -> CGFloat {
+        minimumInteritemSpacingForSectionAt section: Int ) -> CGFloat {
         return 12
     }
     
-    func collectionView(
-        _ collectionView: UICollectionView,
+    func collectionView(_ collectionView: UICollectionView,
         layout collectionViewLayout: UICollectionViewLayout,
-        minimumLineSpacingForSectionAt section: Int
-    ) -> CGFloat {
+        minimumLineSpacingForSectionAt section: Int) -> CGFloat {
         return 12
     }
     
-    func collectionView(
-        _ collectionView: UICollectionView,
+    func collectionView(_ collectionView: UICollectionView,
         layout collectionViewLayout: UICollectionViewLayout,
-        insetForSectionAt section: Int
-    ) -> UIEdgeInsets {
-        return UIEdgeInsets(
-            top: 12,
-            left: 12,
-            bottom: 12,
-            right: 12
-        )
+        insetForSectionAt section: Int) -> UIEdgeInsets {
+        return UIEdgeInsets(top: 12, left: 12, bottom: 12, right: 12)
     }
     
     // Selection for detail page
-    func collectionView(
-        _ collectionView: UICollectionView,
-        didSelectItemAt indexPath: IndexPath
-    ) {
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         selectedRecipe = ownedRecipes[indexPath.item]
         performSegue(withIdentifier: detailSegueID, sender: self)
     }
