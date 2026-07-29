@@ -7,6 +7,7 @@
 
 import UIKit
 import FirebaseFirestore
+import FirebaseStorage
 
 class EditRecipieViewController: UIViewController, UIImagePickerControllerDelegate,
     UINavigationControllerDelegate {
@@ -89,7 +90,35 @@ class EditRecipieViewController: UIViewController, UIImagePickerControllerDelega
             dismiss(animated: true, completion: nil)
         }
     
-    
+    func loadImage(named nameOrURL: String, completion: @escaping (UIImage?) -> Void) {
+        // Case 1: it's a local asset name (e.g. "placeholder", "default_recipe")
+        if let assetImage = UIImage(named: nameOrURL) {
+            completion(assetImage)
+            return
+        }
+        // Case 2: treat it as a Firebase Storage URL
+        // (gs://,https://...firebasestorage...)
+        guard nameOrURL.hasPrefix("gs://") || nameOrURL.hasPrefix("http") else {
+            completion(nil)
+            return
+        }
+        
+        let storageRef = Storage.storage().reference(forURL: nameOrURL)
+        storageRef.getData(maxSize: maxImageSize) { data, error in
+            if let error = error {
+                print("Failed to fetch image: \(error.localizedDescription)")
+                DispatchQueue.main.async { completion(nil) }
+                return
+            }
+            guard let data = data, let image = UIImage(data: data) else {
+                DispatchQueue.main.async { completion(nil) }
+                return
+            }
+            DispatchQueue.main.async {
+                completion(image)
+            }
+        }
+    }
     
     func populateUI() {
         // Ensure we actually have a recipe passed in
@@ -100,14 +129,8 @@ class EditRecipieViewController: UIViewController, UIImagePickerControllerDelega
         instructionsTextView.text = recipe.instructions
         
         // NEW IMAGE LOADING LOGIC:
-        let imageString = recipe.image ?? ""
-        if let imageData = Data(base64Encoded: imageString),
-           let decodedImage = UIImage(data: imageData) {
-            // It's a user-uploaded base64 image
-            recipieImageView.image = decodedImage
-        } else {
-            // It's an Xcode asset name or empty
-            recipieImageView.image = UIImage(named: imageString) ?? UIImage(systemName: "photo")
+        loadImage(named: recipe.image ?? "munchiesLogoColor") { [weak self] image in
+            self?.recipieImageView.image = image ?? UIImage(named: "munchiesLogoColor")
         }
         
         // 2. Set up the Servings Stepper
