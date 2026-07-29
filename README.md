@@ -16,7 +16,7 @@ Logan Nhem, Adriana Reyes, Kaden Kirkland, Sean Chang
 - Set up `LoginVC` as the initial View Controller.
 - Make sure the minimum iOS simulator build is 26.
 - Developed and ran on iPhone 17 Pro.
-- **Test Account:** `ar2002@gmail`, password `123456` (Use this to see a profile with pre-uploaded recipes associated with it).
+- **Test Account:** `ar2002@gmail.com`, password `123456` (Use this to see a profile with pre-uploaded recipes associated with it).
 
 ## Features & Contributions
 
